@@ -21,30 +21,7 @@ def init(dirs):
         if not app_path.exists():
             app_path.mkdir(parents=True, exist_ok=True)
 
-    utils.init_cfg_files()
-
-
-def run_proxy(host, port, uscripts, spam):
-    """
-    Argument handler and proxy runner.
-    :param host: IP address of listen interface <str>
-    :param port: port to listen on <int>
-    :param scripts: list of proxy scripts to run
-    :param spam: enable verbose instead of quiet
-    """
-    volume_ctl = '-q'
-    if spam:
-        volume_ctl = '-v'
-
-    arguments = [
-        volume_ctl,
-        '--listen-host', host,
-        '--listen-port', str(port)]
-    for script in uscripts:
-        arguments.append(script)
-    if spam:
-        print('Args: {}'.format(arguments))
-    run(dump.DumpMaster, cmdline.mitmdump, arguments, {})
+    utils.init_cfg_file()
 
 
 def self_test():
@@ -79,8 +56,10 @@ def show_paths():
 
         print("User app dirs:")
         print(mod.get_userdirs())
-        print("User cfg files:")
+        print("\nUser cfg files:")
         print(mod.get_userfiles())
+        print("\nUser scripts:")
+        print(mod.get_userscripts())
 
     except Exception as exc:
         print("FAILED:", repr(exc))
@@ -95,7 +74,7 @@ def main():
     """
     dirs = utils.get_userdirs()
     init(dirs)
-    cfgs = utils.load_cfg_files()
+    cfg = utils.load_cfg_file()
     uscripts = utils.get_userscripts()
 
     parser = argparse.ArgumentParser(
