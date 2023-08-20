@@ -7,8 +7,10 @@ import sys
 import argparse
 import importlib
 
-from procman import utils
-from procman import __version__
+from honcho.manager import Manager
+
+from . import utils
+from ._version import __version__
 
 
 def init(dirs):
@@ -78,32 +80,39 @@ def main():
     uscripts = utils.get_userscripts()
 
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter)
+        formatter_class=argparse.RawTextHelpFormatter,
+        description='Process manager for user scripts',
+    )
     parser.add_argument('-t', '--test', help='Run sanity checks',
                         action='store_true')
-    parser.add_argument('-v', '--version', help='Display version info',
+    parser.add_argument('-V', '--version', help='Display version info',
                         action='store_true')
     parser.add_argument('-s', '--show', help='Display user data paths',
                         action='store_true')
-    parser.add_argument('-V', '--verbose', help='Switch from quiet to verbose',
+    parser.add_argument('-v', '--verbose', help='Switch from quiet to verbose',
                         action='store_true')
 
-    options = parser.parse_args()
+    args = parser.parse_args()
 
-    if options.version:
+    if args.version:
         print('[procman {}]'.format(__version__))
         sys.exit(0)
-    if options.show:
+    if args.show:
         show_paths()
         sys.exit(0)
-    if options.test:
+    if args.test:
         self_test()
         sys.exit(0)
 
+    mgr = Manager()
+    for user_proc in uscripts:
+        print(f'Adding {user_proc} to manager...')
+        mgr.add_process(user_proc[0], user_proc[1])
+
     try:
-        print("This is a stub: %s %s", uscripts, options.verbose)
+        mgr.loop()
 
     except (KeyboardInterrupt, RuntimeError):
-        pass
-    except Exception as exc:
-        print('[ERROR] {}'.format(exc))
+        print("\nExiting ...")
+    finally:
+        sys.exit(mgr.returncode)

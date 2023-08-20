@@ -2,6 +2,7 @@
 procman/_version.py
 .procman*.yml
 .procman*.yaml
+dump.rdb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -71,7 +71,7 @@ def get_userscripts():
             pkg = os.path.join(os.path.dirname(sys.executable), 'procman')
         else:
             pkg = importlib_resources.files('procman')
-        proc_str = os.path.join(pkg, item.proc_dir, item.proc_name)
+        proc_str = f'{item.proc_runner}' + f' {os.path.join(pkg, item.proc_dir, item.proc_name)}'
         for opt in item.proc_opts:
             proc_str = proc_str + f' {opt}'
         proc_list.append(proc_str)

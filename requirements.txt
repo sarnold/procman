@@ -3,3 +3,4 @@ munch
 PyYAML
 ruamel.yaml
 honcho
+appdirs
