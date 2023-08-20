@@ -3,12 +3,13 @@ procman utils for file handling and config parsing.
 """
 import os
 import sys
-import time
 
 from pathlib import Path
 
 from munch import Munch
 from appdirs import AppDirs
+
+from ._version import __version__
 
 if sys.version_info < (3, 10):
     # importlib.resources either doesn't exist or lacks the files()
@@ -17,8 +18,6 @@ if sys.version_info < (3, 10):
 else:
     # importlib.resources has files(), so use that:
     import importlib.resources as importlib_resources
-
-from ._version import __version__
 
 
 def get_userdirs():
@@ -64,14 +63,20 @@ def get_userscripts():
     :return: list of scripts
     """
     uscripts = []
-    ucfg = load_cfg_file()
+    ucfg, _ = load_cfg_file()
     for item in [x for x in ucfg.scripts if x.proc_enable]:
         proc_list = [item.proc_label]
-        if getattr(sys, 'frozen', False):
-            pkg = os.path.join(os.path.dirname(sys.executable), 'procman')
+        if hasattr(ucfg, 'demo_mode') and ucfg.demo_mode is not None:
+            if getattr(sys, 'frozen', False):
+                scripts_path = os.path.join(os.path.dirname(sys.executable), 'procman')
+            else:
+                scripts_path = importlib_resources.files('procman')
+            proc_str = f'{item.proc_runner}' + f' {os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
         else:
-            pkg = importlib_resources.files('procman')
-        proc_str = f'{item.proc_runner}' + f' {os.path.join(pkg, item.proc_dir, item.proc_name)}'
+            if ucfg.scripts_path:
+                proc_str = f'{item.proc_runner}' + f' {os.path.join(ucfg.scripts_path, item.proc_dir, item.proc_name)}'
+            else:
+                proc_str = f'{item.proc_runner}' + f' {os.path.join(item.proc_dir, item.proc_name)}'
         for opt in item.proc_opts:
             proc_str = proc_str + f' {opt}'
         proc_list.append(proc_str)
@@ -97,9 +102,10 @@ def load_cfg_file():
     """
     files = get_userfiles()
     uidx = 1 if len(files) > 1 else 0
-    encoding = 'utf-8' if b'utf-8' in files[uidx].read_bytes() else None
-    ucfg = Munch.fromYAML(files[uidx].read_text(encoding=encoding))
-    return ucfg
+    ufile = files[uidx]
+    encoding = 'utf-8' if b'utf-8' in ufile.read_bytes() else None
+    ucfg = Munch.fromYAML(ufile.read_text(encoding=encoding))
+    return ucfg, ufile
 
 
 def load_base_config():
@@ -111,11 +117,12 @@ def load_base_config():
     proc_cfg = Munch.fromYAML("""
     file_encoding: 'utf-8'
     default_yml_ext: '.yaml'
+    demo_mode: true
     scripts_path: null
     scripts:
       - proc_name: 'app.py'
         proc_dir: examples
-        proc_label: www
+        proc_label: web
         proc_opts: []
         proc_enable: true
         proc_runner: python

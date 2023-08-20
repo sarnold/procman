@@ -4,3 +4,11 @@ PyYAML
 ruamel.yaml
 honcho
 appdirs
+# only used for demo mode
+redis
+flask
+# dev tasks
+pylint
+mypy
+isort
+flake8

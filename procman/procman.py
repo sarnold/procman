@@ -2,10 +2,9 @@
 procman main init, run, and self-test functions.
 """
 
-import os
-import sys
 import argparse
 import importlib
+import sys
 
 from honcho.manager import Manager
 
@@ -38,8 +37,8 @@ def self_test():
         mod = importlib.import_module(modname)
         print(mod.__doc__)
 
-    except Exception as exc:
-        print("FAILED:", repr(exc))
+    except (NameError, KeyError, ModuleNotFoundError) as exc:
+        print(f"FAILED: {repr(exc)}")
 
     print("-" * 80)
 
@@ -63,8 +62,8 @@ def show_paths():
         print("\nUser scripts:")
         print(mod.get_userscripts())
 
-    except Exception as exc:
-        print("FAILED:", repr(exc))
+    except (NameError, KeyError, ModuleNotFoundError) as exc:
+        print(f"FAILED: {repr(exc)}")
 
     print("-" * 80)
 
@@ -76,12 +75,19 @@ def main():
     """
     dirs = utils.get_userdirs()
     init(dirs)
-    cfg = utils.load_cfg_file()
+    ucfg, ufile = utils.load_cfg_file()
     uscripts = utils.get_userscripts()
 
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,
         description='Process manager for user scripts',
+    )
+    parser.add_argument(
+        '-d',
+        '--dump-config',
+        help="dump active yaml configuration to stdout",
+        action='store_true',
+        dest="dump",
     )
     parser.add_argument('-t', '--test', help='Run sanity checks',
                         action='store_true')
@@ -95,10 +101,13 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print('[procman {}]'.format(__version__))
+        print(f'[procman {__version__}]')
         sys.exit(0)
     if args.show:
         show_paths()
+        sys.exit(0)
+    if args.dump:
+        sys.stdout.write(ufile.read_text(encoding=ucfg.file_encoding))
         sys.exit(0)
     if args.test:
         self_test()
