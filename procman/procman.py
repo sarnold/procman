@@ -71,7 +71,7 @@ def show_paths():
 def main():
     """
     Collect and process command options/arguments and init app dirs
-    if needed.
+    if needed, launch the process manager.
     """
     dirs = utils.get_userdirs()
     init(dirs)
@@ -89,14 +89,16 @@ def main():
         action='store_true',
         dest="dump",
     )
-    parser.add_argument('-t', '--test', help='Run sanity checks',
-                        action='store_true')
-    parser.add_argument('-V', '--version', help='Display version info',
-                        action='store_true')
-    parser.add_argument('-s', '--show', help='Display user data paths',
-                        action='store_true')
-    parser.add_argument('-v', '--verbose', help='Switch from quiet to verbose',
-                        action='store_true')
+    parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
+    parser.add_argument(
+        '-V', '--version', help='Display version info', action='store_true'
+    )
+    parser.add_argument(
+        '-s', '--show', help='Display user data paths', action='store_true'
+    )
+    parser.add_argument(
+        '-v', '--verbose', help='Switch from quiet to verbose', action='store_true'
+    )
 
     args = parser.parse_args()
 

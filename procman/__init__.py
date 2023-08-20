@@ -6,6 +6,8 @@ from ._version import __version__
 
 VERSION = __version__
 
-__description__ = "Console tool for running multiple external processes and multiplexing their output"
+__description__ = (
+    "Console tool for running multiple external processes and multiplexing their output"
+)
 
 __all__ = ["__description__", "__version__", "VERSION"]

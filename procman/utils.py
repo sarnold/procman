@@ -3,11 +3,10 @@ procman utils for file handling and config parsing.
 """
 import os
 import sys
-
 from pathlib import Path
 
-from munch import Munch
 from appdirs import AppDirs
+from munch import Munch
 
 from ._version import __version__
 
@@ -71,12 +70,21 @@ def get_userscripts():
                 scripts_path = os.path.join(os.path.dirname(sys.executable), 'procman')
             else:
                 scripts_path = importlib_resources.files('procman')
-            proc_str = f'{item.proc_runner}' + f' {os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
+            proc_str = (
+                f'{item.proc_runner}'
+                + f' {os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
+            )
         else:
             if ucfg.scripts_path:
-                proc_str = f'{item.proc_runner}' + f' {os.path.join(ucfg.scripts_path, item.proc_dir, item.proc_name)}'
+                proc_str = (
+                    f'{item.proc_runner}'
+                    + f' {os.path.join(ucfg.scripts_path, item.proc_dir, item.proc_name)}'
+                )
             else:
-                proc_str = f'{item.proc_runner}' + f' {os.path.join(item.proc_dir, item.proc_name)}'
+                proc_str = (
+                    f'{item.proc_runner}'
+                    + f' {os.path.join(item.proc_dir, item.proc_name)}'
+                )
         for opt in item.proc_opts:
             proc_str = proc_str + f' {opt}'
         proc_list.append(proc_str)
@@ -114,33 +122,34 @@ def load_base_config():
     :return: tuple of Munch config objs
     """
 
-    proc_cfg = Munch.fromYAML("""
-    file_encoding: 'utf-8'
-    default_yml_ext: '.yaml'
-    demo_mode: true
-    scripts_path: null
-    scripts:
-      - proc_name: 'app.py'
-        proc_dir: examples
-        proc_label: web
-        proc_opts: []
-        proc_enable: true
-        proc_runner: python
-      - proc_name: 'run_redis.sh'
-        proc_dir: examples
-        proc_label: redis
-        proc_opts:
-          - 'run'
-        proc_enable: true
-        proc_runner: bash
-    """)
+    proc_cfg = Munch.fromYAML(
+        """
+        file_encoding: 'utf-8'
+        default_yml_ext: '.yaml'
+        demo_mode: true
+        scripts_path: null
+        scripts:
+          - proc_name: 'app.py'
+            proc_dir: examples
+            proc_label: web
+            proc_opts: []
+            proc_enable: true
+            proc_runner: python
+          - proc_name: 'run_redis.sh'
+            proc_dir: examples
+            proc_label: redis
+            proc_opts:
+              - 'run'
+            proc_enable: true
+            proc_runner: bash
+        """
+    )
 
     return proc_cfg
 
 
 # usage
 if __name__ == '__main__':
-
     print("User dirs:")
     print(get_userdirs())
     print("\nUser files:")
