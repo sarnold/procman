@@ -52,14 +52,6 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 
-[tool.versioningit.vcs]
-# The method key:
-method = "git"  # <- The method name
-
-# Parameters to pass to the method:
-match = ["*"]
-default-tag = "0.0.0"
-
 [tool.versioningit.next-version]
 method = "smallest"
 
