@@ -6,7 +6,7 @@
 
 |ci| |wheels| |release| |badge| |bandit|
 
-|pre|
+|pre| |pylint|
 
 |tag| |license| |python|
 
