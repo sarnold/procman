@@ -15,7 +15,7 @@ from ._version import __version__
 def init(dirs):
     """
     Check and create user and config dirs as needed. Also create the
-    initial proxy/user config files if not present.
+    initial demo/example config file if not present.
     :param: list of Path objs
     """
     for app_path in dirs:
@@ -27,7 +27,7 @@ def init(dirs):
 
 def self_test():
     """
-    Basic sanity check using small test file.
+    Basic sanity check using ``import_module``.
     """
     print("Python version:", sys.version)
     print("-" * 80)
@@ -45,7 +45,7 @@ def self_test():
 
 def show_paths():
     """
-    Display host platform user paths, config files
+    Display host platform user paths, config file, and configured scripts.
     """
     print("Python version:", sys.version)
     print("-" * 80)

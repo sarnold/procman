@@ -71,19 +71,19 @@ def get_userscripts():
             else:
                 scripts_path = importlib_resources.files('procman')
             proc_str = (
-                f'{item.proc_runner}'
-                + f' {os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
+                (f'{item.proc_runner} ' if item.proc_runner else '')
+                + f'{os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
             )
         else:
             if ucfg.scripts_path:
                 proc_str = (
-                    f'{item.proc_runner}'
-                    + f' {os.path.join(ucfg.scripts_path, item.proc_dir, item.proc_name)}'
+                    (f'{item.proc_runner} ' if item.proc_runner else '')
+                    + f'{os.path.join(ucfg.scripts_path, item.proc_dir, item.proc_name)}'
                 )
             else:
                 proc_str = (
-                    f'{item.proc_runner}'
-                    + f' {os.path.join(item.proc_dir, item.proc_name)}'
+                    (f'{item.proc_runner} ' if item.proc_runner else '')
+                    + f'{os.path.join(item.proc_dir, item.proc_name)}'
                 )
         for opt in item.proc_opts:
             proc_str = proc_str + f' {opt}'

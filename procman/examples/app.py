@@ -1,11 +1,14 @@
 import os
+import tempfile
+from pathlib import Path
 
 import redis
 from flask import Flask
 
 app = Flask(__name__)
 # default is localhost
-SOCK_PATH = os.getenv('RIPC_RUNTIME_DIR', default='/tmp')
+temp_dir = Path(tempfile.gettempdir()).joinpath('redis-ipc')
+SOCK_PATH = os.getenv('RIPC_RUNTIME_DIR', default=temp_dir)
 # rconn = redis.Redis()
 rconn = redis.from_url(f"unix://{SOCK_PATH}/socket")
 
@@ -17,5 +20,5 @@ def hello():
     return "This webpage has been viewed " + counter + " time(s)"
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+if __name__ == "__main__":  # see the warning in console, DEMO only
+    app.run(host="localhost", port=8000, debug=True)  # nosec
