@@ -1,13 +1,8 @@
 name: Security check - Bandit
 
 on:
-  workflow_dispatch:
-  pull_request:
-    branches:
-      - master
   push:
-    branches:
-      - master
+    branches: [ "*" ]
 
 permissions:
   contents: read
