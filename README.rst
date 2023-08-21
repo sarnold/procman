@@ -29,7 +29,7 @@ with a small demo Flask_ app that uses redis_ to store a web counter (I
 did say small/simple...).  The example app requires both redis-py_ (which
 in turn requires redis) and flask.  Note installing Procman with the
 ``[examples]`` flag will install the python deps but you must install
-redis using your own platform tools(eg, ``apt`` or ``brew``).
+redis using your own platform tools (eg, ``apt`` or ``brew``).
 
 Note Procman only supports Python 3.6+.
 
@@ -76,7 +76,7 @@ source tree.  Additional config file requirements include:
 * at least one process block with ``proc_enable: true`` should be present
   (under *scripts*)
 * *proc_runner* should be the name of the interpreter, eg, ``python`` or ``ruby``
-  (can be ``null`` if you are calling the executable directly)
+  (can be ``null`` if calling an executable directly)
 
 Install with pip
 ----------------
@@ -201,10 +201,6 @@ To run all ``pre-commit`` checks manually, try::
     :target: https://github.com/sarnold/procman/actions/workflows/wheels.yml
     :alt: Wheel Status
 
-.. |coverage| image:: https://github.com/sarnold/procman/actions/workflows/coverage.yml/badge.svg
-    :target: https://github.com/sarnold/procman/actions/workflows/coverage.yml
-    :alt: Coverage workflow
-
 .. |badge| image:: https://github.com/sarnold/procman/actions/workflows/pylint.yml/badge.svg
     :target: https://github.com/sarnold/procman/actions/workflows/pylint.yml
     :alt: Pylint Status
@@ -212,10 +208,6 @@ To run all ``pre-commit`` checks manually, try::
 .. |release| image:: https://github.com/sarnold/procman/actions/workflows/release.yml/badge.svg
     :target: https://github.com/sarnold/procman/actions/workflows/release.yml
     :alt: Release Status
-
-.. |cov| image:: https://raw.githubusercontent.com/sarnold/procman/badges/master/test-coverage.svg
-    :target: https://github.com/sarnold/procman/
-    :alt: Test coverage
 
 .. |pylint| image:: https://raw.githubusercontent.com/sarnold/procman/badges/master/pylint-score.svg
     :target: https://github.com/sarnold/procman/actions/workflows/pylint.yml

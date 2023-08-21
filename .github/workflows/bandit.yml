@@ -1,0 +1,22 @@
+name: Security check - Bandit
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run bandit
+      uses: VCTLabs/bandit-report-artifacts@master
+      with:
+        project_path: procman
+        config_file: pyproject.toml
+        ignore_failure: false
