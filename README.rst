@@ -221,7 +221,7 @@ To run all ``pre-commit`` checks manually, try::
     :target: https://github.com/sarnold/procman/actions/workflows/pylint.yml
     :alt: Pylint score
 
-.. |license| image:: https://img.shields.io/badge/license-LGPL-2.1-blue
+.. |license| image:: https://img.shields.io/badge/license-LGPL_2.1-blue
     :target: https://github.com/sarnold/procman/blob/master/LICENSE
     :alt: License
 
