@@ -15,8 +15,8 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Run bandit
-      uses: VCTLabs/bandit-report-artifacts@master
+      uses: VCTLabs/bandit-report-artifacts@excludes
       with:
-        project_path: procman
-        config_file: pyproject.toml
+        project_path: .
         ignore_failure: false
+        exclude_paths: 'procman/examples'
