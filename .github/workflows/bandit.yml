@@ -15,8 +15,8 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Run bandit
-      uses: VCTLabs/bandit-report-artifacts@excludes
+      uses: VCTLabs/bandit-report-artifacts@master
       with:
-        project_path: .
+        project_path: procman
         ignore_failure: false
         exclude_paths: 'procman/examples'
