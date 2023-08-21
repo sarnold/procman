@@ -49,6 +49,7 @@ jobs:
       if: matrix.python-version == 3.8 && runner.os == 'Linux'
       uses: actions/upload-artifact@v3
       with:
+        name: wheels
         path: |
           ./dist/*.whl
           ./dist/*.tar.gz
