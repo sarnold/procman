@@ -4,7 +4,7 @@
 
 **A Process manager for user scripts**.
 
-|ci| |wheels| |release| |bandit|
+|ci| |wheels| |release| |badge| |bandit|
 
 |pre|
 
@@ -201,6 +201,10 @@ To run all ``pre-commit`` checks manually, try::
     :target: https://github.com/sarnold/procman/actions/workflows/wheels.yml
     :alt: Wheel Status
 
+.. |badge| image:: https://github.com/sarnold/procman/actions/workflows/pylint.yml/badge.svg
+    :target: https://github.com/sarnold/procman/actions/workflows/pylint.yml
+    :alt: Pylint Status
+
 .. |release| image:: https://github.com/sarnold/procman/actions/workflows/release.yml/badge.svg
     :target: https://github.com/sarnold/procman/actions/workflows/release.yml
     :alt: Release Status
@@ -208,6 +212,10 @@ To run all ``pre-commit`` checks manually, try::
 .. |bandit| image:: https://github.com/sarnold/procman/actions/workflows/bandit.yml/badge.svg
     :target: https://github.com/sarnold/procman/actions/workflows/bandit.yml
     :alt: Security check - Bandit
+
+.. |pylint| image:: https://raw.githubusercontent.com/sarnold/procman/badges/master/pylint-score.svg
+    :target: https://github.com/sarnold/procman/actions/workflows/pylint.yml
+    :alt: Pylint Score
 
 .. |license| image:: https://img.shields.io/badge/license-LGPL_2.1-blue
     :target: https://github.com/sarnold/procman/blob/master/LICENSE
