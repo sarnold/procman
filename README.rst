@@ -144,34 +144,17 @@ To install in developer mode::
 
   $ tox -e dev
 
-Running the above command will install in develop mode and then run the
-flask/redis demo in the tox dev environment for 5 seconds::
+To actually run the active configuration file with tox, use something like::
 
-  $ tox -e dev
-  dev: install_deps> python -I -m pip install 'pip>=21.1' versioningit -e . -r requirements.txt
-  dev: commands[0]> procman --test
-  Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
-  --------------------------------------------------------------------------------
+  $ tox -e serv -- 10
 
-  procman script runner and example scripts.
+Running the above command will install the package and then run the active
+config, (by default the flask/redis demo) in the tox serv environment for 10
+seconds::
 
-  --------------------------------------------------------------------------------
-  dev: commands[1]> procman --show
-  Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
-  --------------------------------------------------------------------------------
-
-  procman utils for file handling and config parsing.
-
-  User app dirs:
-  [PosixPath('/home/user/.config/procman/0.1.1.dev4'), PosixPath('/home/user/.cache/procman/0.1.1.dev4'), PosixPath('/home/user/.cache/procman/0.1.1.dev4/log')]
-
-  User cfg files:
-  [PosixPath('/home/user/.config/procman/0.1.1.dev4/procman.yaml')]
-
-  User scripts:
-  [['web', 'python /home/user/src/procman/procman/examples/app.py'], ['redis', 'bash /home/user/src/procman/procman/examples/run_redis.sh run']]
-  --------------------------------------------------------------------------------
-  dev: commands[2]> procman --countdown 5
+  $ tox -e serv -- 10
+  serv: install_deps> python -I -m pip install 'pip>=21.1' versioningit '.[examples]'
+  serv: commands[0]> procman --countdown 10
   Adding ['web', 'python /home/user/src/procman/procman/examples/app.py'] to manager...
   Adding ['redis', 'bash /home/user/src/procman/procman/examples/run_redis.sh run'] to manager...
   Running for 5 seconds only...
@@ -222,6 +205,8 @@ flask/redis demo in the tox dev environment for 5 seconds::
 Full list of additional ``tox`` commands:
 
 * ``tox -e dev`` pip "developer" install
+* ``tox -e serv -- <timeout>`` will run the active configuration for <timeout>
+                               seconds (default: 5)
 * ``tox -e style`` will run flake8 style checks
 * ``tox -e lint`` will run pylint (somewhat less permissive than PEP8/flake8 checks)
 * ``tox -e mypy`` will run mypy import and type checking
