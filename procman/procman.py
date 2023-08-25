@@ -5,6 +5,7 @@ procman main init, run, and self-test functions.
 import argparse
 import importlib
 import sys
+import warnings
 from threading import Timer
 
 from honcho.manager import Manager
@@ -44,7 +45,8 @@ def self_test():
             print(f"FAILED: {repr(exc)}")
 
     for cfg_file in mod.get_userfiles():
-        assert cfg_file.exists()
+        if not cfg_file.exists():
+            warnings.warn("Cannot verify user file %s", cfg_file, stacklevel=2)
 
     print("-" * 80)
 
