@@ -4,18 +4,18 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>procman.procman module &mdash; procman 0.1.0 documentation</title>
+  <title>procman.procman module &mdash; procman 0.1.1.dev4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f56c220d"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,7 +35,7 @@
             procman
           </a>
               <div class="version">
-                0.1.0
+                0.1.1.dev4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,7 +55,7 @@
 <li class="toctree-l4"><a class="reference internal" href="procman.utils.html">procman.utils module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="procman.html#module-procman">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="procman.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -88,12 +88,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-procman.procman">
-<span id="procman-procman-module"></span><h1>procman.procman module<a class="headerlink" href="#module-procman.procman" title="Permalink to this heading"></a></h1>
-<p>procman main init, run, and self-test functions.</p>
+  <section id="procman-procman-module">
+<h1>procman.procman module<a class="headerlink" href="#procman-procman-module" title="Link to this heading"></a></h1>
+<p id="module-procman.procman">procman main init, run, and self-test functions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.procman.init">
-<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.init" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.init" title="Link to this definition"></a></dt>
 <dd><p>Check and create user and config dirs as needed. Also create the
 initial demo/example config file if not present.
 :param: list of Path objs</p>
@@ -101,20 +101,20 @@ initial demo/example config file if not present.
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.procman.main">
-<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.main" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.main" title="Link to this definition"></a></dt>
 <dd><p>Collect and process command options/arguments and init app dirs
 if needed, launch the process manager.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.procman.self_test">
-<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">self_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#self_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.self_test" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">self_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#self_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.self_test" title="Link to this definition"></a></dt>
 <dd><p>Basic sanity check using <code class="docutils literal notranslate"><span class="pre">import_module</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.procman.show_paths">
-<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">show_paths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#show_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.show_paths" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.procman.</span></span><span class="sig-name descname"><span class="pre">show_paths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/procman.html#show_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.procman.show_paths" title="Link to this definition"></a></dt>
 <dd><p>Display host platform user paths, config file, and configured scripts.</p>
 </dd></dl>
 

@@ -67,6 +67,9 @@ YAML extension, ie, either ``.yml`` or ``.yaml``.
 * Valid - ``.procman.yaml`` or ``.procman_myproject.yml`` or ``.procman_pelican.yaml``
 * Invalid - ``.procman.yl`` or ``.proc_foobar.yaml`` or ``.proc_man.yml``
 
+Using your preferred editor, edit/add process blocks to ``scripts`` as shown in the
+example configuration (each "block" is a list element).
+
 Note there should only be one Procman configuration file in a given project
 source tree.  Additional config file requirements include:
 
@@ -77,6 +80,14 @@ source tree.  Additional config file requirements include:
   (under *scripts*)
 * *proc_runner* should be the name of the interpreter, eg, ``python`` or ``ruby``
   (can be ``null`` if calling an executable directly)
+
+.. note:: This project uses versioningit_ to generate and maintain the
+          version file, which only gets included in the sdist/wheel
+          packages. In a fresh clone, running any of the tox_ commands
+          should generate the current version file.
+
+.. _versioningit: https://github.com/jwodder/versioningit
+
 
 Install with pip
 ----------------
@@ -130,6 +141,20 @@ To install in developer mode::
           environments are created under ``.tox/`` and named after the
           env argument (eg, py).
 
+Full list of additional ``tox`` commands:
+
+* ``tox -e dev`` pip "developer" install
+* ``tox -e style`` will run flake8 style checks
+* ``tox -e lint`` will run pylint (somewhat less permissive than PEP8/flake8 checks)
+* ``tox -e mypy`` will run mypy import and type checking
+* ``tox -e isort`` will run isort import checks
+* ``tox -e clean`` will remove generated/temporary files
+
+To build/lint the html docs, use the following tox commands:
+
+* ``tox -e docs`` build the documentation using sphinx and the api-doc plugin
+* ``tox -e docs-lint`` build the docs and run the sphinx link checking
+
 
 To install the latest source, eg with your own ``tox.ini`` file in
 another project, use something like this::
@@ -153,13 +178,13 @@ copy).
 
 You will need to install pre-commit before contributing any changes;
 installing it using your system's package manager is recommended,
-otherwise install with pip into your usual virtual environment using
+otherwise install with pip into your local user environment using
 something like::
 
   $ sudo emerge pre-commit  --or--
   $ pip install pre-commit
 
-then install it into the repo you just cloned::
+then install the hooks into the repo you just cloned::
 
   $ git clone https://github.com/sarnold/procman
   $ cd procman/

@@ -4,18 +4,18 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>procman.utils module &mdash; procman 0.1.0 documentation</title>
+  <title>procman.utils module &mdash; procman 0.1.1.dev4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f56c220d"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
             procman
           </a>
               <div class="version">
-                0.1.0
+                0.1.1.dev4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -54,7 +54,7 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">procman.utils module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="procman.html#module-procman">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="procman.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -87,12 +87,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-procman.utils">
-<span id="procman-utils-module"></span><h1>procman.utils module<a class="headerlink" href="#module-procman.utils" title="Permalink to this heading"></a></h1>
-<p>procman utils for file handling and config parsing.</p>
+  <section id="procman-utils-module">
+<h1>procman.utils module<a class="headerlink" href="#procman-utils-module" title="Link to this heading"></a></h1>
+<p id="module-procman.utils">procman utils for file handling and config parsing.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.utils.get_userdirs">
-<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">get_userdirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#get_userdirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.get_userdirs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">get_userdirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#get_userdirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.get_userdirs" title="Link to this definition"></a></dt>
 <dd><p>Set platform-agnostic user directory paths via appdirs, plus return
 working directory.</p>
 <dl class="field-list simple">
@@ -104,7 +104,7 @@ working directory.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.utils.get_userfiles">
-<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">get_userfiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projfiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#get_userfiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.get_userfiles" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">get_userfiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projfiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#get_userfiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.get_userfiles" title="Link to this definition"></a></dt>
 <dd><p>Get user-managed config file paths from both appdirs and working
 directory.  Note <em>we stop</em> after finding the first matching user
 filename.</p>
@@ -117,7 +117,7 @@ filename.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.utils.get_userscripts">
-<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">get_userscripts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#get_userscripts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.get_userscripts" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">get_userscripts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#get_userscripts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.get_userscripts" title="Link to this definition"></a></dt>
 <dd><p>Get user scripts from Munchified user cfg.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -128,20 +128,26 @@ filename.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.utils.init_cfg_file">
-<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">init_cfg_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#init_cfg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.init_cfg_file" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">init_cfg_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#init_cfg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.init_cfg_file" title="Link to this definition"></a></dt>
 <dd><p>Create initial procman/example configuration file.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.utils.load_base_config">
-<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">load_base_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#load_base_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.load_base_config" title="Permalink to this definition"></a></dt>
-<dd><p>Load initial procman config with our baseline values.
-:return: tuple of Munch config objs</p>
+<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">load_base_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#load_base_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.load_base_config" title="Link to this definition"></a></dt>
+<dd><p>Load initial procman config with our baseline example values. This is
+used to both run the example flask app and provide a user-facing example
+configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Munch config obj</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="procman.utils.load_cfg_file">
-<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">load_cfg_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#load_cfg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.load_cfg_file" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">procman.utils.</span></span><span class="sig-name descname"><span class="pre">load_cfg_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/procman/utils.html#load_cfg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#procman.utils.load_cfg_file" title="Link to this definition"></a></dt>
 <dd><p>Load user/procman configuration file and munchify the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
