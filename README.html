@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Procman &mdash; procman 0.1.1.dev4 documentation</title>
+  <title>Procman &mdash; procman 0.1.1.dev5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=f56c220d"></script>
+        <script src="_static/documentation_options.js?v=5114a614"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -35,7 +35,7 @@
             procman
           </a>
               <div class="version">
-                0.1.1.dev4
+                0.1.1.dev5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -163,23 +163,33 @@ demo with a reference configuration file with defaults for all values.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To run the demo/example application, you need to first install
-<code class="docutils literal notranslate"><span class="pre">redis</span></code> via your system package manager first.</p>
+<code class="docutils literal notranslate"><span class="pre">redis</span></code> via your system package manager.</p>
 </div>
 <p>If you’d rather work from the source repository, it supports the common
 idiom to install it on your system in a virtual env after cloning:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m venv env
 $ source env/bin/activate
 (env) $ pip install .[examples]
-(env) $ procman --version
-(env) $ procman --show
-(env) $ procman    # this will run the demo application using the built-in config
+(env) $ procman -h
+usage: procman [-h] [-d] [--countdown RUNFOR] [-t] [--version] [-s] [-v]
+
+Process manager for user scripts
+
+options:
+  -h, --help          show this help message and exit
+  -d, --dump-config   dump active yaml configuration to stdout
+  --countdown RUNFOR  Runtime STOP timer in seconds - 0 means run until whenever
+  -t, --test          Run sanity checks
+  --version           show program&#39;s version number and exit
+  -s, --show          Display user data paths
+  -v, --verbose       Switch from quiet to verbose
 (env) $ deactivate
 </pre></div>
 </div>
 <p>The alternative to python venv is the <a class="reference external" href="https://github.com/tox-dev/tox">Tox</a> test driver.  If you have it
 installed already, clone this repository and try the following commands
 from the procman source directory.</p>
-<p>To install the package with examples and run the tests:</p>
+<p>To install the package with examples and run the checks:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e py
 </pre></div>
 </div>
@@ -189,6 +199,73 @@ from the procman source directory.</p>
 </div>
 <p>To install in developer mode:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e dev
+</pre></div>
+</div>
+<p>Running the above command will install in develop mode and then run the
+flask/redis demo in the tox dev environment for 5 seconds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e dev
+dev: install_deps&gt; python -I -m pip install &#39;pip&gt;=21.1&#39; versioningit -e . -r requirements.txt
+dev: commands[0]&gt; procman --test
+Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
+--------------------------------------------------------------------------------
+
+procman script runner and example scripts.
+
+--------------------------------------------------------------------------------
+dev: commands[1]&gt; procman --show
+Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
+--------------------------------------------------------------------------------
+
+procman utils for file handling and config parsing.
+
+User app dirs:
+[PosixPath(&#39;/home/user/.config/procman/0.1.1.dev4&#39;), PosixPath(&#39;/home/user/.cache/procman/0.1.1.dev4&#39;), PosixPath(&#39;/home/user/.cache/procman/0.1.1.dev4/log&#39;)]
+
+User cfg files:
+[PosixPath(&#39;/home/user/.config/procman/0.1.1.dev4/procman.yaml&#39;)]
+
+User scripts:
+[[&#39;web&#39;, &#39;python /home/user/src/procman/procman/examples/app.py&#39;], [&#39;redis&#39;, &#39;bash /home/user/src/procman/procman/examples/run_redis.sh run&#39;]]
+--------------------------------------------------------------------------------
+dev: commands[2]&gt; procman --countdown 5
+Adding [&#39;web&#39;, &#39;python /home/user/src/procman/procman/examples/app.py&#39;] to manager...
+Adding [&#39;redis&#39;, &#39;bash /home/user/src/procman/procman/examples/run_redis.sh run&#39;] to manager...
+Running for 5 seconds only...
+11:32:56 system | redis started (pid=15576)
+11:32:56 system | web started (pid=15575)
+11:32:56 redis  | Using socket runtime dir: /tmp/redis-ipc
+11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=15581, just started
+11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # Configuration loaded
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # You requested maxclients of 10000 requiring at least 10032 max file descriptors.
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # Server can&#39;t set maximum open files to 10032 because of OS error: Operation not permitted.
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # Current maximum open files is 4096. maxclients has been reduced to 4064 to compensate for low ulimit. If you need higher maxclients increase &#39;ulimit -n&#39;.
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 * monotonic clock: POSIX clock_gettime
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 * Running mode=standalone, port=0.
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 # Server initialized
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add &#39;vm.overcommit_memory = 1&#39; to /etc/sysctl.conf and then reboot or run the command &#39;sysctl vm.overcommit_memory=1&#39; for this to take effect.
+11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.923 * The server is now ready to accept connections at /tmp/redis-ipc/socket
+11:32:57 web    |  * Serving Flask app &#39;app&#39;
+11:32:57 web    |  * Debug mode: on
+11:32:57 web    | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+11:32:57 web    |  * Running on http://localhost:8000
+11:32:57 web    | Press CTRL+C to quit
+11:32:57 web    |  * Restarting with stat
+11:32:57 web    |  * Debugger is active!
+11:32:57 web    |  * Debugger PIN: 650-499-885
+11:33:01 system | sending SIGTERM to web (pid 15575)
+11:33:01 system | sending SIGTERM to redis (pid 15576)
+11:33:01 redis  | 15581:signal-handler (1692988381) Received SIGTERM scheduling shutdown...
+11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.946 # User requested shutdown...
+11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.946 * Saving the final RDB snapshot before exiting.
+11:33:01 system | web stopped (rc=0)
+11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * DB saved on disk
+11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * Removing the pid file.
+11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * Removing the unix socket file.
+11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 # Redis is now ready to exit, bye bye...
+11:33:01 system | redis stopped (rc=-15)
+  dev: OK (14.87=setup[9.32]+cmd[0.12,0.14,5.29] seconds)
+  congratulations :) (14.92 seconds)
 </pre></div>
 </div>
 <div class="admonition note">
@@ -207,14 +284,14 @@ env argument (eg, py).</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">lint</span></code> will run pylint (somewhat less permissive than PEP8/flake8 checks)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">mypy</span></code> will run mypy import and type checking</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">isort</span></code> will run isort import checks</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">clean</span></code> will remove generated/temporary files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">clean</span></code> will remove all generated/temporary files</p></li>
 </ul>
 <p>To build/lint the html docs, use the following tox commands:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">docs</span></code> build the documentation using sphinx and the api-doc plugin</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">docs-lint</span></code> build the docs and run the sphinx link checking</p></li>
 </ul>
-<p>To install the latest source, eg with your own <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file in
+<p>To install the latest release, eg with your own <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file in
 another project, use something like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -U https://github.com/sarnold/procman/releases/download/0.1.0/procman-0.1.0-py3-none-any.whl
 </pre></div>
@@ -222,7 +299,7 @@ another project, use something like this:</p>
 </section>
 <section id="pre-commit">
 <h3>Pre-commit<a class="headerlink" href="#pre-commit" title="Link to this heading"></a></h3>
-<p>This repo is now <a class="reference external" href="https://pre-commit.com/index.html">pre-commit</a> enabled for python/rst source and file-type
+<p>This repository is <a class="reference external" href="https://pre-commit.com/index.html">pre-commit</a> enabled for python/rst source and file-type
 linting. The checks run automatically on commit and will fail the commit
 (if not clean) and perform simple file corrections.  For example, if the
 mypy check fails on commit, you must first fix any fatal errors for the
@@ -234,6 +311,7 @@ installing it using your system’s package manager is recommended,
 otherwise install with pip into your local user environment using
 something like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo emerge pre-commit  --or--
+$ sudo apt install pre-commit  --or--
 $ pip install pre-commit
 </pre></div>
 </div>
@@ -250,7 +328,7 @@ $ pre-commit install
 <p>Most (but not all) of the pre-commit checks will make corrections for you,
 however, some will only report errors, so these you will need to correct
 manually.</p>
-<p>Automatic-fix checks include ffffff, isort, autoflake, and miscellaneous
+<p>Automatic-fix checks include black, isort, autoflake, and miscellaneous
 file fixers. If any of these fail, you can review the changes with
 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">diff</span></code> and just add them to your commit and continue.</p>
 <p>If any of the mypy, bandit, or rst source checks fail, you will get a report,

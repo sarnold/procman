@@ -105,7 +105,7 @@ The full package provides the ``procman`` executable as well as a working
 demo with a reference configuration file with defaults for all values.
 
 .. note:: To run the demo/example application, you need to first install
-          ``redis`` via your system package manager first.
+          ``redis`` via your system package manager.
 
 If you'd rather work from the source repository, it supports the common
 idiom to install it on your system in a virtual env after cloning::
@@ -113,16 +113,26 @@ idiom to install it on your system in a virtual env after cloning::
   $ python -m venv env
   $ source env/bin/activate
   (env) $ pip install .[examples]
-  (env) $ procman --version
-  (env) $ procman --show
-  (env) $ procman    # this will run the demo application using the built-in config
+  (env) $ procman -h
+  usage: procman [-h] [-d] [--countdown RUNFOR] [-t] [--version] [-s] [-v]
+
+  Process manager for user scripts
+
+  options:
+    -h, --help          show this help message and exit
+    -d, --dump-config   dump active yaml configuration to stdout
+    --countdown RUNFOR  Runtime STOP timer in seconds - 0 means run until whenever
+    -t, --test          Run sanity checks
+    --version           show program's version number and exit
+    -s, --show          Display user data paths
+    -v, --verbose       Switch from quiet to verbose
   (env) $ deactivate
 
 The alternative to python venv is the Tox_ test driver.  If you have it
 installed already, clone this repository and try the following commands
 from the procman source directory.
 
-To install the package with examples and run the tests::
+To install the package with examples and run the checks::
 
   $ tox -e py
 
@@ -133,6 +143,74 @@ To run pylint::
 To install in developer mode::
 
   $ tox -e dev
+
+Running the above command will install in develop mode and then run the
+flask/redis demo in the tox dev environment for 5 seconds::
+
+  $ tox -e dev
+  dev: install_deps> python -I -m pip install 'pip>=21.1' versioningit -e . -r requirements.txt
+  dev: commands[0]> procman --test
+  Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
+  --------------------------------------------------------------------------------
+
+  procman script runner and example scripts.
+
+  --------------------------------------------------------------------------------
+  dev: commands[1]> procman --show
+  Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
+  --------------------------------------------------------------------------------
+
+  procman utils for file handling and config parsing.
+
+  User app dirs:
+  [PosixPath('/home/user/.config/procman/0.1.1.dev4'), PosixPath('/home/user/.cache/procman/0.1.1.dev4'), PosixPath('/home/user/.cache/procman/0.1.1.dev4/log')]
+
+  User cfg files:
+  [PosixPath('/home/user/.config/procman/0.1.1.dev4/procman.yaml')]
+
+  User scripts:
+  [['web', 'python /home/user/src/procman/procman/examples/app.py'], ['redis', 'bash /home/user/src/procman/procman/examples/run_redis.sh run']]
+  --------------------------------------------------------------------------------
+  dev: commands[2]> procman --countdown 5
+  Adding ['web', 'python /home/user/src/procman/procman/examples/app.py'] to manager...
+  Adding ['redis', 'bash /home/user/src/procman/procman/examples/run_redis.sh run'] to manager...
+  Running for 5 seconds only...
+  11:32:56 system | redis started (pid=15576)
+  11:32:56 system | web started (pid=15575)
+  11:32:56 redis  | Using socket runtime dir: /tmp/redis-ipc
+  11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+  11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=15581, just started
+  11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # Configuration loaded
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # You requested maxclients of 10000 requiring at least 10032 max file descriptors.
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # Server can't set maximum open files to 10032 because of OS error: Operation not permitted.
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # Current maximum open files is 4096. maxclients has been reduced to 4064 to compensate for low ulimit. If you need higher maxclients increase 'ulimit -n'.
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 * monotonic clock: POSIX clock_gettime
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 * Running mode=standalone, port=0.
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 # Server initialized
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.923 * The server is now ready to accept connections at /tmp/redis-ipc/socket
+  11:32:57 web    |  * Serving Flask app 'app'
+  11:32:57 web    |  * Debug mode: on
+  11:32:57 web    | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+  11:32:57 web    |  * Running on http://localhost:8000
+  11:32:57 web    | Press CTRL+C to quit
+  11:32:57 web    |  * Restarting with stat
+  11:32:57 web    |  * Debugger is active!
+  11:32:57 web    |  * Debugger PIN: 650-499-885
+  11:33:01 system | sending SIGTERM to web (pid 15575)
+  11:33:01 system | sending SIGTERM to redis (pid 15576)
+  11:33:01 redis  | 15581:signal-handler (1692988381) Received SIGTERM scheduling shutdown...
+  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.946 # User requested shutdown...
+  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.946 * Saving the final RDB snapshot before exiting.
+  11:33:01 system | web stopped (rc=0)
+  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * DB saved on disk
+  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * Removing the pid file.
+  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * Removing the unix socket file.
+  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 # Redis is now ready to exit, bye bye...
+  11:33:01 system | redis stopped (rc=-15)
+    dev: OK (14.87=setup[9.32]+cmd[0.12,0.14,5.29] seconds)
+    congratulations :) (14.92 seconds)
+
 
 .. note:: After installing in dev mode, use the environment created by
           Tox just like any other Python virtual environment.  The dev
@@ -148,7 +226,7 @@ Full list of additional ``tox`` commands:
 * ``tox -e lint`` will run pylint (somewhat less permissive than PEP8/flake8 checks)
 * ``tox -e mypy`` will run mypy import and type checking
 * ``tox -e isort`` will run isort import checks
-* ``tox -e clean`` will remove generated/temporary files
+* ``tox -e clean`` will remove all generated/temporary files
 
 To build/lint the html docs, use the following tox commands:
 
@@ -156,7 +234,7 @@ To build/lint the html docs, use the following tox commands:
 * ``tox -e docs-lint`` build the docs and run the sphinx link checking
 
 
-To install the latest source, eg with your own ``tox.ini`` file in
+To install the latest release, eg with your own ``tox.ini`` file in
 another project, use something like this::
 
   $ pip install -U https://github.com/sarnold/procman/releases/download/0.1.0/procman-0.1.0-py3-none-any.whl
@@ -168,7 +246,7 @@ another project, use something like this::
 Pre-commit
 ----------
 
-This repo is now pre-commit_ enabled for python/rst source and file-type
+This repository is pre-commit_ enabled for python/rst source and file-type
 linting. The checks run automatically on commit and will fail the commit
 (if not clean) and perform simple file corrections.  For example, if the
 mypy check fails on commit, you must first fix any fatal errors for the
@@ -182,6 +260,7 @@ otherwise install with pip into your local user environment using
 something like::
 
   $ sudo emerge pre-commit  --or--
+  $ sudo apt install pre-commit  --or--
   $ pip install pre-commit
 
 then install the hooks into the repo you just cloned::
@@ -198,7 +277,7 @@ Most (but not all) of the pre-commit checks will make corrections for you,
 however, some will only report errors, so these you will need to correct
 manually.
 
-Automatic-fix checks include ffffff, isort, autoflake, and miscellaneous
+Automatic-fix checks include black, isort, autoflake, and miscellaneous
 file fixers. If any of these fail, you can review the changes with
 ``git diff`` and just add them to your commit and continue.
 
