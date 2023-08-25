@@ -31,7 +31,7 @@ in turn requires redis) and flask.  Note installing Procman with the
 ``[examples]`` flag will install the python deps but you must install
 redis using your own platform tools (eg, ``apt`` or ``brew``).
 
-Note Procman only supports Python 3.6+.
+Note Procman only supports Python 3.7+.
 
 
 .. _Honcho: https://honcho.readthedocs.io/en/latest/index.html
@@ -250,7 +250,7 @@ To run all ``pre-commit`` checks manually, try::
     :target: https://github.com/sarnold/procman/releases
     :alt: GitHub tag
 
-.. |python| image:: https://img.shields.io/badge/python-3.6+-blue.svg
+.. |python| image:: https://img.shields.io/badge/python-3.7+-blue.svg
     :target: https://www.python.org/downloads/
     :alt: Python
 
