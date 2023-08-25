@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Procman &mdash; procman 0.1.1.dev6 documentation</title>
+  <title>Procman &mdash; procman 0.1.1.dev7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=66ec2c7e"></script>
+        <script src="_static/documentation_options.js?v=c294a867"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -35,7 +35,7 @@
             procman
           </a>
               <div class="version">
-                0.1.1.dev6
+                0.1.1.dev7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -201,33 +201,16 @@ from the procman source directory.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e dev
 </pre></div>
 </div>
-<p>Running the above command will install in develop mode and then run the
-flask/redis demo in the tox dev environment for 5 seconds:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e dev
-dev: install_deps&gt; python -I -m pip install &#39;pip&gt;=21.1&#39; versioningit -e . -r requirements.txt
-dev: commands[0]&gt; procman --test
-Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
---------------------------------------------------------------------------------
-
-procman script runner and example scripts.
-
---------------------------------------------------------------------------------
-dev: commands[1]&gt; procman --show
-Python version: 3.11.4 (main, Jul  5 2023, 16:15:04) [GCC 12.3.1 20230526]
---------------------------------------------------------------------------------
-
-procman utils for file handling and config parsing.
-
-User app dirs:
-[PosixPath(&#39;/home/user/.config/procman/0.1.1.dev4&#39;), PosixPath(&#39;/home/user/.cache/procman/0.1.1.dev4&#39;), PosixPath(&#39;/home/user/.cache/procman/0.1.1.dev4/log&#39;)]
-
-User cfg files:
-[PosixPath(&#39;/home/user/.config/procman/0.1.1.dev4/procman.yaml&#39;)]
-
-User scripts:
-[[&#39;web&#39;, &#39;python /home/user/src/procman/procman/examples/app.py&#39;], [&#39;redis&#39;, &#39;bash /home/user/src/procman/procman/examples/run_redis.sh run&#39;]]
---------------------------------------------------------------------------------
-dev: commands[2]&gt; procman --countdown 5
+<p>To actually run the active configuration file with tox, use something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e serv -- 10
+</pre></div>
+</div>
+<p>Running the above command will install the package and then run the active
+config, (by default the flask/redis demo) in the tox serv environment for 10
+seconds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e serv -- 10
+serv: install_deps&gt; python -I -m pip install &#39;pip&gt;=21.1&#39; versioningit &#39;.[examples]&#39;
+serv: commands[0]&gt; procman --countdown 10
 Adding [&#39;web&#39;, &#39;python /home/user/src/procman/procman/examples/app.py&#39;] to manager...
 Adding [&#39;redis&#39;, &#39;bash /home/user/src/procman/procman/examples/run_redis.sh run&#39;] to manager...
 Running for 5 seconds only...
@@ -280,6 +263,11 @@ env argument (eg, py).</p>
 <p>Full list of additional <code class="docutils literal notranslate"><span class="pre">tox</span></code> commands:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">dev</span></code> pip “developer” install</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">serv</span> <span class="pre">--</span> <span class="pre">&lt;timeout&gt;</span></code> will run the active configuration for &lt;timeout&gt;</dt><dd><p>seconds (default: 5)</p>
+</dd>
+</dl>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">style</span></code> will run flake8 style checks</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">lint</span></code> will run pylint (somewhat less permissive than PEP8/flake8 checks)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">mypy</span></code> will run mypy import and type checking</p></li>
