@@ -81,12 +81,12 @@ source tree.  Additional config file requirements include:
 * *proc_runner* should be the name of the interpreter, eg, ``python`` or ``ruby``
   (can be ``null`` if calling an executable directly)
 
-.. note:: This project uses versioningit_ to generate and maintain the
+.. note:: This project uses setuptools_scm_ to generate and maintain the
           version file, which only gets included in the sdist/wheel
           packages. In a fresh clone, running any of the tox_ commands
           should generate the current version file.
 
-.. _versioningit: https://github.com/jwodder/versioningit
+.. _setuptools_scm: https://github.com/pypa/setuptools_scm
 
 
 Install with pip
