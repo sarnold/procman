@@ -33,13 +33,18 @@ def self_test():
     print("Python version:", sys.version)
     print("-" * 80)
 
-    modname = 'procman.__init__'
-    try:
-        mod = importlib.import_module(modname)
-        print(mod.__doc__)
+    modlist = ['procman.__init__', 'procman.utils']
+    for modname in modlist:
+        try:
+            print(f'Checking module {modname}')
+            mod = importlib.import_module(modname)
+            print(mod.__doc__)
 
-    except (NameError, KeyError, ModuleNotFoundError) as exc:
-        print(f"FAILED: {repr(exc)}")
+        except (NameError, KeyError, ModuleNotFoundError) as exc:
+            print(f"FAILED: {repr(exc)}")
+
+    for cfg_file in mod.get_userfiles():
+        assert cfg_file.exists()
 
     print("-" * 80)
 
