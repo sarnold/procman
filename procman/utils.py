@@ -71,9 +71,8 @@ def get_userscripts():
             else:
                 scripts_path = importlib_resources.files('procman')
             proc_str = (
-                (f'{item.proc_runner} ' if item.proc_runner else '')
-                + f'{os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
-            )
+                f'{item.proc_runner} ' if item.proc_runner else ''
+            ) + f'{os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
         else:
             if ucfg.scripts_path:
                 proc_str = (
@@ -82,9 +81,8 @@ def get_userscripts():
                 )
             else:
                 proc_str = (
-                    (f'{item.proc_runner} ' if item.proc_runner else '')
-                    + f'{os.path.join(item.proc_dir, item.proc_name)}'
-                )
+                    f'{item.proc_runner} ' if item.proc_runner else ''
+                ) + f'{os.path.join(item.proc_dir, item.proc_name)}'
         for opt in item.proc_opts:
             proc_str = proc_str + f' {opt}'
         proc_list.append(proc_str)
@@ -118,8 +116,11 @@ def load_cfg_file():
 
 def load_base_config():
     """
-    Load initial procman config with our baseline values.
-    :return: tuple of Munch config objs
+    Load initial procman config with our baseline example values. This is
+    used to both run the example flask app and provide a user-facing example
+    configuration.
+
+    :return: Munch config obj
     """
 
     proc_cfg = Munch.fromYAML(

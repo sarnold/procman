@@ -5,6 +5,7 @@ procman main init, run, and self-test functions.
 import argparse
 import importlib
 import sys
+from threading import Timer
 
 from honcho.manager import Manager
 
@@ -68,11 +69,14 @@ def show_paths():
     print("-" * 80)
 
 
-def main():
+def main(argv=None):
     """
     Collect and process command options/arguments and init app dirs
     if needed, launch the process manager.
     """
+    if argv is None:
+        argv = sys.argv
+
     dirs = utils.get_userdirs()
     init(dirs)
     ucfg, ufile = utils.load_cfg_file()
@@ -89,10 +93,15 @@ def main():
         action='store_true',
         dest="dump",
     )
-    parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
     parser.add_argument(
-        '-V', '--version', help='Display version info', action='store_true'
+        "--countdown",
+        type=int,
+        default='0',
+        dest="runfor",
+        help="Runtime STOP timer in seconds - 0 means run until whenever",
     )
+    parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
+    parser.add_argument('--version', action="version", version=f"procman {__version__}")
     parser.add_argument(
         '-s', '--show', help='Display user data paths', action='store_true'
     )
@@ -102,9 +111,6 @@ def main():
 
     args = parser.parse_args()
 
-    if args.version:
-        print(f'[procman {__version__}]')
-        sys.exit(0)
     if args.show:
         show_paths()
         sys.exit(0)
@@ -120,6 +126,11 @@ def main():
         print(f'Adding {user_proc} to manager...')
         mgr.add_process(user_proc[0], user_proc[1])
 
+    stopme = Timer(args.runfor, mgr.terminate)
+    if args.runfor:
+        print(f'Running for {args.runfor} seconds only...')
+        stopme.start()
+
     try:
         mgr.loop()
 
@@ -127,3 +138,7 @@ def main():
         print("\nExiting ...")
     finally:
         sys.exit(mgr.returncode)
+
+
+if __name__ == "__main__":
+    main()
