@@ -205,8 +205,7 @@ seconds::
 Full list of additional ``tox`` commands:
 
 * ``tox -e dev`` pip "developer" install
-* ``tox -e serv -- <timeout>`` will run the active configuration for <timeout>
-                               seconds (default: 5)
+* ``tox -e serv`` will run the active configuration then stop (default: 5 sec)
 * ``tox -e style`` will run flake8 style checks
 * ``tox -e lint`` will run pylint (somewhat less permissive than PEP8/flake8 checks)
 * ``tox -e mypy`` will run mypy import and type checking
