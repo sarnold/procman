@@ -8,15 +8,17 @@ from pathlib import Path
 from appdirs import AppDirs
 from munch import Munch
 
-from ._version import __version__
+if sys.version_info < (3, 8):
+    from importlib_metadata import version
+else:
+    from importlib.metadata import version
 
 if sys.version_info < (3, 10):
-    # importlib.resources either doesn't exist or lacks the files()
-    # function, so use the PyPI version:
     import importlib_resources
 else:
-    # importlib.resources has files(), so use that:
     import importlib.resources as importlib_resources
+
+VERSION = version('procman')
 
 
 def get_userdirs():
@@ -26,7 +28,7 @@ def get_userdirs():
 
     :return: list of Path objs
     """
-    dirs = AppDirs(appname='procman', version=__version__)
+    dirs = AppDirs(appname='procman', version=VERSION)
     logdir = Path(dirs.user_log_dir)
     cachedir = Path(dirs.user_cache_dir)
     configdir = Path(dirs.user_config_dir)

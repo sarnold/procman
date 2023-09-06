@@ -13,12 +13,12 @@
 import os
 import sys
 
-import pkg_resources
-
+if sys.version_info < (3, 8):
+    from importlib_metadata import version
+else:
+    from importlib.metadata import version
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
-__version__ = pkg_resources.get_distribution('procman').version
 
 # -- Project information -----------------------------------------------------
 
@@ -27,9 +27,9 @@ copyright = '2023, Stephen L Arnold'
 author = 'Stephen Arnold'
 
 # The full version, including alpha/beta/rc tags
-version = __version__
-release = version
-
+release = version('procman')
+# The short X.Y version.
+version = '.'.join(release.split('.')[:2])
 
 # -- General configuration ------------------------------------------------
 

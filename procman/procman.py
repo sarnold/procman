@@ -11,7 +11,6 @@ from threading import Timer
 from honcho.manager import Manager
 
 from . import utils
-from ._version import __version__
 
 
 def init(dirs):
@@ -78,8 +77,8 @@ def show_paths():
 
 def main(argv=None):
     """
-    Collect and process command options/arguments and init app dirs
-    if needed, launch the process manager.
+    Collect and process command options/arguments and init app dirs,
+    then launch the process manager.
     """
     if argv is None:
         argv = sys.argv
@@ -101,6 +100,7 @@ def main(argv=None):
         dest="dump",
     )
     parser.add_argument(
+        '-c',
         "--countdown",
         type=int,
         default='0',
@@ -108,7 +108,9 @@ def main(argv=None):
         help="Runtime STOP timer in seconds - 0 means run until whenever",
     )
     parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
-    parser.add_argument('--version', action="version", version=f"procman {__version__}")
+    parser.add_argument(
+        '--version', action="version", version=f"%(prog)s {utils.VERSION}"
+    )
     parser.add_argument(
         '-s', '--show', help='Display user data paths', action='store_true'
     )
@@ -140,7 +142,6 @@ def main(argv=None):
 
     try:
         mgr.loop()
-
     except (KeyboardInterrupt, RuntimeError):
         print("\nExiting ...")
     finally:
