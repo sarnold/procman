@@ -19,7 +19,7 @@ their output to the console. It also cleans up and stops the whole stack
 if any one of the running processes stops or dies on its own.
 
 Procman is loosely based on Honcho_ and uses Honcho's process manager API.
-Honcho (and Foreman_, and Heroku_) parse a Procfile_ to run an application
+Honcho (and Foreman_, and Heroku_) parsee a Procfile_ to run an application
 stack, usually with a specific ``.env`` file.  See the Introduction_ in the
 Honcho documentation for an overview with an example ``Procfile``.
 
@@ -60,9 +60,9 @@ YAML configuration.
 
 In your own project directory, use one of the ``pip install`` commands shown
 below to install Procman in your own environment.  Copy the default config file
-from the above path to your project directory and set ``demo_mode`` to false.
-Make sure your custom config file starts with ``.procman`` and ends with a valid
-YAML extension, ie, either ``.yml`` or ``.yaml``.
+from the displayed path to your project directory and set ``demo_mode`` to false.
+Make sure the name of your custom config file starts with ``.procman`` and ends
+with a valid YAML extension, ie, either ``.yml`` or ``.yaml``.
 
 * Valid - ``.procman.yaml`` or ``.procman_myproject.yml`` or ``.procman_pelican.yaml``
 * Invalid - ``.procman.yl`` or ``.proc_foobar.yaml`` or ``.proc_man.yml``
@@ -81,13 +81,6 @@ source tree.  Additional config file requirements include:
 * *proc_runner* should be the name of the interpreter, eg, ``python`` or ``ruby``
   (can be ``null`` if calling an executable directly)
 
-.. note:: This project uses versioningit_ to generate and maintain the
-          version file, which only gets included in the sdist/wheel
-          packages. In a fresh clone, running any of the tox_ commands
-          should generate the current version file.
-
-.. _versioningit: https://github.com/jwodder/versioningit
-
 
 Install with pip
 ----------------
@@ -95,7 +88,7 @@ Install with pip
 This package is *not* yet published on PyPI, thus use one of the following
 to install procman on any platform. Install from the main branch::
 
-  $ https://github.com/sarnold/procman/archive/refs/heads/master.tar.gz
+  $ pip install https://github.com/sarnold/procman/archive/refs/heads/master.tar.gz
 
 or use this command to install a specific release version::
 
@@ -153,52 +146,55 @@ config, (by default the flask/redis demo) in the tox serv environment for 10
 seconds::
 
   $ tox -e serv -- 10
-  serv: install_deps> python -I -m pip install 'pip>=21.1' versioningit '.[examples]'
   serv: commands[0]> procman --countdown 10
-  Adding ['web', 'python /home/user/src/procman/procman/examples/app.py'] to manager...
-  Adding ['redis', 'bash /home/user/src/procman/procman/examples/run_redis.sh run'] to manager...
-  Running for 5 seconds only...
-  11:32:56 system | redis started (pid=15576)
-  11:32:56 system | web started (pid=15575)
-  11:32:56 redis  | Using socket runtime dir: /tmp/redis-ipc
-  11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
-  11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=15581, just started
-  11:32:56 redis  | 15581:C 25 Aug 2023 11:32:56.921 # Configuration loaded
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # You requested maxclients of 10000 requiring at least 10032 max file descriptors.
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # Server can't set maximum open files to 10032 because of OS error: Operation not permitted.
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 # Current maximum open files is 4096. maxclients has been reduced to 4064 to compensate for low ulimit. If you need higher maxclients increase 'ulimit -n'.
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.921 * monotonic clock: POSIX clock_gettime
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 * Running mode=standalone, port=0.
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 # Server initialized
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.922 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
-  11:32:56 redis  | 15581:M 25 Aug 2023 11:32:56.923 * The server is now ready to accept connections at /tmp/redis-ipc/socket
-  11:32:57 web    |  * Serving Flask app 'app'
-  11:32:57 web    |  * Debug mode: on
-  11:32:57 web    | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
-  11:32:57 web    |  * Running on http://localhost:8000
-  11:32:57 web    | Press CTRL+C to quit
-  11:32:57 web    |  * Restarting with stat
-  11:32:57 web    |  * Debugger is active!
-  11:32:57 web    |  * Debugger PIN: 650-499-885
-  11:33:01 system | sending SIGTERM to web (pid 15575)
-  11:33:01 system | sending SIGTERM to redis (pid 15576)
-  11:33:01 redis  | 15581:signal-handler (1692988381) Received SIGTERM scheduling shutdown...
-  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.946 # User requested shutdown...
-  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.946 * Saving the final RDB snapshot before exiting.
-  11:33:01 system | web stopped (rc=0)
-  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * DB saved on disk
-  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * Removing the pid file.
-  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 * Removing the unix socket file.
-  11:33:01 redis  | 15581:M 25 Aug 2023 11:33:01.950 # Redis is now ready to exit, bye bye...
-  11:33:01 system | redis stopped (rc=-15)
-    dev: OK (14.87=setup[9.32]+cmd[0.12,0.14,5.29] seconds)
-    congratulations :) (14.92 seconds)
+  Adding ['web', 'python /home/user/src/procman/.tox/serv/lib/python3.11/site-packages/procman/examples/app.py'] to manager...
+  Adding ['redis', 'bash /home/user/src/procman/.tox/serv/lib/python3.11/site-packages/procman/examples/run_redis.sh run'] to manager...
+  Running for 10 seconds only...
+  21:04:54 system | web started (pid=26678)
+  21:04:54 system | redis started (pid=26680)
+  21:04:54 redis  | Using socket runtime dir: /tmp/redis-ipc
+  21:04:54 redis  | 26684:C 07 Sep 2023 21:04:54.046 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+  21:04:54 redis  | 26684:C 07 Sep 2023 21:04:54.046 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=26684, just started
+  21:04:54 redis  | 26684:C 07 Sep 2023 21:04:54.046 # Configuration loaded
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 # You requested maxclients of 10000 requiring at least 10032 max file descriptors.
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 # Server can't set maximum open files to 10032 because of OS error: Operation not permitted.
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 # Current maximum open files is 4096. maxclients has been reduced to 4064 to compensate for low ulimit. If you need higher maxclients increase 'ulimit -n'.
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 * monotonic clock: POSIX clock_gettime
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.047 * Running mode=standalone, port=0.
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.047 # Server initialized
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.047 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * Loading RDB produced by version 7.0.11
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * RDB age 595 seconds
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * RDB memory usage when created 0.59 Mb
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * Done loading RDB, keys loaded: 0, keys expired: 0.
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * DB loaded from disk: 0.000 seconds
+  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * The server is now ready to accept connections at /tmp/redis-ipc/socket
+  21:04:54 web    |  * Serving Flask app 'app'
+  21:04:54 web    |  * Debug mode: on
+  21:04:54 web    | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+  21:04:54 web    |  * Running on http://localhost:8000
+  21:04:54 web    | Press CTRL+C to quit
+  21:04:54 web    |  * Restarting with stat
+  21:04:54 web    |  * Debugger is active!
+  21:04:54 web    |  * Debugger PIN: 112-588-591
+  21:05:04 system | sending SIGTERM to web (pid 26678)
+  21:05:04 system | sending SIGTERM to redis (pid 26680)
+  21:05:04 redis  | 26684:signal-handler (1694145904) Received SIGTERM scheduling shutdown...
+  21:05:04 system | web stopped (rc=0)
+  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.089 # User requested shutdown...
+  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.089 * Saving the final RDB snapshot before exiting.
+  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 * DB saved on disk
+  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 * Removing the pid file.
+  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 * Removing the unix socket file.
+  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 # Redis is now ready to exit, bye bye...
+  21:05:04 system | redis stopped (rc=-15)
+    serv: OK (10.46=setup[0.05]+cmd[10.41] seconds)
+    congratulations :) (10.51 seconds)
 
-
-.. note:: After installing in dev mode, use the environment created by
-          Tox just like any other Python virtual environment.  The dev
-          install mode of Pip allows you to edit the code and run it
-          again while inside the virtual environment. By default Tox
+.. note:: After running the serv command, use the environment created by
+          Tox just like any other Python virtual environment. As shown,
+          the dev install mode of Pip allows you to edit the code and run
+          it again while inside the virtual environment. By default Tox
           environments are created under ``.tox/`` and named after the
           env argument (eg, py).
 
@@ -226,59 +222,56 @@ another project, use something like this::
 
 .. _Tox: https://github.com/tox-dev/tox
 
+Making Changes & Contributing
+=============================
 
-Pre-commit
-----------
+We use the gitchangelog_ action to generate our changelog and GH Release
+page, as well as the gitchangelog message format to help it categorize/filter
+commits for a tidier changelog. Please use the appropriate ACTION modifiers
+in any Pull Requests.
 
-This repository is pre-commit_ enabled for python/rst source and file-type
-linting. The checks run automatically on commit and will fail the commit
-(if not clean) and perform simple file corrections.  For example, if the
-mypy check fails on commit, you must first fix any fatal errors for the
-commit to succeed. That said, pre-commit does nothing if you don't install
-it first (both the program itself and the hooks in your local repository
-copy).
+This repo is also pre-commit_ enabled for various linting and format
+checks.  The checks run automatically on commit and will fail the
+commit (if not clean) with some checks performing simple file corrections.
+
+If other checks fail on commit, the failure display should explain the error
+types and line numbers. Note you must fix any fatal errors for the
+commit to succeed; some errors should be fixed automatically (use
+``git status`` and ``git diff`` to review any changes).
+
+See the following pages for more information on gitchangelog and pre-commit.
+
+.. inclusion-marker-1
+
+* generate-changelog_
+* pre-commit-config_
+* pre-commit-usage_
+
+.. _generate-changelog:  docs/source/dev/generate-changelog.rst
+.. _pre-commit-config: docs/source/dev/pre-commit-config.rst
+.. _pre-commit-usage: docs/source/dev/pre-commit-usage.rst
+.. inclusion-marker-2
 
 You will need to install pre-commit before contributing any changes;
 installing it using your system's package manager is recommended,
-otherwise install with pip into your local user environment using
+otherwise install with pip into your usual virtual environment using
 something like::
 
   $ sudo emerge pre-commit  --or--
-  $ sudo apt install pre-commit  --or--
   $ pip install pre-commit
 
-then install the hooks into the repo you just cloned::
+then install it into the repo you just cloned::
 
-  $ git clone https://github.com/sarnold/procman
-  $ cd procman/
+  $ git clone https://github.com/sarnold/ymltoxml
+  $ cd ymltoxml/
   $ pre-commit install
 
 It's usually a good idea to update the hooks to the latest version::
 
-    $ pre-commit autoupdate
+    pre-commit autoupdate
 
-Most (but not all) of the pre-commit checks will make corrections for you,
-however, some will only report errors, so these you will need to correct
-manually.
-
-Automatic-fix checks include black, isort, autoflake, and miscellaneous
-file fixers. If any of these fail, you can review the changes with
-``git diff`` and just add them to your commit and continue.
-
-If any of the mypy, bandit, or rst source checks fail, you will get a report,
-and you must fix any errors before you can continue adding/committing.
-
-To see a "replay" of any ``rst`` check errors, run::
-
-  $ pre-commit run rst-backticks -a
-  $ pre-commit run rst-directive-colons -a
-  $ pre-commit run rst-inline-touching-normal -a
-
-To run all ``pre-commit`` checks manually, try::
-
-  $ pre-commit run -a
-
-.. _pre-commit: https://pre-commit.com/index.html
+.. _gitchangelog: https://github.com/sarnold/gitchangelog-action
+.. _pre-commit: http://pre-commit.com/
 
 
 .. |ci| image:: https://github.com/sarnold/procman/actions/workflows/ci.yml/badge.svg

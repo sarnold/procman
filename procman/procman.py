@@ -83,13 +83,8 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    dirs = utils.get_userdirs()
-    init(dirs)
-    ucfg, ufile = utils.load_cfg_file()
-    uscripts = utils.get_userscripts()
-
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='Process manager for user scripts',
     )
     parser.add_argument(
@@ -114,11 +109,13 @@ def main(argv=None):
     parser.add_argument(
         '-s', '--show', help='Display user data paths', action='store_true'
     )
-    parser.add_argument(
-        '-v', '--verbose', help='Switch from quiet to verbose', action='store_true'
-    )
 
     args = parser.parse_args()
+
+    dirs = utils.get_userdirs()
+    init(dirs)
+    ucfg, ufile = utils.load_cfg_file()
+    uscripts = utils.get_userscripts()
 
     if args.show:
         show_paths()
