@@ -1,12 +1,13 @@
 """
 procman utils for file handling and config parsing.
 """
+import logging
 import os
 import sys
 from pathlib import Path
 
-from appdirs import AppDirs
 from munch import Munch
+from platformdirs import PlatformDirs
 
 if sys.version_info < (3, 8):
     from importlib_metadata import version
@@ -28,10 +29,16 @@ def get_userdirs():
 
     :return: list of Path objs
     """
-    dirs = AppDirs(appname='procman', version=VERSION)
-    logdir = Path(dirs.user_log_dir)
-    cachedir = Path(dirs.user_cache_dir)
-    configdir = Path(dirs.user_config_dir)
+    appnamme = 'procman'
+    appauthor = 'nerdboy'
+    version = '.'.join(VERSION.split('.')[:2])
+    logdir = PlatformDirs(appnamme, appauthor, version, ensure_exists=True).user_log_path
+    cachedir = PlatformDirs(
+        appnamme, appauthor, version, ensure_exists=True
+    ).user_cache_path
+    configdir = PlatformDirs(
+        appnamme, appauthor, version, ensure_exists=True
+    ).user_config_path
     return [configdir, cachedir, logdir]
 
 
@@ -85,6 +92,7 @@ def get_userscripts():
                 proc_str = (
                     f'{item.proc_runner} ' if item.proc_runner else ''
                 ) + f'{os.path.join(item.proc_dir, item.proc_name)}'
+        logging.warning('Demo mode is %s', ucfg.demo_mode)
         for opt in item.proc_opts:
             proc_str = proc_str + f' {opt}'
         proc_list.append(proc_str)
@@ -113,6 +121,7 @@ def load_cfg_file():
     ufile = files[uidx]
     encoding = 'utf-8' if b'utf-8' in ufile.read_bytes() else None
     ucfg = Munch.fromYAML(ufile.read_text(encoding=encoding))
+    logging.warning('Cfg items: %s, %s', ucfg, ufile)
     return ucfg, ufile
 
 
@@ -149,13 +158,3 @@ def load_base_config():
     )
 
     return proc_cfg
-
-
-# usage
-if __name__ == '__main__':
-    print("User dirs:")
-    print(get_userdirs())
-    print("\nUser files:")
-    print(get_userfiles())
-    print("\nUser scripts:")
-    print(get_userscripts())

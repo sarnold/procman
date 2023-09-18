@@ -19,7 +19,7 @@ their output to the console. It also cleans up and stops the whole stack
 if any one of the running processes stops or dies on its own.
 
 Procman is loosely based on Honcho_ and uses Honcho's process manager API.
-Honcho (and Foreman_, and Heroku_) parsee a Procfile_ to run an application
+Honcho (and Foreman_, and Heroku_) parses a Procfile_ to run an application
 stack, usually with a specific ``.env`` file.  See the Introduction_ in the
 Honcho documentation for an overview with an example ``Procfile``.
 
@@ -54,13 +54,13 @@ Usage
 -----
 
 Clone this repository, then follow the virtual environment install steps below.
-Procman uses the XDG standard for user paths, which you can view below after
-running ``procman --show``.  Run ``procman --dump-config`` to view the default
+Procman uses ``pathlib`` to find user paths, which you can view below after
+running ``procman --show``.  Run ``procman --dump-config`` to view the active
 YAML configuration.
 
 In your own project directory, use one of the ``pip install`` commands shown
-below to install Procman in your own environment.  Copy the default config file
-from the displayed path to your project directory and set ``demo_mode`` to false.
+below to install Procman in a virtual environment.
+
 Make sure the name of your custom config file starts with ``.procman`` and ends
 with a valid YAML extension, ie, either ``.yml`` or ``.yaml``.
 
@@ -70,10 +70,11 @@ with a valid YAML extension, ie, either ``.yml`` or ``.yaml``.
 Using your preferred editor, edit/add process blocks to ``scripts`` as shown in the
 example configuration (each "block" is a list element).
 
-Note there should only be one Procman configuration file in a given project
-source tree.  Additional config file requirements include:
+Note there can be only one default configuration in a given project tree named
+``.procman.yaml``, however, you can override the default name via the environment
+variable PROCMAN_CFG= path/to/.procman_othername.yaml. Additional config file
+guidance includes:
 
-* *demo_mode* must be false or removed
 * *default_yml_ext* must be ``.yml`` or ``.yaml``
 * *scripts_path* should be ``null`` for relative paths *inside your project tree*
 * at least one process block with ``proc_enable: true`` should be present

@@ -4,6 +4,7 @@ procman main init, run, and self-test functions.
 
 import argparse
 import importlib
+import logging
 import sys
 import warnings
 from threading import Timer
@@ -11,6 +12,8 @@ from threading import Timer
 from honcho.manager import Manager
 
 from . import utils
+
+# from logging_tree import printout  # debug logger environment
 
 
 def init(dirs):
@@ -63,11 +66,14 @@ def show_paths():
         print(mod.__doc__)
 
         print("User app dirs:")
-        print(mod.get_userdirs())
+        for item in mod.get_userdirs():
+            print(f'  {item}')
         print("\nUser cfg files:")
-        print(mod.get_userfiles())
+        for item in mod.get_userfiles():
+            print(f'  {item}')
         print("\nUser scripts:")
-        print(mod.get_userscripts())
+        for item in mod.get_userscripts():
+            print(f'  {item}')
 
     except (NameError, KeyError, ModuleNotFoundError) as exc:
         print(f"FAILED: {repr(exc)}")
@@ -75,7 +81,7 @@ def show_paths():
     print("-" * 80)
 
 
-def main(argv=None):
+def main(argv=None):  # pragma: no cover
     """
     Collect and process command options/arguments and init app dirs,
     then launch the process manager.
@@ -86,6 +92,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='Process manager for user scripts',
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Display more processing info",
     )
     parser.add_argument(
         '-d',
@@ -111,6 +123,11 @@ def main(argv=None):
     )
 
     args = parser.parse_args()
+
+    # basic logging setup must come before any other logging calls
+    log_level = logging.DEBUG if args.verbose else logging.INFO
+    logging.basicConfig(stream=sys.stdout, level=log_level)
+    # printout()  # logging_tree
 
     dirs = utils.get_userdirs()
     init(dirs)
@@ -146,4 +163,4 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pragma: no cover
