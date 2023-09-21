@@ -16,19 +16,6 @@ from . import utils
 # from logging_tree import printout  # debug logger environment
 
 
-def init(dirs):
-    """
-    Check and create user and config dirs as needed. Also create the
-    initial demo/example config file if not present.
-    :param: list of Path objs
-    """
-    for app_path in dirs:
-        if not app_path.exists():
-            app_path.mkdir(parents=True, exist_ok=True)
-
-    utils.init_cfg_file()
-
-
 def self_test():
     """
     Basic sanity check using ``import_module``.
@@ -46,9 +33,9 @@ def self_test():
         except (NameError, KeyError, ModuleNotFoundError) as exc:
             print(f"FAILED: {repr(exc)}")
 
-    for cfg_file in mod.get_userfiles():
-        if not cfg_file.exists():
-            warnings.warn("Cannot verify user file %s", cfg_file, stacklevel=2)
+    _, cfg_file = utils.load_config()
+    if not cfg_file.exists():
+        warnings.warn("Cannot verify user file %s", cfg_file, stacklevel=2)
 
     print("-" * 80)
 
@@ -65,12 +52,9 @@ def show_paths():
         mod = importlib.import_module(modname)
         print(mod.__doc__)
 
-        print("User app dirs:")
-        for item in mod.get_userdirs():
-            print(f'  {item}')
-        print("\nUser cfg files:")
-        for item in mod.get_userfiles():
-            print(f'  {item}')
+        print("\nUser cfg file:")
+        _, cfg = mod.load_config()
+        print(f'  {cfg}')
         print("\nUser scripts:")
         for item in mod.get_userscripts():
             print(f'  {item}')
@@ -114,6 +98,7 @@ def main(argv=None):  # pragma: no cover
         dest="runfor",
         help="Runtime STOP timer in seconds - 0 means run until whenever",
     )
+    parser.add_argument('-D', '--demo', help='Run demo config', action='store_true')
     parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
     parser.add_argument(
         '--version', action="version", version=f"%(prog)s {utils.VERSION}"
@@ -129,10 +114,8 @@ def main(argv=None):  # pragma: no cover
     logging.basicConfig(stream=sys.stdout, level=log_level)
     # printout()  # logging_tree
 
-    dirs = utils.get_userdirs()
-    init(dirs)
-    ucfg, ufile = utils.load_cfg_file()
-    uscripts = utils.get_userscripts()
+    ucfg, ufile = utils.load_config()
+    uscripts = utils.get_userscripts(demo_mode=args.demo)
 
     if args.show:
         show_paths()

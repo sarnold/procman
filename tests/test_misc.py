@@ -7,13 +7,6 @@ from procman.procman import *
 from procman.utils import *
 
 
-def test_init():
-    dirs = get_userdirs()
-    for udir in dirs:
-        assert isinstance(udir, Path)
-    init(dirs)
-
-
 def test_load_base_config():
     pcfg = load_base_config()
 
@@ -21,15 +14,15 @@ def test_load_base_config():
     assert hasattr(pcfg, 'scripts')
 
 
-def test_load_cfg_file():
-    popts, pfile = load_cfg_file()
+def test_load_config():
+    popts, pfile = load_config()
 
     assert isinstance(pfile, Path)
     assert isinstance(popts, Munch)
 
 
 def test_get_userscripts():
-    uscripts = get_userscripts()
+    uscripts = get_userscripts(True)
 
     assert isinstance(uscripts, list)
     assert len(uscripts) == 2

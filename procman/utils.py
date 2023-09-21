@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 from munch import Munch
-from platformdirs import PlatformDirs
 
 if sys.version_info < (3, 8):
     from importlib_metadata import version
@@ -22,59 +21,50 @@ else:
 VERSION = version('procman')
 
 
-def get_userdirs():
+class FileTypeError(Exception):
+    """Raise when the file extension is not '.yml' or '.yaml'"""
+
+    __module__ = Exception.__module__
+
+
+def load_config(file_encoding='utf-8'):
     """
-    Set platform-agnostic user directory paths via appdirs, plus return
-    working directory.
+    Load yaml configuration file and munchify the data. If ENV path or local
+    file is not found in current directory, the default cfg will be loaded.
 
-    :return: list of Path objs
+    :param file_encoding: file encoding of config file
+    :type file_encoding: str
+    :return tuple: Munch cfg obj
+    :raises FileTypeError: if the input file is not yml
     """
-    appnamme = 'procman'
-    appauthor = 'nerdboy'
-    version = '.'.join(VERSION.split('.')[:2])
-    logdir = PlatformDirs(appnamme, appauthor, version, ensure_exists=True).user_log_path
-    cachedir = PlatformDirs(
-        appnamme, appauthor, version, ensure_exists=True
-    ).user_cache_path
-    configdir = PlatformDirs(
-        appnamme, appauthor, version, ensure_exists=True
-    ).user_config_path
-    return [configdir, cachedir, logdir]
+    proc_cfg = os.getenv('PROCMAN_CFG', default='')
+    defconfig = '.procman.yaml'
+
+    cfgfile = Path(proc_cfg) if proc_cfg else Path('.procman.yaml')
+    if not cfgfile.name.lower().endswith(('.yml', '.yaml')):
+        raise FileTypeError(f"FileTypeError: unknown file extension: {cfgfile.name}")
+    if not cfgfile.exists():
+        cfgobj = load_base_config()
+        cfgfile.with_name(defconfig).write_text(
+            Munch.toYAML(cfgobj), encoding=cfgobj.file_encoding
+        )
+    logging.debug('Using config: %s', str(cfgfile.resolve()))
+    cfgobj = Munch.fromYAML(cfgfile.read_text(encoding=file_encoding))
+
+    return cfgobj, cfgfile
 
 
-def get_userfiles(projfiles=True):
-    """
-    Get user-managed config file paths from both appdirs and working
-    directory.  Note *we stop* after finding the first matching user
-    filename.
-
-    :return: list of Path objs
-    """
-    cfg_paths = []
-    dirs = get_userdirs()
-    p_cfg = dirs[0].joinpath('procman.yaml')
-    cfg_paths.append(p_cfg)
-    l_cfg = Path('.').glob('**/.procman*.y*ml')
-    if projfiles:
-        try:
-            u_cfg = next(l_cfg)
-        except StopIteration:
-            return cfg_paths
-        cfg_paths.append(u_cfg)
-    return cfg_paths
-
-
-def get_userscripts():
+def get_userscripts(demo_mode=False):
     """
     Get user scripts from Munchified user cfg.
 
     :return: list of scripts
     """
     uscripts = []
-    ucfg, _ = load_cfg_file()
+    ucfg, _ = load_config()
     for item in [x for x in ucfg.scripts if x.proc_enable]:
         proc_list = [item.proc_label]
-        if hasattr(ucfg, 'demo_mode') and ucfg.demo_mode is not None:
+        if demo_mode:
             if getattr(sys, 'frozen', False):
                 scripts_path = os.path.join(os.path.dirname(sys.executable), 'procman')
             else:
@@ -92,37 +82,12 @@ def get_userscripts():
                 proc_str = (
                     f'{item.proc_runner} ' if item.proc_runner else ''
                 ) + f'{os.path.join(item.proc_dir, item.proc_name)}'
-        logging.warning('Demo mode is %s', ucfg.demo_mode)
+        logging.debug('Demo mode is %s', demo_mode)
         for opt in item.proc_opts:
             proc_str = proc_str + f' {opt}'
         proc_list.append(proc_str)
         uscripts.append(proc_list)
     return uscripts
-
-
-def init_cfg_file():
-    """
-    Create initial procman/example configuration file.
-    """
-    files = get_userfiles(projfiles=False)
-    pcfg = load_base_config()
-    if not files[0].exists():
-        files[0].write_text(Munch.toYAML(pcfg), encoding=pcfg.file_encoding)
-
-
-def load_cfg_file():
-    """
-    Load user/procman configuration file and munchify the data.
-
-    :return: Munch cfg obj
-    """
-    files = get_userfiles()
-    uidx = 1 if len(files) > 1 else 0
-    ufile = files[uidx]
-    encoding = 'utf-8' if b'utf-8' in ufile.read_bytes() else None
-    ucfg = Munch.fromYAML(ufile.read_text(encoding=encoding))
-    logging.warning('Cfg items: %s, %s', ucfg, ufile)
-    return ucfg, ufile
 
 
 def load_base_config():
@@ -138,7 +103,6 @@ def load_base_config():
         """
         file_encoding: 'utf-8'
         default_yml_ext: '.yaml'
-        demo_mode: true
         scripts_path: null
         scripts:
           - proc_name: 'app.py'
