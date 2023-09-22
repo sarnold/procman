@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 import pytest
@@ -19,6 +20,22 @@ def test_load_config():
 
     assert isinstance(pfile, Path)
     assert isinstance(popts, Munch)
+
+
+def test_load_config_env(monkeypatch):
+    """monkeypatch env good test"""
+    monkeypatch.setenv("PROCMAN_CFG", "testme.yml")
+    _, pfile = load_config()
+    assert isinstance(pfile, Path)
+
+
+def test_load_config_bogus(monkeypatch):
+    """monkeypatch env bogus test"""
+    monkeypatch.setenv("PROCMAN_CFG", "testme.txt")
+    with pytest.raises(FileTypeError) as excinfo:
+        _, pfile = load_config()
+    assert 'unknown file extension' in str(excinfo.value)
+    assert 'testme.txt' in str(excinfo.value)
 
 
 def test_get_userscripts():

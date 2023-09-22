@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 import pytest
