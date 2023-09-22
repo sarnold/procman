@@ -40,16 +40,14 @@ def load_config(file_encoding='utf-8'):
     proc_cfg = os.getenv('PROCMAN_CFG', default='')
     defconfig = '.procman.yaml'
 
-    cfgfile = Path(proc_cfg) if proc_cfg else Path('.procman.yaml')
+    cfgfile = Path(proc_cfg) if proc_cfg else Path(defconfig)
     if not cfgfile.name.lower().endswith(('.yml', '.yaml')):
         raise FileTypeError(f"FileTypeError: unknown file extension: {cfgfile.name}")
     if not cfgfile.exists():
         cfgobj = load_base_config()
-        cfgfile.with_name(defconfig).write_text(
-            Munch.toYAML(cfgobj), encoding=cfgobj.file_encoding
-        )
+    else:
+        cfgobj = Munch.fromYAML(cfgfile.read_text(encoding=file_encoding))
     logging.debug('Using config: %s', str(cfgfile.resolve()))
-    cfgobj = Munch.fromYAML(cfgfile.read_text(encoding=file_encoding))
 
     return cfgobj, cfgfile
 
@@ -61,7 +59,8 @@ def get_userscripts(demo_mode=False):
     :return: list of scripts
     """
     uscripts = []
-    ucfg, _ = load_config()
+    usr_cfg, usr_file = load_config()
+    ucfg = load_base_config() if not usr_file.exists() or demo_mode else usr_cfg
     for item in [x for x in ucfg.scripts if x.proc_enable]:
         proc_list = [item.proc_label]
         if demo_mode:

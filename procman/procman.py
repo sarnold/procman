@@ -10,6 +10,7 @@ import warnings
 from threading import Timer
 
 from honcho.manager import Manager
+from munch import Munch
 
 from . import utils
 
@@ -31,11 +32,11 @@ def self_test():
             print(mod.__doc__)
 
         except (NameError, KeyError, ModuleNotFoundError) as exc:
-            print(f"FAILED: {repr(exc)}")
+            logging.error("FAILED: %s", repr(exc))
 
     _, cfg_file = utils.load_config()
     if not cfg_file.exists():
-        warnings.warn("Cannot verify user file %s", cfg_file, stacklevel=2)
+        warnings.warn(f"Cannot verify user file {cfg_file}", RuntimeWarning, stacklevel=2)
 
     print("-" * 80)
 
@@ -60,7 +61,7 @@ def show_paths():
             print(f'  {item}')
 
     except (NameError, KeyError, ModuleNotFoundError) as exc:
-        print(f"FAILED: {repr(exc)}")
+        logging.error("FAILED: %s", repr(exc))
 
     print("-" * 80)
 
@@ -104,7 +105,7 @@ def main(argv=None):  # pragma: no cover
         '--version', action="version", version=f"%(prog)s {utils.VERSION}"
     )
     parser.add_argument(
-        '-s', '--show', help='Display user data paths', action='store_true'
+        '-S', '--show', help='Display user data paths', action='store_true'
     )
 
     args = parser.parse_args()
@@ -121,7 +122,7 @@ def main(argv=None):  # pragma: no cover
         show_paths()
         sys.exit(0)
     if args.dump:
-        sys.stdout.write(ufile.read_text(encoding=ucfg.file_encoding))
+        sys.stdout.write(Munch.toYAML(ucfg))
         sys.exit(0)
     if args.test:
         self_test()
@@ -129,12 +130,12 @@ def main(argv=None):  # pragma: no cover
 
     mgr = Manager()
     for user_proc in uscripts:
-        print(f'Adding {user_proc} to manager...')
+        logging.info('Adding %s to manager...', user_proc)
         mgr.add_process(user_proc[0], user_proc[1])
 
     stopme = Timer(args.runfor, mgr.terminate)
     if args.runfor:
-        print(f'Running for {args.runfor} seconds only...')
+        logging.info('Running for %d seconds only...', args.runfor)
         stopme.start()
 
     try:
