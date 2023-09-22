@@ -43,7 +43,7 @@ def self_test():
 
 def show_paths():
     """
-    Display host platform user paths, config file, and configured scripts.
+    Display user config path and configured scripts.
     """
     print("Python version:", sys.version)
     print("-" * 80)
@@ -118,6 +118,10 @@ def main(argv=None):  # pragma: no cover
     ucfg, ufile = utils.load_config()
     uscripts = utils.get_userscripts(demo_mode=args.demo)
 
+    if len(argv) == 1 and not ufile.exists():
+        parser.print_help()
+        print('\nDid you create a config file yet?')
+        sys.exit(1)
     if args.show:
         show_paths()
         sys.exit(0)
@@ -130,12 +134,12 @@ def main(argv=None):  # pragma: no cover
 
     mgr = Manager()
     for user_proc in uscripts:
-        logging.info('Adding %s to manager...', user_proc)
+        logging.debug('Adding %s to manager', user_proc)
         mgr.add_process(user_proc[0], user_proc[1])
 
     stopme = Timer(args.runfor, mgr.terminate)
     if args.runfor:
-        logging.info('Running for %d seconds only...', args.runfor)
+        logging.debug('Running for %d seconds then shutdown', args.runfor)
         stopme.start()
 
     try:

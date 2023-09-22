@@ -2,7 +2,7 @@
  Procman
 =========
 
-**A Process manager for user scripts**.
+**A lightweight process manager for user scripts**.
 
 |ci| |wheels| |release| |badge| |bandit|
 
@@ -30,6 +30,9 @@ did say small/simple...).  The example app requires both redis-py_ (which
 in turn requires redis) and flask.  Note installing Procman with the
 ``[examples]`` flag will install the python deps but you must install
 redis using your own platform tools (eg, ``apt`` or ``brew``).
+
+Procman is tested on the 3 primary GH runner platforms, so as long as you
+have a new-ish Python and a sane shell environment it should Just Work.
 
 Note Procman only supports Python 3.6+.
 
@@ -72,15 +75,16 @@ example configuration (each "block" is a list element).
 
 Note there can be only one default configuration in a given project tree named
 ``.procman.yaml``, however, you can override the default name via the environment
-variable PROCMAN_CFG= path/to/.procman_othername.yaml. Additional config file
+variable PROCMAN_CFG=path/to/.procman_othername.yaml. Additional config file
 guidance includes:
 
 * *default_yml_ext* must be ``.yml`` or ``.yaml``
-* *scripts_path* should be ``null`` for relative paths *inside your project tree*
+* *scripts_path* can be relative, absolute, or ``null``, depending on where the the
+  script directory is
 * at least one process block with ``proc_enable: true`` should be present
   (under *scripts*)
-* *proc_runner* should be the name of the interpreter, eg, ``python`` or ``ruby``
-  (can be ``null`` if calling an executable directly)
+* *proc_runner* should be the name of the interpreter, eg, ``python`` or ``ruby``,
+  or ``null`` if calling an executable directly
 
 
 Install with pip
@@ -98,7 +102,7 @@ or use this command to install a specific release version::
 The full package provides the ``procman`` executable as well as a working
 demo with a reference configuration file with defaults for all values.
 
-.. note:: To run the demo/example application, you need to first install
+.. note:: To run the example application, you need to first install
           ``redis`` via your system package manager.
 
 If you'd rather work from the source repository, it supports the common
@@ -108,18 +112,22 @@ idiom to install it on your system in a virtual env after cloning::
   $ source env/bin/activate
   (env) $ pip install .[examples]
   (env) $ procman -h
-  usage: procman [-h] [-d] [--countdown RUNFOR] [-t] [--version] [-s] [-v]
+  usage: procman [-h] [-v] [-d] [-c RUNFOR] [-D] [-t] [--version] [-S]
 
   Process manager for user scripts
 
   options:
-    -h, --help          show this help message and exit
-    -d, --dump-config   dump active yaml configuration to stdout
-    --countdown RUNFOR  Runtime STOP timer in seconds - 0 means run until whenever
-    -t, --test          Run sanity checks
-    --version           show program's version number and exit
-    -s, --show          Display user data paths
-    -v, --verbose       Switch from quiet to verbose
+    -h, --help            show this help message and exit
+    -v, --verbose         Display more processing info (default: False)
+    -d, --dump-config     dump active yaml configuration to stdout (default:
+                          False)
+    -c RUNFOR, --countdown RUNFOR
+                          Runtime STOP timer in seconds - 0 means run until
+                          whenever (default: 0)
+    -D, --demo            Run demo config (default: False)
+    -t, --test            Run sanity checks (default: False)
+    --version             show program's version number and exit
+    -S, --show            Display user data paths (default: False)
   (env) $ deactivate
 
 The alternative to python venv is the Tox_ test driver.  If you have it
@@ -142,55 +150,48 @@ To actually run the active configuration file with tox, use something like::
 
   $ tox -e serv -- 10
 
-Running the above command will install the package and then run the active
-config, (by default the flask/redis demo) in the tox serv environment for 10
+Running the above command will install the package and then run the (built-in)
+example config via the ``--demo`` command using the tox serv environment for 10
 seconds::
 
   $ tox -e serv -- 10
+  serv: install_deps> python -I -m pip install 'pip>=21.1' 'setuptools_scm[toml]' '.[examples]'
   serv: commands[0]> procman --demo --countdown 10
-  Adding ['web', 'python /home/user/src/procman/.tox/serv/lib/python3.11/site-packages/procman/examples/app.py'] to manager...
-  Adding ['redis', 'bash /home/user/src/procman/.tox/serv/lib/python3.11/site-packages/procman/examples/run_redis.sh run'] to manager...
-  Running for 10 seconds only...
-  21:04:54 system | web started (pid=26678)
-  21:04:54 system | redis started (pid=26680)
-  21:04:54 redis  | Using socket runtime dir: /tmp/redis-ipc
-  21:04:54 redis  | 26684:C 07 Sep 2023 21:04:54.046 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
-  21:04:54 redis  | 26684:C 07 Sep 2023 21:04:54.046 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=26684, just started
-  21:04:54 redis  | 26684:C 07 Sep 2023 21:04:54.046 # Configuration loaded
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 # You requested maxclients of 10000 requiring at least 10032 max file descriptors.
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 # Server can't set maximum open files to 10032 because of OS error: Operation not permitted.
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 # Current maximum open files is 4096. maxclients has been reduced to 4064 to compensate for low ulimit. If you need higher maxclients increase 'ulimit -n'.
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.046 * monotonic clock: POSIX clock_gettime
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.047 * Running mode=standalone, port=0.
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.047 # Server initialized
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.047 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * Loading RDB produced by version 7.0.11
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * RDB age 595 seconds
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * RDB memory usage when created 0.59 Mb
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * Done loading RDB, keys loaded: 0, keys expired: 0.
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * DB loaded from disk: 0.000 seconds
-  21:04:54 redis  | 26684:M 07 Sep 2023 21:04:54.048 * The server is now ready to accept connections at /tmp/redis-ipc/socket
-  21:04:54 web    |  * Serving Flask app 'app'
-  21:04:54 web    |  * Debug mode: on
-  21:04:54 web    | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
-  21:04:54 web    |  * Running on http://localhost:8000
-  21:04:54 web    | Press CTRL+C to quit
-  21:04:54 web    |  * Restarting with stat
-  21:04:54 web    |  * Debugger is active!
-  21:04:54 web    |  * Debugger PIN: 112-588-591
-  21:05:04 system | sending SIGTERM to web (pid 26678)
-  21:05:04 system | sending SIGTERM to redis (pid 26680)
-  21:05:04 redis  | 26684:signal-handler (1694145904) Received SIGTERM scheduling shutdown...
-  21:05:04 system | web stopped (rc=0)
-  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.089 # User requested shutdown...
-  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.089 * Saving the final RDB snapshot before exiting.
-  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 * DB saved on disk
-  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 * Removing the pid file.
-  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 * Removing the unix socket file.
-  21:05:04 redis  | 26684:M 07 Sep 2023 21:05:04.093 # Redis is now ready to exit, bye bye...
-  21:05:04 system | redis stopped (rc=-15)
-    serv: OK (10.46=setup[0.05]+cmd[10.41] seconds)
-    congratulations :) (10.51 seconds)
+  14:02:15 system | redis started (pid=15356)
+  14:02:15 system | web started (pid=15355)
+  14:02:15 redis  | Using socket runtime dir: /tmp/redis-ipc
+  14:02:15 redis  | 15361:C 22 Sep 2023 14:02:15.793 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+  14:02:15 redis  | 15361:C 22 Sep 2023 14:02:15.793 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=15361, just started
+  14:02:15 redis  | 15361:C 22 Sep 2023 14:02:15.793 # Configuration loaded
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.794 # You requested maxclients of 10000 requiring at least 10032 max file descriptors.
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.794 # Server can't set maximum open files to 10032 because of OS error: Operation not permitted.
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.794 # Current maximum open files is 4096. maxclients has been reduced to 4064 to compensate for low ulimit. If you need higher maxclients increase 'ulimit -n'.
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.794 * monotonic clock: POSIX clock_gettime
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.795 * Running mode=standalone, port=0.
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.795 # Server initialized
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.795 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+  14:02:15 redis  | 15361:M 22 Sep 2023 14:02:15.796 * The server is now ready to accept connections at /tmp/redis-ipc/socket
+  14:02:15 web    |  * Serving Flask app 'app'
+  14:02:15 web    |  * Debug mode: on
+  14:02:15 web    | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+  14:02:15 web    |  * Running on http://localhost:8000
+  14:02:15 web    | Press CTRL+C to quit
+  14:02:15 web    |  * Restarting with stat
+  14:02:16 web    |  * Debugger is active!
+  14:02:16 web    |  * Debugger PIN: 112-588-591
+  14:02:25 system | sending SIGTERM to web (pid 15355)
+  14:02:25 system | sending SIGTERM to redis (pid 15356)
+  14:02:25 redis  | 15361:signal-handler (1695416545) Received SIGTERM scheduling shutdown...
+  14:02:25 system | web stopped (rc=0)
+  14:02:25 redis  | 15361:M 22 Sep 2023 14:02:25.853 # User requested shutdown...
+  14:02:25 redis  | 15361:M 22 Sep 2023 14:02:25.853 * Saving the final RDB snapshot before exiting.
+  14:02:25 redis  | 15361:M 22 Sep 2023 14:02:25.859 * DB saved on disk
+  14:02:25 redis  | 15361:M 22 Sep 2023 14:02:25.859 * Removing the pid file.
+  14:02:25 redis  | 15361:M 22 Sep 2023 14:02:25.859 * Removing the unix socket file.
+  14:02:25 redis  | 15361:M 22 Sep 2023 14:02:25.859 # Redis is now ready to exit, bye bye...
+  14:02:25 system | redis stopped (rc=-15)
+    serv: OK (16.17=setup[5.88]+cmd[10.29] seconds)
+    congratulations :) (16.22 seconds)
 
 .. note:: After running the serv command, use the environment created by
           Tox just like any other Python virtual environment. As shown,
