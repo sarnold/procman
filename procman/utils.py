@@ -27,7 +27,7 @@ class FileTypeError(Exception):
     __module__ = Exception.__module__
 
 
-def load_config(file_encoding='utf-8'):
+def load_config(file_encoding='utf-8', file_extension='.yaml'):
     """
     Load yaml configuration file and munchify the data. If ENV path or local
     file is not found in current directory, the default cfg will be loaded.
@@ -38,9 +38,9 @@ def load_config(file_encoding='utf-8'):
     :raises FileTypeError: if the input file is not yml
     """
     proc_cfg = os.getenv('PROCMAN_CFG', default='')
-    defconfig = '.procman.yaml'
+    defconfig_file = f'.procman{file_extension}'
 
-    cfgfile = Path(proc_cfg) if proc_cfg else Path(defconfig)
+    cfgfile = Path(proc_cfg) if proc_cfg else Path(defconfig_file)
     if not cfgfile.name.lower().endswith(('.yml', '.yaml')):
         raise FileTypeError(f"FileTypeError: unknown file extension: {cfgfile.name}")
     if not cfgfile.exists():
@@ -52,14 +52,14 @@ def load_config(file_encoding='utf-8'):
     return cfgobj, cfgfile
 
 
-def get_userscripts(demo_mode=False):
+def get_userscripts(demo_mode=False, file_encoding='utf-8', file_extension='.yaml'):
     """
     Get user scripts from Munchified user cfg.
 
     :return: list of scripts
     """
     uscripts = []
-    usr_cfg, usr_file = load_config()
+    usr_cfg, usr_file = load_config(file_encoding, file_extension)
     ucfg = load_base_config() if not usr_file.exists() or demo_mode else usr_cfg
     for item in [x for x in ucfg.scripts if x.proc_enable]:
         proc_list = [item.proc_label]
@@ -100,8 +100,6 @@ def load_base_config():
 
     proc_cfg = Munch.fromYAML(
         """
-        file_encoding: 'utf-8'
-        default_yml_ext: '.yaml'
         scripts_path: null
         scripts:
           - proc_name: 'app.py'

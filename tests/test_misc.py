@@ -4,8 +4,13 @@ from pathlib import Path
 import pytest
 from munch import Munch
 
-from procman.procman import *
-from procman.utils import *
+import procman
+from procman.utils import (
+    FileTypeError,
+    get_userscripts,
+    load_base_config,
+    load_config,
+)
 
 
 def test_load_base_config():

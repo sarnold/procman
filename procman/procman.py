@@ -12,7 +12,7 @@ from threading import Timer
 from honcho.manager import Manager
 from munch import Munch
 
-from . import utils
+from .utils import VERSION, get_userscripts, load_config
 
 # from logging_tree import printout  # debug logger environment
 
@@ -34,7 +34,7 @@ def self_test():
         except (NameError, KeyError, ModuleNotFoundError) as exc:
             logging.error("FAILED: %s", repr(exc))
 
-    _, cfg_file = utils.load_config()
+    _, cfg_file = load_config()
     if not cfg_file.exists():
         warnings.warn(f"Cannot verify user file {cfg_file}", RuntimeWarning, stacklevel=2)
 
@@ -101,9 +101,7 @@ def main(argv=None):  # pragma: no cover
     )
     parser.add_argument('-D', '--demo', help='Run demo config', action='store_true')
     parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
-    parser.add_argument(
-        '--version', action="version", version=f"%(prog)s {utils.VERSION}"
-    )
+    parser.add_argument('--version', action="version", version=f"%(prog)s {VERSION}")
     parser.add_argument(
         '-S', '--show', help='Display user data paths', action='store_true'
     )
@@ -115,12 +113,12 @@ def main(argv=None):  # pragma: no cover
     logging.basicConfig(stream=sys.stdout, level=log_level)
     # printout()  # logging_tree
 
-    ucfg, ufile = utils.load_config()
-    uscripts = utils.get_userscripts(demo_mode=args.demo)
+    ucfg, ufile = load_config()
+    uscripts = get_userscripts(demo_mode=args.demo)
 
     if len(argv) == 1 and not ufile.exists():
         parser.print_help()
-        print('\nDid you create a config file yet?')
+        print('\nNo cfg file found; use the --demo arg or create a cfg file')
         sys.exit(1)
     if args.show:
         show_paths()

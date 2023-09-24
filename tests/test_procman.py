@@ -3,7 +3,8 @@ import warnings
 
 import pytest
 
-from procman.procman import *
+import procman
+from procman.procman import self_test, show_paths
 
 
 def test_self_test(capfd):

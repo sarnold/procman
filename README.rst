@@ -51,67 +51,16 @@ Note Procman only supports Python 3.6+.
 Quick Start
 ===========
 
-The (hopefully) 2-minute version...
+Procman is mainly configuration-driven via YAML config files; the included
+example can be displayed and copied via command-line options (see the Usage_
+section below).  To create your own configuration, you need at least one
+script to run and a place to put it (see `Configuration settings`_ for more
+details).
 
-Usage
------
+The current version supports minimal command options and there are no
+required arguments::
 
-Clone this repository, then follow the virtual environment install steps below.
-Procman uses ``pathlib`` to find user paths, which you can view below after
-running ``procman --show``.  Run ``procman --dump-config`` to view the active
-YAML configuration.
-
-In your own project directory, use one of the ``pip install`` commands shown
-below to install Procman in a virtual environment.
-
-Make sure the name of your custom config file starts with ``.procman`` and ends
-with a valid YAML extension, ie, either ``.yml`` or ``.yaml``.
-
-* Valid - ``.procman.yaml`` or ``.procman_myproject.yml`` or ``.procman_pelican.yaml``
-* Invalid - ``.procman.yl`` or ``.proc_foobar.yaml`` or ``.proc_man.yml``
-
-Using your preferred editor, edit/add process blocks to ``scripts`` as shown in the
-example configuration (each "block" is a list element).
-
-Note there can be only one default configuration in a given project tree named
-``.procman.yaml``, however, you can override the default name via the environment
-variable PROCMAN_CFG=path/to/.procman_othername.yaml. Additional config file
-guidance includes:
-
-* *default_yml_ext* must be ``.yml`` or ``.yaml``
-* *scripts_path* can be relative, absolute, or ``null``, depending on where the the
-  script directory is
-* at least one process block with ``proc_enable: true`` should be present
-  (under *scripts*)
-* *proc_runner* should be the name of the interpreter, eg, ``python`` or ``ruby``,
-  or ``null`` if calling an executable directly
-
-
-Install with pip
-----------------
-
-This package is *not* yet published on PyPI, thus use one of the following
-to install procman on any platform. Install from the main branch::
-
-  $ pip install https://github.com/sarnold/procman/archive/refs/heads/master.tar.gz
-
-or use this command to install a specific release version::
-
-  $ pip install https://github.com/sarnold/procman/releases/download/0.1.0/procman-0.1.0.tar.gz
-
-The full package provides the ``procman`` executable as well as a working
-demo with a reference configuration file with defaults for all values.
-
-.. note:: To run the example application, you need to first install
-          ``redis`` via your system package manager.
-
-If you'd rather work from the source repository, it supports the common
-idiom to install it on your system in a virtual env after cloning::
-
-  $ python -m venv env
-  $ source env/bin/activate
-  (env) $ pip install .[examples]
-  (env) $ procman -h
+  (dev) user@host $ procman
   usage: procman [-h] [-v] [-d] [-c RUNFOR] [-D] [-t] [--version] [-S]
 
   Process manager for user scripts
@@ -128,6 +77,88 @@ idiom to install it on your system in a virtual env after cloning::
     -t, --test            Run sanity checks (default: False)
     --version             show program's version number and exit
     -S, --show            Display user data paths (default: False)
+
+  No cfg file found; use the --demo arg or create a cfg file
+
+
+Usage
+-----
+
+To get started, clone this repository, then follow the virtual
+environment install steps below. Procman uses ``pathlib`` to find user
+paths, which you can view below after running ``procman --show``.  Run
+``procman --dump-config`` to view the active YAML configuration.
+
+To create your own default config file in the working directory, the local
+copy must be named ``.procman.yaml``.  To get a copy of the example
+configuration file, do::
+
+  $ cd path/to/work/dir/
+  $ procman --dump-config > .procman.yaml
+  $ $EDITOR .procman.yaml
+  $ procman --dump-config  # you should see your config settings
+
+If needed, you can also create additional ``procman`` config files to
+override your default project configuration. These alternate config files
+can have arbitrary names (ending in '.yml' or '.yaml') but we recommend
+using something like ``procman-dev-myproject.yml`` or similar. Since only
+one configuration can be "active", the non-default config file must be set
+via the environment variable ``PROCMAN_CFG``, eg::
+
+  $ procman --dump-config > procman-develop.yml
+  $ $EDITOR procman-develop.yml  # set alternate scripts, other options
+  $ PROCMAN_CFG="procman-develop.yml" procman --verbose
+
+Configuration settings
+----------------------
+
+Using your preferred editor, edit/add process blocks to ``scripts`` as shown in the
+example configuration (each "block" is a list element).
+
+Note there can be only one default configuration in a given project tree
+named ``.procman.yaml``, however, you can override the default name via the
+environment variable PROCMAN_CFG=path/to/procman_othername.yaml. Additional
+config file guidance includes:
+
+:scripts_path: the path to the script containing directory, ie, ``proc_dir``,
+               which can be relative, absolute, or ``null``, depending on
+               where the script directory is
+:scripts: at least one process block with ``proc_enable: true`` should be present
+          (under *scripts*)
+:proc_label: is the process label for the script (see log display below)
+:proc_name: the actual (file)name of the script
+:proc_dir: the directory name where the script lives
+:proc_runner: the name of the script interpreter, eg, ``python`` or ``ruby``,
+              or ``null`` if calling an executable directly
+:proc_enable: enable/disable this process block
+:proc_opts: any required script args (default is an empty list)
+
+Install with pip
+================
+
+This package is *not* yet published on PyPI, thus use one of the following
+to install procman on any platform. Install from the main branch::
+
+  $ pip install https://github.com/sarnold/procman/archive/refs/heads/master.tar.gz
+
+or use this command to install a specific release version::
+
+  $ pip install https://github.com/sarnold/procman/releases/download/0.1.0/procman-0.1.0.tar.gz
+
+The full package provides the ``procman`` executable as well as a working
+demo with a reference configuration with defaults for all values.
+
+.. note:: To run the example application, you need to first install
+          ``redis`` via your system package manager.
+
+If you'd rather work from the source repository, it supports the common
+idiom to install it on your system in a virtual env after cloning::
+
+  $ python -m venv env
+  $ source env/bin/activate
+  (env) $ pip install .[examples]
+  (env) $ procman --version
+  procman 0.1.1.dev16+g3b96476.d20230922
   (env) $ deactivate
 
 The alternative to python venv is the Tox_ test driver.  If you have it
@@ -146,17 +177,18 @@ To install in developer mode::
 
   $ tox -e dev
 
-To actually run the active configuration file with tox, use something like::
+To actually run the active configuration file for 30 seconds, run::
 
-  $ tox -e serv -- 10
+  $ tox -e serv -- 30
 
-Running the above command will install the package and then run the (built-in)
-example config via the ``--demo`` command using the tox serv environment for 10
-seconds::
+Running the following command will install the package and then run the
+(built-in) example config via the ``--demo`` option for 10 seconds using
+the tox serv environment; note you can override the ``--demo`` option by
+providing the timeout value as shown above::
 
-  $ tox -e serv -- 10
+  $ tox -e serv
   serv: install_deps> python -I -m pip install 'pip>=21.1' 'setuptools_scm[toml]' '.[examples]'
-  serv: commands[0]> procman --demo --countdown 10
+  serv: commands[0]> procman --countdown 10 --demo
   14:02:15 system | redis started (pid=15356)
   14:02:15 system | web started (pid=15355)
   14:02:15 redis  | Using socket runtime dir: /tmp/redis-ipc
@@ -198,12 +230,12 @@ seconds::
           the dev install mode of Pip allows you to edit the code and run
           it again while inside the virtual environment. By default Tox
           environments are created under ``.tox/`` and named after the
-          env argument (eg, py).
+          env argument (eg, dev).
 
 Full list of additional ``tox`` commands:
 
 * ``tox -e dev`` pip "developer" install
-* ``tox -e serv`` will run the active configuration then stop (default: 5 sec)
+* ``tox -e serv`` will run the active configuration then stop (default: 10 sec)
 * ``tox -e style`` will run flake8 style checks
 * ``tox -e lint`` will run pylint (somewhat less permissive than PEP8/flake8 checks)
 * ``tox -e mypy`` will run mypy import and type checking
