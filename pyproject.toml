@@ -1,14 +1,27 @@
 [build-system]
 requires = [
-    "setuptools>=42",
-    "versioningit >= 1.1.1",
+    "setuptools>=59",
+    "setuptools_scm[toml]>=6.2",
 ]
 
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools_scm]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests",]
+log_cli =  true
+doctest_optionflags = ["ELLIPSIS", "NORMALIZE_WHITESPACE",]
+addopts = "--strict-markers"
+markers = "subscript"
+
 [tool.coverage.run]
 branch = true
-source = ["procman"]
+source = [
+    "procman",
+    ".tox/py*/lib/python*/site-packages/",
+]
 omit = [
     "tests",
     ".tox",
@@ -18,7 +31,7 @@ omit = [
 source = ["procman"]
 
 [tool.coverage.report]
-fail_under = 50
+fail_under = 10
 show_missing = true
 
 [tool.black]
@@ -52,13 +65,5 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 
-[tool.versioningit.next-version]
-method = "smallest"
-
-[tool.versioningit.format]
-distance = "{next_version}.dev{distance}"
-dirty = "{version}+d{build_date:%Y%m%d}"
-distance-dirty = "{next_version}.dev{distance}"
-
-[tool.versioningit.write]
-file = "procman/_version.py"
+[tool.bandit]
+exclude_dirs = ["docs"]

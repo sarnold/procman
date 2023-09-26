@@ -1,0 +1,17 @@
+default_yml_ext: .yaml
+file_encoding: utf-8
+scripts:
+-   proc_dir: examples
+    proc_enable: true
+    proc_label: web
+    proc_name: app.py
+    proc_opts: []
+    proc_runner: python
+-   proc_dir: examples
+    proc_enable: true
+    proc_label: redis
+    proc_name: run_redis.sh
+    proc_opts:
+    - run
+    proc_runner: bash
+scripts_path: ~/src/procman/procman

@@ -4,27 +4,17 @@ procman main init, run, and self-test functions.
 
 import argparse
 import importlib
+import logging
 import sys
 import warnings
 from threading import Timer
 
 from honcho.manager import Manager
+from munch import Munch
 
-from . import utils
-from ._version import __version__
+from .utils import VERSION, get_userscripts, load_config
 
-
-def init(dirs):
-    """
-    Check and create user and config dirs as needed. Also create the
-    initial demo/example config file if not present.
-    :param: list of Path objs
-    """
-    for app_path in dirs:
-        if not app_path.exists():
-            app_path.mkdir(parents=True, exist_ok=True)
-
-    utils.init_cfg_file()
+# from logging_tree import printout  # debug logger environment
 
 
 def self_test():
@@ -42,18 +32,18 @@ def self_test():
             print(mod.__doc__)
 
         except (NameError, KeyError, ModuleNotFoundError) as exc:
-            print(f"FAILED: {repr(exc)}")
+            logging.error("FAILED: %s", repr(exc))
 
-    for cfg_file in mod.get_userfiles():
-        if not cfg_file.exists():
-            warnings.warn("Cannot verify user file %s", cfg_file, stacklevel=2)
+    _, cfg_file = load_config()
+    if not cfg_file.exists():
+        warnings.warn(f"Cannot verify user file {cfg_file}", RuntimeWarning, stacklevel=2)
 
     print("-" * 80)
 
 
 def show_paths():
     """
-    Display host platform user paths, config file, and configured scripts.
+    Display user config path and configured scripts.
     """
     print("Python version:", sys.version)
     print("-" * 80)
@@ -63,35 +53,36 @@ def show_paths():
         mod = importlib.import_module(modname)
         print(mod.__doc__)
 
-        print("User app dirs:")
-        print(mod.get_userdirs())
-        print("\nUser cfg files:")
-        print(mod.get_userfiles())
+        print("\nUser cfg file:")
+        _, cfg = mod.load_config()
+        print(f'  {cfg}')
         print("\nUser scripts:")
-        print(mod.get_userscripts())
+        for item in mod.get_userscripts():
+            print(f'  {item}')
 
     except (NameError, KeyError, ModuleNotFoundError) as exc:
-        print(f"FAILED: {repr(exc)}")
+        logging.error("FAILED: %s", repr(exc))
 
     print("-" * 80)
 
 
-def main(argv=None):
+def main(argv=None):  # pragma: no cover
     """
-    Collect and process command options/arguments and init app dirs
-    if needed, launch the process manager.
+    Collect and process command options/arguments and init app dirs,
+    then launch the process manager.
     """
     if argv is None:
         argv = sys.argv
 
-    dirs = utils.get_userdirs()
-    init(dirs)
-    ucfg, ufile = utils.load_cfg_file()
-    uscripts = utils.get_userscripts()
-
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='Process manager for user scripts',
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Display more processing info",
     )
     parser.add_argument(
         '-d',
@@ -101,28 +92,39 @@ def main(argv=None):
         dest="dump",
     )
     parser.add_argument(
+        '-c',
         "--countdown",
         type=int,
         default='0',
         dest="runfor",
         help="Runtime STOP timer in seconds - 0 means run until whenever",
     )
+    parser.add_argument('-D', '--demo', help='Run demo config', action='store_true')
     parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
-    parser.add_argument('--version', action="version", version=f"procman {__version__}")
+    parser.add_argument('--version', action="version", version=f"%(prog)s {VERSION}")
     parser.add_argument(
-        '-s', '--show', help='Display user data paths', action='store_true'
-    )
-    parser.add_argument(
-        '-v', '--verbose', help='Switch from quiet to verbose', action='store_true'
+        '-S', '--show', help='Display user data paths', action='store_true'
     )
 
     args = parser.parse_args()
 
+    # basic logging setup must come before any other logging calls
+    log_level = logging.DEBUG if args.verbose else logging.INFO
+    logging.basicConfig(stream=sys.stdout, level=log_level)
+    # printout()  # logging_tree
+
+    ucfg, ufile = load_config()
+    uscripts = get_userscripts(demo_mode=args.demo)
+
+    if len(argv) == 1 and not ufile.exists():
+        parser.print_help()
+        print('\nNo cfg file found; use the --demo arg or create a cfg file')
+        sys.exit(1)
     if args.show:
         show_paths()
         sys.exit(0)
     if args.dump:
-        sys.stdout.write(ufile.read_text(encoding=ucfg.file_encoding))
+        sys.stdout.write(Munch.toYAML(ucfg))
         sys.exit(0)
     if args.test:
         self_test()
@@ -130,17 +132,16 @@ def main(argv=None):
 
     mgr = Manager()
     for user_proc in uscripts:
-        print(f'Adding {user_proc} to manager...')
+        logging.debug('Adding %s to manager', user_proc)
         mgr.add_process(user_proc[0], user_proc[1])
 
     stopme = Timer(args.runfor, mgr.terminate)
     if args.runfor:
-        print(f'Running for {args.runfor} seconds only...')
+        logging.debug('Running for %d seconds then shutdown', args.runfor)
         stopme.start()
 
     try:
         mgr.loop()
-
     except (KeyboardInterrupt, RuntimeError):
         print("\nExiting ...")
     finally:
@@ -148,4 +149,4 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pragma: no cover

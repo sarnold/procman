@@ -1,14 +1,16 @@
+importlib-metadata; python_version < '3.8'
 importlib_resources; python_version < '3.10'
 munch
 PyYAML
-ruamel.yaml
 honcho
-appdirs
 # only used for demo mode
 redis
 flask
 # dev tasks
+pytest
+pytest-cov
 pylint
 mypy
 isort
 flake8
+black
