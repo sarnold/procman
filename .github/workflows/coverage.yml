@@ -14,7 +14,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   pre_ci:
