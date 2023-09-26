@@ -6,7 +6,7 @@
 
 |ci| |wheels| |release| |badge| |bandit|
 
-|pre| |pylint|
+|pre| |cov| |pylint|
 
 |tag| |license| |python|
 
@@ -327,6 +327,10 @@ It's usually a good idea to update the hooks to the latest version::
 .. |bandit| image:: https://github.com/sarnold/procman/actions/workflows/bandit.yml/badge.svg
     :target: https://github.com/sarnold/procman/actions/workflows/bandit.yml
     :alt: Security check - Bandit
+
+.. |cov| image:: https://raw.githubusercontent.com/sarnold/procman/badges/master/test-coverage.svg
+    :target: https://github.com/sarnold/procman/actions/workflows/coverage.yml
+    :alt: Test coverage
 
 .. |pylint| image:: https://raw.githubusercontent.com/sarnold/procman/badges/master/pylint-score.svg
     :target: https://github.com/sarnold/procman/actions/workflows/pylint.yml
