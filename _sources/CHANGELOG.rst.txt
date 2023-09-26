@@ -2,8 +2,35 @@ Changelog
 =========
 
 
-(unreleased)
-------------
+0.2.0 (2023-09-25)
+------------------
+
+New
+~~~
+- Add a changelog, update docs build, readme and pkg cleanup. [Stephen L
+  Arnold]
+
+Changes
+~~~~~~~
+- Refactor docs, cleanup imports, sync up extension bits. [Stephen L
+  Arnold]
+
+  * document the full config block, cleanup serv example
+- More readme and logging cleanup, print help if no cfg file. [Stephen L
+  Arnold]
+- Add simple tests, start refactoring readme. [Stephen L Arnold]
+
+  * yank old cfg handling, make it simpler
+
+Other
+~~~~~
+- Merge pull request #3 from sarnold/import-ref. [Steve Arnold]
+
+  Import refactor, docs cleanup
+
+
+0.1.1 (2023-08-25)
+------------------
 
 New
 ~~~

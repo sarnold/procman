@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Changelog &mdash; procman 0.1.2.dev11+g9297d41 documentation</title>
+  <title>Changelog &mdash; procman 0.1.2.dev12+gb0195f3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=84d9868c"></script>
+        <script src="_static/documentation_options.js?v=1ada07f3"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -52,18 +52,24 @@
 <li class="toctree-l1"><a class="reference internal" href="dev/pre-commit-usage.html">Using Pre-Commit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">procman</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#unreleased">(unreleased)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.2.0 (2023-09-25)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#new">New</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#fix">Fix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#other">Other</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">0.1.0 (2023-08-21)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">New</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Fix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.1.1 (2023-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">New</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fix">Fix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">0.1.0 (2023-08-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">New</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Other</a></li>
 </ul>
 </li>
 </ul>
@@ -96,10 +102,46 @@
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
-<section id="unreleased">
-<h2>(unreleased)<a class="headerlink" href="#unreleased" title="Link to this heading"></a></h2>
+<section id="id1">
+<h2>0.2.0 (2023-09-25)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <section id="new">
 <h3>New<a class="headerlink" href="#new" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add a changelog, update docs build, readme and pkg cleanup. [Stephen L
+Arnold]</p></li>
+</ul>
+</section>
+<section id="changes">
+<h3>Changes<a class="headerlink" href="#changes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Refactor docs, cleanup imports, sync up extension bits. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>document the full config block, cleanup serv example</p></li>
+</ul>
+</li>
+<li><p>More readme and logging cleanup, print help if no cfg file. [Stephen L
+Arnold]</p></li>
+<li><p>Add simple tests, start refactoring readme. [Stephen L Arnold]</p>
+<ul>
+<li><p>yank old cfg handling, make it simpler</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="other">
+<h3>Other<a class="headerlink" href="#other" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #3 from sarnold/import-ref. [Steve Arnold]</p>
+<p>Import refactor, docs cleanup</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2>0.1.1 (2023-08-25)<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>New<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Add runtime countdown-to-terminate argument, use 5 sec in tox.
 [Stephen L Arnold]</p>
@@ -109,8 +151,8 @@
 </li>
 </ul>
 </section>
-<section id="changes">
-<h3>Changes<a class="headerlink" href="#changes" title="Link to this heading"></a></h3>
+<section id="id4">
+<h3>Changes<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Cleanup rst formatting. [Stephen L Arnold]</p></li>
 <li><p>Add new tox command to run active config, update readme. [Stephen L
@@ -127,8 +169,8 @@ Arnold]</p></li>
 [Stephen L Arnold]</p></li>
 </ul>
 </section>
-<section id="other">
-<h3>Other<a class="headerlink" href="#other" title="Link to this heading"></a></h3>
+<section id="id5">
+<h3>Other<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <ul>
 <li><p>Merge pull request #2 from sarnold/nit-cleanup. [Steve Arnold]</p>
 <p>Doc and nit cleanup</p>
@@ -136,10 +178,10 @@ Arnold]</p></li>
 </ul>
 </section>
 </section>
-<section id="id1">
-<h2>0.1.0 (2023-08-21)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<section id="id2">
-<h3>New<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<section id="id6">
+<h2>0.1.0 (2023-08-21)<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="id7">
+<h3>New<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Add basic sphinx docs build and some GH workflows. [Stephen L Arnold]</p>
 <ul>
@@ -148,15 +190,15 @@ Arnold]</p></li>
 </li>
 </ul>
 </section>
-<section id="id3">
-<h3>Changes<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<section id="id8">
+<h3>Changes<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Ci: get more verbose with bandit workflow permissions. [Stephen L
 Arnold]</p></li>
 </ul>
 </section>
-<section id="id4">
-<h3>Fix<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<section id="id9">
+<h3>Fix<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Add missing pylint score. [Stephen L Arnold]</p></li>
 <li><p>Use correct license in badge text. [Stephen L Arnold]</p></li>
@@ -168,8 +210,8 @@ Arnold]</p></li>
 <li><p>Add missing license file. [Stephen L Arnold]</p></li>
 </ul>
 </section>
-<section id="id5">
-<h3>Other<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<section id="id10">
+<h3>Other<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
 <ul>
 <li><p>Merge pull request #1 from sarnold/early-chores. [Steve Arnold]</p>
 <p>add docs and workflows</p>
