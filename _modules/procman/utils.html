@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>procman.utils &mdash; procman 0.1.1 documentation</title>
+  <title>procman.utils &mdash; procman 0.1.2.dev11+g9297d41 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -12,7 +12,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../_static/documentation_options.js?v=84d9868c"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -32,7 +32,7 @@
             procman
           </a>
               <div class="version">
-                0.1.1
+                0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -44,8 +44,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_include.html">Procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/generate-changelog.html">Changelog Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/pre-commit-config.html">Contents of the <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/pre-commit-usage.html">Using Pre-Commit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOG.html">Changelog</a></li>
 </ul>
 
         </div>
@@ -76,79 +80,74 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">procman utils for file handling and config parsing.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span> <span class="nn">appdirs</span> <span class="kn">import</span> <span class="n">AppDirs</span>
 <span class="kn">from</span> <span class="nn">munch</span> <span class="kn">import</span> <span class="n">Munch</span>
 
-<span class="kn">from</span> <span class="nn">._version</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">importlib_metadata</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">importlib.metadata</span> <span class="kn">import</span> <span class="n">version</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
-    <span class="c1"># importlib.resources either doesn&#39;t exist or lacks the files()</span>
-    <span class="c1"># function, so use the PyPI version:</span>
     <span class="kn">import</span> <span class="nn">importlib_resources</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="c1"># importlib.resources has files(), so use that:</span>
     <span class="kn">import</span> <span class="nn">importlib.resources</span> <span class="k">as</span> <span class="nn">importlib_resources</span>
 
+<span class="n">VERSION</span> <span class="o">=</span> <span class="n">version</span><span class="p">(</span><span class="s1">&#39;procman&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="get_userdirs">
-<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.get_userdirs">[docs]</a>
-<span class="k">def</span> <span class="nf">get_userdirs</span><span class="p">():</span>
+
+<span class="k">class</span> <span class="nc">FileTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when the file extension is not &#39;.yml&#39; or &#39;.yaml&#39;&quot;&quot;&quot;</span>
+
+    <span class="vm">__module__</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="vm">__module__</span>
+
+
+<div class="viewcode-block" id="load_config">
+<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.load_config">[docs]</a>
+<span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="n">file_encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">file_extension</span><span class="o">=</span><span class="s1">&#39;.yaml&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Set platform-agnostic user directory paths via appdirs, plus return</span>
-<span class="sd">    working directory.</span>
+<span class="sd">    Load yaml configuration file and munchify the data. If ENV path or local</span>
+<span class="sd">    file is not found in current directory, the default cfg will be loaded.</span>
 
-<span class="sd">    :return: list of Path objs</span>
+<span class="sd">    :param file_encoding: file encoding of config file</span>
+<span class="sd">    :type file_encoding: str</span>
+<span class="sd">    :return tuple: Munch cfg obj</span>
+<span class="sd">    :raises FileTypeError: if the input file is not yml</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dirs</span> <span class="o">=</span> <span class="n">AppDirs</span><span class="p">(</span><span class="n">appname</span><span class="o">=</span><span class="s1">&#39;procman&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">)</span>
-    <span class="n">logdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dirs</span><span class="o">.</span><span class="n">user_log_dir</span><span class="p">)</span>
-    <span class="n">cachedir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dirs</span><span class="o">.</span><span class="n">user_cache_dir</span><span class="p">)</span>
-    <span class="n">configdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dirs</span><span class="o">.</span><span class="n">user_config_dir</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">configdir</span><span class="p">,</span> <span class="n">cachedir</span><span class="p">,</span> <span class="n">logdir</span><span class="p">]</span></div>
+    <span class="n">proc_cfg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;PROCMAN_CFG&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">defconfig_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;.procman</span><span class="si">{</span><span class="n">file_extension</span><span class="si">}</span><span class="s1">&#39;</span>
 
+    <span class="n">cfgfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">proc_cfg</span><span class="p">)</span> <span class="k">if</span> <span class="n">proc_cfg</span> <span class="k">else</span> <span class="n">Path</span><span class="p">(</span><span class="n">defconfig_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfgfile</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s1">&#39;.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="n">FileTypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FileTypeError: unknown file extension: </span><span class="si">{</span><span class="n">cfgfile</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfgfile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">cfgobj</span> <span class="o">=</span> <span class="n">load_base_config</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cfgobj</span> <span class="o">=</span> <span class="n">Munch</span><span class="o">.</span><span class="n">fromYAML</span><span class="p">(</span><span class="n">cfgfile</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">file_encoding</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Using config: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">cfgfile</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
 
-
-<div class="viewcode-block" id="get_userfiles">
-<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.get_userfiles">[docs]</a>
-<span class="k">def</span> <span class="nf">get_userfiles</span><span class="p">(</span><span class="n">projfiles</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get user-managed config file paths from both appdirs and working</span>
-<span class="sd">    directory.  Note *we stop* after finding the first matching user</span>
-<span class="sd">    filename.</span>
-
-<span class="sd">    :return: list of Path objs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cfg_paths</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">dirs</span> <span class="o">=</span> <span class="n">get_userdirs</span><span class="p">()</span>
-    <span class="n">p_cfg</span> <span class="o">=</span> <span class="n">dirs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;procman.yaml&#39;</span><span class="p">)</span>
-    <span class="n">cfg_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_cfg</span><span class="p">)</span>
-    <span class="n">l_cfg</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/.procman*.y*ml&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">projfiles</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">u_cfg</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">l_cfg</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">cfg_paths</span>
-        <span class="n">cfg_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u_cfg</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cfg_paths</span></div>
+    <span class="k">return</span> <span class="n">cfgobj</span><span class="p">,</span> <span class="n">cfgfile</span></div>
 
 
 
 <div class="viewcode-block" id="get_userscripts">
 <a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.get_userscripts">[docs]</a>
-<span class="k">def</span> <span class="nf">get_userscripts</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">get_userscripts</span><span class="p">(</span><span class="n">demo_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">file_encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">file_extension</span><span class="o">=</span><span class="s1">&#39;.yaml&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get user scripts from Munchified user cfg.</span>
 
 <span class="sd">    :return: list of scripts</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">uscripts</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">ucfg</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_cfg_file</span><span class="p">()</span>
+    <span class="n">usr_cfg</span><span class="p">,</span> <span class="n">usr_file</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">file_encoding</span><span class="p">,</span> <span class="n">file_extension</span><span class="p">)</span>
+    <span class="n">ucfg</span> <span class="o">=</span> <span class="n">load_base_config</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">usr_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="n">demo_mode</span> <span class="k">else</span> <span class="n">usr_cfg</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ucfg</span><span class="o">.</span><span class="n">scripts</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">proc_enable</span><span class="p">]:</span>
         <span class="n">proc_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">proc_label</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ucfg</span><span class="p">,</span> <span class="s1">&#39;demo_mode&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ucfg</span><span class="o">.</span><span class="n">demo_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">demo_mode</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
                 <span class="n">scripts_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">),</span> <span class="s1">&#39;procman&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -166,41 +165,12 @@
                 <span class="n">proc_str</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
                 <span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">proc_dir</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="o">.</span><span class="n">proc_name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Demo mode is </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">demo_mode</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">proc_opts</span><span class="p">:</span>
             <span class="n">proc_str</span> <span class="o">=</span> <span class="n">proc_str</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">opt</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="n">proc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proc_str</span><span class="p">)</span>
         <span class="n">uscripts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proc_list</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">uscripts</span></div>
-
-
-
-<div class="viewcode-block" id="init_cfg_file">
-<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.init_cfg_file">[docs]</a>
-<span class="k">def</span> <span class="nf">init_cfg_file</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create initial procman/example configuration file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">get_userfiles</span><span class="p">(</span><span class="n">projfiles</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">pcfg</span> <span class="o">=</span> <span class="n">load_base_config</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">Munch</span><span class="o">.</span><span class="n">toYAML</span><span class="p">(</span><span class="n">pcfg</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="n">pcfg</span><span class="o">.</span><span class="n">file_encoding</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="load_cfg_file">
-<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.load_cfg_file">[docs]</a>
-<span class="k">def</span> <span class="nf">load_cfg_file</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load user/procman configuration file and munchify the data.</span>
-
-<span class="sd">    :return: Munch cfg obj</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">get_userfiles</span><span class="p">()</span>
-    <span class="n">uidx</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
-    <span class="n">ufile</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="n">uidx</span><span class="p">]</span>
-    <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span> <span class="k">if</span> <span class="sa">b</span><span class="s1">&#39;utf-8&#39;</span> <span class="ow">in</span> <span class="n">ufile</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
-    <span class="n">ucfg</span> <span class="o">=</span> <span class="n">Munch</span><span class="o">.</span><span class="n">fromYAML</span><span class="p">(</span><span class="n">ufile</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">ucfg</span><span class="p">,</span> <span class="n">ufile</span></div>
 
 
 
@@ -217,9 +187,6 @@
 
     <span class="n">proc_cfg</span> <span class="o">=</span> <span class="n">Munch</span><span class="o">.</span><span class="n">fromYAML</span><span class="p">(</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        file_encoding: &#39;utf-8&#39;</span>
-<span class="sd">        default_yml_ext: &#39;.yaml&#39;</span>
-<span class="sd">        demo_mode: true</span>
 <span class="sd">        scripts_path: null</span>
 <span class="sd">        scripts:</span>
 <span class="sd">          - proc_name: &#39;app.py&#39;</span>
@@ -240,16 +207,6 @@
 
     <span class="k">return</span> <span class="n">proc_cfg</span></div>
 
-
-
-<span class="c1"># usage</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;User dirs:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">get_userdirs</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">User files:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">get_userfiles</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">User scripts:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">get_userscripts</span><span class="p">())</span>
 </pre></div>
 
            </div>

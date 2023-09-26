@@ -1,4 +1,4 @@
-Welcome to the Procman documentation!
+Welcome to the procman documentation!
 =====================================
 
 .. git_commit_detail::
@@ -9,12 +9,15 @@ Welcome to the Procman documentation!
     :untracked:
 
 .. toctree::
+    :maxdepth: 4
     :caption: Contents:
-    :maxdepth: 3
 
-    README
+    readme_include
+    dev/generate-changelog
+    dev/pre-commit-config
+    dev/pre-commit-usage
     api/modules
-
+    CHANGELOG
 
 Indices and tables
 ==================

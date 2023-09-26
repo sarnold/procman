@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>procman.procman &mdash; procman 0.1.1 documentation</title>
+  <title>procman.procman &mdash; procman 0.1.2.dev11+g9297d41 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -12,7 +12,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../_static/documentation_options.js?v=84d9868c"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -32,7 +32,7 @@
             procman
           </a>
               <div class="version">
-                0.1.1
+                0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -44,8 +44,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_include.html">Procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/generate-changelog.html">Changelog Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/pre-commit-config.html">Contents of the <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/pre-commit-usage.html">Using Pre-Commit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOG.html">Changelog</a></li>
 </ul>
 
         </div>
@@ -79,30 +83,17 @@
 
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Timer</span>
 
 <span class="kn">from</span> <span class="nn">honcho.manager</span> <span class="kn">import</span> <span class="n">Manager</span>
+<span class="kn">from</span> <span class="nn">munch</span> <span class="kn">import</span> <span class="n">Munch</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">._version</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">get_userscripts</span><span class="p">,</span> <span class="n">load_config</span>
 
-
-<div class="viewcode-block" id="init">
-<a class="viewcode-back" href="../../api/procman.procman.html#procman.procman.init">[docs]</a>
-<span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">dirs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check and create user and config dirs as needed. Also create the</span>
-<span class="sd">    initial demo/example config file if not present.</span>
-<span class="sd">    :param: list of Path objs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">app_path</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">app_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">app_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">utils</span><span class="o">.</span><span class="n">init_cfg_file</span><span class="p">()</span></div>
-
+<span class="c1"># from logging_tree import printout  # debug logger environment</span>
 
 
 <div class="viewcode-block" id="self_test">
@@ -122,11 +113,11 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="p">(</span><span class="ne">NameError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;FAILED: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
 
-    <span class="k">for</span> <span class="n">cfg_file</span> <span class="ow">in</span> <span class="n">mod</span><span class="o">.</span><span class="n">get_userfiles</span><span class="p">():</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Cannot verify user file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">cfg_file</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot verify user file </span><span class="si">{</span><span class="n">cfg_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span></div>
 
@@ -136,7 +127,7 @@
 <a class="viewcode-back" href="../../api/procman.procman.html#procman.procman.show_paths">[docs]</a>
 <span class="k">def</span> <span class="nf">show_paths</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Display host platform user paths, config file, and configured scripts.</span>
+<span class="sd">    Display user config path and configured scripts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Python version:&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
@@ -146,15 +137,15 @@
         <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">modname</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;User app dirs:&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">get_userdirs</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">User cfg files:&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">get_userfiles</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">User cfg file:&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">cfg</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="n">cfg</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">User scripts:&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">get_userscripts</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">mod</span><span class="o">.</span><span class="n">get_userscripts</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="p">(</span><span class="ne">NameError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;FAILED: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span></div>
 
@@ -162,22 +153,23 @@
 
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../api/procman.procman.html#procman.procman.main">[docs]</a>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Collect and process command options/arguments and init app dirs</span>
-<span class="sd">    if needed, launch the process manager.</span>
+<span class="sd">    Collect and process command options/arguments and init app dirs,</span>
+<span class="sd">    then launch the process manager.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">argv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
 
-    <span class="n">dirs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_userdirs</span><span class="p">()</span>
-    <span class="n">init</span><span class="p">(</span><span class="n">dirs</span><span class="p">)</span>
-    <span class="n">ucfg</span><span class="p">,</span> <span class="n">ufile</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_cfg_file</span><span class="p">()</span>
-    <span class="n">uscripts</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_userscripts</span><span class="p">()</span>
-
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
-        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawTextHelpFormatter</span><span class="p">,</span>
+        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentDefaultsHelpFormatter</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Process manager for user scripts&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-v&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Display more processing info&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s1">&#39;-d&#39;</span><span class="p">,</span>
@@ -187,28 +179,39 @@
         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;dump&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;-c&#39;</span><span class="p">,</span>
         <span class="s2">&quot;--countdown&quot;</span><span class="p">,</span>
         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;runfor&quot;</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Runtime STOP timer in seconds - 0 means run until whenever&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-D&#39;</span><span class="p">,</span> <span class="s1">&#39;--demo&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Run demo config&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-t&#39;</span><span class="p">,</span> <span class="s1">&#39;--test&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Run sanity checks&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--version&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;procman </span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--version&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;%(prog)s </span><span class="si">{</span><span class="n">VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--show&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Display user data paths&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span>
-    <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="s1">&#39;--verbose&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Switch from quiet to verbose&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span>
+        <span class="s1">&#39;-S&#39;</span><span class="p">,</span> <span class="s1">&#39;--show&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Display user data paths&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span>
     <span class="p">)</span>
 
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
+    <span class="c1"># basic logging setup must come before any other logging calls</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">log_level</span><span class="p">)</span>
+    <span class="c1"># printout()  # logging_tree</span>
+
+    <span class="n">ucfg</span><span class="p">,</span> <span class="n">ufile</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
+    <span class="n">uscripts</span> <span class="o">=</span> <span class="n">get_userscripts</span><span class="p">(</span><span class="n">demo_mode</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">demo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ufile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">No cfg file found; use the --demo arg or create a cfg file&#39;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">show</span><span class="p">:</span>
         <span class="n">show_paths</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dump</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">ufile</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">ucfg</span><span class="o">.</span><span class="n">file_encoding</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">Munch</span><span class="o">.</span><span class="n">toYAML</span><span class="p">(</span><span class="n">ucfg</span><span class="p">))</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">test</span><span class="p">:</span>
         <span class="n">self_test</span><span class="p">()</span>
@@ -216,17 +219,16 @@
 
     <span class="n">mgr</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">user_proc</span> <span class="ow">in</span> <span class="n">uscripts</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Adding </span><span class="si">{</span><span class="n">user_proc</span><span class="si">}</span><span class="s1"> to manager...&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Adding </span><span class="si">%s</span><span class="s1"> to manager&#39;</span><span class="p">,</span> <span class="n">user_proc</span><span class="p">)</span>
         <span class="n">mgr</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span><span class="n">user_proc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">user_proc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="n">stopme</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">runfor</span><span class="p">,</span> <span class="n">mgr</span><span class="o">.</span><span class="n">terminate</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">runfor</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Running for </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">runfor</span><span class="si">}</span><span class="s1"> seconds only...&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Running for </span><span class="si">%d</span><span class="s1"> seconds then shutdown&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">runfor</span><span class="p">)</span>
         <span class="n">stopme</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">mgr</span><span class="o">.</span><span class="n">loop</span><span class="p">()</span>
-
     <span class="k">except</span> <span class="p">(</span><span class="ne">KeyboardInterrupt</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Exiting ...&quot;</span><span class="p">)</span>
     <span class="k">finally</span><span class="p">:</span>
@@ -235,7 +237,7 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
+    <span class="n">main</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
 </pre></div>
 
            </div>
