@@ -53,10 +53,10 @@ def show_paths():
         mod = importlib.import_module(modname)
         print(mod.__doc__)
 
-        print("\nUser cfg file:")
+        print("User cfg file:")
         _, cfg = mod.load_config()
-        print(f'  {cfg}')
-        print("\nUser scripts:")
+        print(f'  {cfg.resolve()}')
+        print("User scripts:")
         for item in mod.get_userscripts():
             print(f'  {item}')
 
@@ -78,6 +78,10 @@ def main(argv=None):  # pragma: no cover
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='Process manager for user scripts',
     )
+    parser.add_argument('--version', action="version", version=f"%(prog)s {VERSION}")
+    parser.add_argument('-D', '--demo', help='Run demo config', action='store_true')
+    parser.add_argument('-S', '--show', help='Display user config', action='store_true')
+    parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
     parser.add_argument(
         "-v",
         "--verbose",
@@ -98,12 +102,6 @@ def main(argv=None):  # pragma: no cover
         default='0',
         dest="runfor",
         help="Runtime STOP timer in seconds - 0 means run until whenever",
-    )
-    parser.add_argument('-D', '--demo', help='Run demo config', action='store_true')
-    parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
-    parser.add_argument('--version', action="version", version=f"%(prog)s {VERSION}")
-    parser.add_argument(
-        '-S', '--show', help='Display user data paths', action='store_true'
     )
 
     args = parser.parse_args()
