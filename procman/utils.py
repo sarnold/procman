@@ -34,7 +34,9 @@ def load_config(file_encoding='utf-8', file_extension='.yaml'):
 
     :param file_encoding: file encoding of config file
     :type file_encoding: str
-    :return tuple: Munch cfg obj
+    :param file_extension: file extension with leading separator
+    :type file_extension: str
+    :return tuple: Munch cfg obj, Path obj
     :raises FileTypeError: if the input file is not yml
     """
     proc_cfg = os.getenv('PROCMAN_CFG', default='')
