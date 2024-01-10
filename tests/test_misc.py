@@ -45,6 +45,13 @@ def test_load_config_bogus(monkeypatch):
 
 def test_get_userscripts():
     uscripts = get_userscripts(True)
+    # print(uscripts)
 
     assert isinstance(uscripts, list)
     assert len(uscripts) == 2
+
+    for item in uscripts:
+        path_str = item[1].split()[1]
+        print(path_str)
+        assert isinstance(path_str, str)
+        assert Path(path_str).is_absolute
