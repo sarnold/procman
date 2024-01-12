@@ -51,7 +51,7 @@ def load_config(file_encoding='utf-8', file_extension='.yaml'):
         cfgobj = Munch.fromYAML(cfgfile.read_text(encoding=file_encoding))
     logging.debug('Using config: %s', str(cfgfile.resolve()))
 
-    return cfgobj, cfgfile
+    return cfgobj, cfgfile.resolve()
 
 
 def get_userscripts(demo_mode=False, file_encoding='utf-8', file_extension='.yaml'):
