@@ -19,7 +19,9 @@ on:
 jobs:
   pre_ci:
     name: Prepare CI environment
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     outputs:
       #commit_message: ${{ steps.get_commit_message.outputs.commit_message }}
       branch: ${{ steps.extract_branch.outputs.branch }}
@@ -60,7 +62,9 @@ jobs:
 
   base:
     name: Base coverage
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     outputs:
       base_branch: ${{ steps.get_base.outputs.base_branch }}
       base_cov: ${{ steps.get_base.outputs.base_cov }}
@@ -100,7 +104,9 @@ jobs:
 
   check:
     name: Pre CI check
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     needs: [pre_ci, base]
 
     steps:
@@ -120,6 +126,9 @@ jobs:
   cov_data:
     name: Generate test coverage data
     runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      pull-requests: write
     needs: [check]
     defaults:
       run:
@@ -193,7 +202,9 @@ jobs:
 
   test:
     name: Coverage check
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     needs: [cov_data, base]
     outputs:
       coverage: ${{ needs.cov_data.outputs.coverage }}
@@ -215,7 +226,10 @@ jobs:
 
   comment_cov_change:
     name: Comment on PR with coverage delta
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
     needs: [test, base]
 
     steps:
@@ -293,7 +307,11 @@ jobs:
     #   - This is a pull request event and the pull actor is the same as the repo owner
     #     if: ${{ ( github.event_name == 'pull_request' && github.actor == github.repository_owner ) || github.ref == 'refs/heads/master' }}
     name: Generate badge image with test coverage value
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    permissions:
+      pull-requests: read
+      contents: write
+      actions: read
     needs: [test, pre_ci]
     if: github.event_name == 'push'
     outputs:
