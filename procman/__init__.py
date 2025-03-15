@@ -1,10 +1,15 @@
 """
-procman script runner and example scripts.
+procman process runner and example scripts.
 """
 
+import sys
 
-__description__ = (
-    "Console tool for running multiple external processes and multiplexing their output"
-)
+if sys.version_info < (3, 8):
+    from importlib_metadata import version
+else:
+    from importlib.metadata import version
 
-__all__ = ["__description__"]
+__version__ = version('procman')
+__all__ = [
+    "__version__",
+]
