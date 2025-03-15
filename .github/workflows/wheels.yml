@@ -7,9 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  python_wheels:
 
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     defaults:
       run:
         shell: bash

@@ -10,6 +10,8 @@ jobs:
   wheels:
 
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     defaults:
       run:
         shell: bash
@@ -56,6 +58,8 @@ jobs:
     name: Create Release
     needs: [wheels]
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
 
     steps:
       - name: Get version
@@ -99,6 +103,8 @@ jobs:
     name: Release docs
     needs: [create_release]
     runs-on: ubuntu-20.04
+    permissions:
+      contents: read
 
     steps:
     - uses: actions/checkout@v4
