@@ -1,0 +1,302 @@
+reuse: commands[0]> reuse spdx
+SPDXVersion: SPDX-2.1
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: procman
+DocumentNamespace: http://spdx.org/spdxdocs/spdx-v2.1-b117ef6d-583b-47c7-a50f-080e3da041a0
+Creator: Person: Stephen L Arnold
+Creator: Organization: sarnold
+Creator: Tool: reuse-5.0.2
+Created: 2025-03-15T21:16:11Z
+CreatorComment: <text>This document was created automatically using available reuse information consistent with REUSE.</text>
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-f1c7a005a4ee87aeb2f1b0b248e68278
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-73cba5429195a229e3f175e7af216a66
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-ec93bf0c98ce13538e1f3681fa4fac5b
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-745332fc55a72ded5f7784e1d55f8538
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-1b8c80328d885496341876c4574f7527
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-d767a9d1e598bbd27db3d058e5c06afa
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-57a75ceca5a622f983c5f09766e0f3a7
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-ab52e829ee9afb8efc52658e728ea08b
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-a58a2fb02867d54894bee64f2a1fe6d0
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-9b777929b5bea81ab4b0c3f4cf6d3168
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-9ad69fed46867582263df01276090945
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-006ac61f5cf23cc963a4f62e7e77ee87
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-45f639f8259abc04eaeb97215a24bd56
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-7d50e436ade0eb9c1e64087f08f3990a
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-2ad1c8da1a9c5e2f7068045166d92218
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-61975fafa543c92697049e6cefe8531f
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-f5023241b3abddb4c12f470c1647cff6
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-5055c3b8a01ca395902093ec9d81458b
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-9082ab835a37e95ab976f0b4813571da
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-3b2158e1c4d9ed6cd37593e76b0dc954
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-0f94c610f761663208f388bc87e00927
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-66450f11155ebdf91c25462174c1c29f
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-6242373c9eed569fd0875e74141339b6
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-521ba1842aa2d39b4637427aedd0abdb
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-9a57bc02ab4d5579eb2f98fa515456cb
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-30065d5dec9b33d996204f64eb66cc6c
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-ebde20beb837519ef66a8c317bcf9bf6
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-e87e68a9ef267089f1d44a4d3af4e75c
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-9b4062172044788295f15fa90f565bbb
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-7296097422bdcfa4e185c06187004876
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-8788d5f195c42322cefca382b093da5c
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-42db43691331e7dd86543f50ede422d8
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-644619411eb00a860836b03500324ac2
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-9d19a444c59148a6655ef59677fbfc8f
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-57c6521d873d0e1e836492a5bc5fe883
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-3a5218db7b3bc79985b93ea178c8297d
+
+FileName: ./.gitattributes
+SPDXID: SPDXRef-f1c7a005a4ee87aeb2f1b0b248e68278
+FileChecksum: SHA1: 7c7330735cd75ba4f27cdadc4deb6093ffce66bf
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/ISSUE_TEMPLATE/bug_report.md
+SPDXID: SPDXRef-73cba5429195a229e3f175e7af216a66
+FileChecksum: SHA1: 5f30e716be62047d16f943ef8fecda20dc6991e6
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/ISSUE_TEMPLATE/feature_request.md
+SPDXID: SPDXRef-ec93bf0c98ce13538e1f3681fa4fac5b
+FileChecksum: SHA1: f6867a2f0417fe89a0f2008730ee19dd38422021
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/workflows/bandit.yml
+SPDXID: SPDXRef-745332fc55a72ded5f7784e1d55f8538
+FileChecksum: SHA1: 6b8fa8e5a98eb65d3fbd04b1bcb15f04650ecca7
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/workflows/ci.yml
+SPDXID: SPDXRef-1b8c80328d885496341876c4574f7527
+FileChecksum: SHA1: 6668713a724152a3778382621da9a7e817810cbd
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/workflows/coverage.yml
+SPDXID: SPDXRef-d767a9d1e598bbd27db3d058e5c06afa
+FileChecksum: SHA1: 4bd03db44f68d4d38cc2c810607ee812b6078622
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/workflows/pylint.yml
+SPDXID: SPDXRef-57a75ceca5a622f983c5f09766e0f3a7
+FileChecksum: SHA1: 5054ba0b3a326eb30c592481a5c6024399d8ad2f
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/workflows/release.yml
+SPDXID: SPDXRef-ab52e829ee9afb8efc52658e728ea08b
+FileChecksum: SHA1: 9e6819f40ed24b721f0fde3dbb10b5ccbb632c95
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/workflows/sphinx.yml
+SPDXID: SPDXRef-a58a2fb02867d54894bee64f2a1fe6d0
+FileChecksum: SHA1: b65acbf00680cef7cddb16a3d95692f42b1aac41
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.github/workflows/wheels.yml
+SPDXID: SPDXRef-9b777929b5bea81ab4b0c3f4cf6d3168
+FileChecksum: SHA1: bc80da34b11a906cac15d7250aff95e19d9a8bac
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.gitignore
+SPDXID: SPDXRef-9ad69fed46867582263df01276090945
+FileChecksum: SHA1: 1ad56eafd8ceeaebdb2fc49482e7a6033be13cae
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./.pre-commit-config.yaml
+SPDXID: SPDXRef-006ac61f5cf23cc963a4f62e7e77ee87
+FileChecksum: SHA1: 78098fdf1b8b13034c807d376c4d9ffb595f7c2e
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./CHANGELOG.rst
+SPDXID: SPDXRef-45f639f8259abc04eaeb97215a24bd56
+FileChecksum: SHA1: b446759ef5b7d7fea8853351da88e26441300d02
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./README.rst
+SPDXID: SPDXRef-7d50e436ade0eb9c1e64087f08f3990a
+FileChecksum: SHA1: 040fd15a98332acedf806986517ea4c56b24b133
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/Makefile
+SPDXID: SPDXRef-2ad1c8da1a9c5e2f7068045166d92218
+FileChecksum: SHA1: 18a11fe9b19bd205af4d4cf4482fb5df7a8da718
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/make.bat
+SPDXID: SPDXRef-61975fafa543c92697049e6cefe8531f
+FileChecksum: SHA1: 892d1050b493ce6f1d82bee4eca37f18ad69d41d
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/source/conf.py
+SPDXID: SPDXRef-f5023241b3abddb4c12f470c1647cff6
+FileChecksum: SHA1: efe882c97a32b28ce62784ee4e13184405276195
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/source/dev/generate-changelog.rst
+SPDXID: SPDXRef-5055c3b8a01ca395902093ec9d81458b
+FileChecksum: SHA1: 3ded000cc80d4d06a0694c27f9373135819eaa19
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/source/dev/pre-commit-config.rst
+SPDXID: SPDXRef-9082ab835a37e95ab976f0b4813571da
+FileChecksum: SHA1: dc91bb98d69a44700ef72d7368780098c66dc038
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/source/dev/pre-commit-usage.rst
+SPDXID: SPDXRef-3b2158e1c4d9ed6cd37593e76b0dc954
+FileChecksum: SHA1: e88bea7d568e87eff63bfb85e80c7ece1df15f65
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/source/index.rst
+SPDXID: SPDXRef-0f94c610f761663208f388bc87e00927
+FileChecksum: SHA1: 218aaca89218990c73a13ef919adbf362ad20116
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./docs/source/readme_include.rst
+SPDXID: SPDXRef-66450f11155ebdf91c25462174c1c29f
+FileChecksum: SHA1: 7a2c583cbb8b070bf7531d5b030407028ea25ec4
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./procman-sdist-sbom.txt
+SPDXID: SPDXRef-6242373c9eed569fd0875e74141339b6
+FileChecksum: SHA1: 834b02d016cbe6cd7cc52c75b185e427d5d5f5c9
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./procman/__init__.py
+SPDXID: SPDXRef-521ba1842aa2d39b4637427aedd0abdb
+FileChecksum: SHA1: 15b236dfec584f6f61a805b4b32497388e892409
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./procman/examples/app.py
+SPDXID: SPDXRef-9a57bc02ab4d5579eb2f98fa515456cb
+FileChecksum: SHA1: f43742f51a9366ef5cd62bbcaad1ee14e60ea75f
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./procman/examples/run_redis.sh
+SPDXID: SPDXRef-30065d5dec9b33d996204f64eb66cc6c
+FileChecksum: SHA1: f6374e1e5c905f52e02a9f7a8e37643a26ec8fd9
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./procman/procman.py
+SPDXID: SPDXRef-ebde20beb837519ef66a8c317bcf9bf6
+FileChecksum: SHA1: fed2760d6bd9cc0fa5db37d8ac7057d9b352019b
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./procman/utils.py
+SPDXID: SPDXRef-e87e68a9ef267089f1d44a4d3af4e75c
+FileChecksum: SHA1: 17a99438b8871a6eb550f84b7227e90dac4fabf7
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./pyproject.toml
+SPDXID: SPDXRef-9b4062172044788295f15fa90f565bbb
+FileChecksum: SHA1: d17364c29c1255d93608d48246617d245f08dd0e
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./requirements.txt
+SPDXID: SPDXRef-7296097422bdcfa4e185c06187004876
+FileChecksum: SHA1: 8e42a3e32cbb3c8ffa5f9ce65f22aee1a83e6fc5
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./setup.cfg
+SPDXID: SPDXRef-8788d5f195c42322cefca382b093da5c
+FileChecksum: SHA1: e901704eceef15c92fe798f6d22103e1012b54af
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./setup.py
+SPDXID: SPDXRef-42db43691331e7dd86543f50ede422d8
+FileChecksum: SHA1: a16694850970de930df9a1a32951bcff18522205
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./tests/test_misc.py
+SPDXID: SPDXRef-644619411eb00a860836b03500324ac2
+FileChecksum: SHA1: 0505b9076ada428ccfde6a5258e2eb558ef4b0f6
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./tests/test_procman.py
+SPDXID: SPDXRef-9d19a444c59148a6655ef59677fbfc8f
+FileChecksum: SHA1: d5d2842b1d71276d1f2ddb0753e030655f10de00
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./tests/testdata/procman_tdata2.yml
+SPDXID: SPDXRef-57c6521d873d0e1e836492a5bc5fe883
+FileChecksum: SHA1: d82d7d6ace985842ae45100cfd1163f3bc4b87e2
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+FileName: ./tox.ini
+SPDXID: SPDXRef-3a5218db7b3bc79985b93ea178c8297d
+FileChecksum: SHA1: c921d01f7ac34b9b7431450e34a55ca10747aaa3
+LicenseConcluded: NOASSERTION
+LicenseInfoInFile: LGPL-2.1-or-later
+FileCopyrightText: <text>2022-2025 Stephen Arnold <sarnold@vctlabs.com></text>
+
+  reuse: OK (0.24=setup[0.03]+cmd[0.21] seconds)
+  congratulations :) (0.29 seconds)
