@@ -2,11 +2,77 @@ Changelog
 =========
 
 
-0.2.0 (2023-09-25)
+0.4.0 (2025-03-15)
+------------------
+
+Changes
+~~~~~~~
+- Apply recommended actions hardening, add PR approval. [Stephen L
+  Arnold]
+
+  * the latter auto-approve workflow is owner-only for CI checks
+  * update .pre-commit-config.yaml
+- Add explicit job permissions, bump runner version. [Stephen L Arnold]
+- Add REUSE.toml config and become reuse spec 3.3 compliant. [Stephen L
+  Arnold]
+
+  * procman-sdist-sbom.txt was generated using ``reuse spdx`` cmd
+  * COPYING is now a symlink pointing to LICENSES/LGPL-2.1-or-later.txt
+  * add readme section on SBOM and licensing info
+  * add reuse cmd and bump python versions in tox file
+- Update all workflow actions and python versions. [Stephen L Arnold]
+
+Fixes
+~~~~~
+- Move description text and add version. [Stephen L Arnold]
+
+Other
+~~~~~
+- Merge pull request #9 from sarnold/action-hashes. [Steve Arnold]
+
+  workflow linting
+- Merge pull request #8 from sarnold/workflow-job-renames. [Steve
+  Arnold]
+
+  more workflow cleanup
+- Merge pull request #6 from sarnold/metadata-cleanup. [Steve Arnold]
+
+  metadata cleanup
+
+
+0.3.0 (2024-01-12)
+------------------
+
+Changes
+~~~~~~~
+- Tighten up show output, use full path for cfg file. [Stephen L Arnold]
+
+  * since the demo config is a string and not a file, the --show command
+    will display a "fictitious" user file, and --test will warn about it
+
+Fixes
+~~~~~
+- Use resolved paths for config and scripts. [Stephen L Arnold]
+
+  * return resolved path obj from load_config, use it in get_userscripts
+  * update tests for full script path in get_userscripts list
+
+Other
+~~~~~
+- Merge pull request #5 from sarnold/full-cfg-path. [Steve Arnold]
+
+  use resolved paths for config and scripts
+- Merge pull request #4 from sarnold/more-nit-cleanup. [Steve Arnold]
+
+  tighten up show output, use full path for cfg file
+
+
+0.2.0 (2023-09-26)
 ------------------
 
 New
 ~~~
+- Add coverage workflow. [Stephen L Arnold]
 - Add a changelog, update docs build, readme and pkg cleanup. [Stephen L
   Arnold]
 
@@ -16,14 +82,35 @@ Changes
   Arnold]
 
   * document the full config block, cleanup serv example
+- Bump setuptools version for setuptools_scm, cleanup setup.py. [Stephen
+  L Arnold]
+
+  * according to other project bugs, eg, matplotlib, minimum should be 64
+  * try 59 so we can keep python 3.6 for now
 - More readme and logging cleanup, print help if no cfg file. [Stephen L
   Arnold]
+- Add more connfig tests. [Stephen L Arnold]
+- Cleanup imports and reqs, warnings, logging, and config handling.
+  [Stephen L Arnold]
+
+  * make demo-mode a command-line arg with default False
+  * do NOT write the example config to a file automatically
+  * use --dump-config and redirect to a file instead
+- Refactor user cfg  handling, no more appdirs. [Stephen L Arnold]
+
+  * support local/default project config file(s) with ENV override
+  * if no defconfig is found, create one in working directory
 - Add simple tests, start refactoring readme. [Stephen L Arnold]
 
-  * yank old cfg handling, make it simpler
+  * still needs old cfg handling yanked, make it simpler
+- Swap out version file, swap in setuptools-scm dynamic version.
+  [Stephen L Arnold]
 
 Other
 ~~~~~
+- Fix silly branch typo in coverage workflow. [Stephen L Arnold]
+- Update changelog for release, restore missing coverage in the readme.
+  [Stephen L Arnold]
 - Merge pull request #3 from sarnold/import-ref. [Steve Arnold]
 
   Import refactor, docs cleanup
@@ -48,8 +135,12 @@ Changes
 - Show some output in the readme, cleanup self-checks. [Stephen L
   Arnold]
 
-Fix
-~~~
+Fixes
+~~~~~
+- Add worrkaround for GH API bug, update readme. [Stephen L Arnold]
+
+  * limit bandit workflow to push event only so comments get connected
+    with the proper check run
 - Cleanup formatting, docs and docstrings, remove static default_tag.
   [Stephen L Arnold]
 
@@ -68,20 +159,34 @@ New
 - Add basic sphinx docs build and some GH workflows. [Stephen L Arnold]
 
   * more cleanup in readne/tox/setup files
+- Add initial README doc and pre-commit config. [Stephen L Arnold]
+- Initial process manager and example user script integration. [Stephen
+  L Arnold]
+
+  * uses default example flask-redis app
 
 Changes
 ~~~~~~~
 - Ci: get more verbose with bandit workflow permissions. [Stephen L
   Arnold]
+- Restore pylint/bandit workflows, use explicit branch target. [Stephen
+  L Arnold]
+- Add explicit permissions block to bandit workflow. [Stephen L Arnold]
+- Revert bandit workflow action branch to master, set path. [Stephen L
+  Arnold]
+- Switch bandit workflow to latest test branch. [Stephen L Arnold]
 
-Fix
-~~~
+Fixes
+~~~~~
+- Restore missing release artifact name. [Stephen L Arnold]
 - Add missing pylint score. [Stephen L Arnold]
 - Use correct license in badge text. [Stephen L Arnold]
 - Allow proc_runner to be null if no interpreter. [Stephen L Arnold]
 
   * cleanup example app, docstrings, and tox file
 - Add missing license file. [Stephen L Arnold]
+- Cleanup even more lint with pre-commit. [Stephen L Arnold]
+- Cleanup some lint. [Stephen L Arnold]
 
 Other
 ~~~~~
