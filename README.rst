@@ -374,7 +374,7 @@ specifications.
     :alt: Pylint Score
 
 .. |license| image:: https://img.shields.io/badge/license-LGPL_2.1-blue
-    :target: https://github.com/sarnold/procman/blob/master/LICENSE
+    :target: https://github.com/sarnold/procman/blob/master/COPYING
     :alt: License
 
 .. |tag| image:: https://img.shields.io/github/v/tag/sarnold/procman?color=green&include_prereleases&label=latest%20release
