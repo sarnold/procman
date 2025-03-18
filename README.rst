@@ -4,7 +4,7 @@
 
 **A lightweight process manager for user scripts**.
 
-|ci| |wheels| |release| |badge| |bandit|
+|ci| |wheels| |bandit| |release|
 
 |pre| |cov| |pylint|
 
@@ -296,8 +296,8 @@ something like::
 
 then install it into the repo you just cloned::
 
-  $ git clone https://github.com/sarnold/ymltoxml
-  $ cd ymltoxml/
+  $ git clone https://github.com/sarnold/procman
+  $ cd procman/
   $ pre-commit install
 
 It's usually a good idea to update the hooks to the latest version::
