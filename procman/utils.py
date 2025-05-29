@@ -33,7 +33,7 @@ def load_config(
     :type file_encoding: str
     :param file_extension: file extension with leading separator
     :type file_extension: str
-    :return tuple: Munch cfg obj, Path obj
+    :return: Munch and Path objects
     :raises FileTypeError: if the input file is not yml
     """
     proc_cfg = os.getenv('PROCMAN_CFG', default='')
