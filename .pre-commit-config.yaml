@@ -48,7 +48,9 @@ repos:
         - --follow-imports=normal
         - --install-types
         - --non-interactive
-        - --ignore-missing-imports
+      additional_dependencies:
+        - "munch[yaml]"
+        - "munch-stubs @ git+https://github.com/VCTLabs/munch-stubs.git@main"
       files: procman/
 
   - repo: "https://github.com/asottile/blacken-docs"

@@ -15,6 +15,7 @@ log_cli =  true
 doctest_optionflags = ["ELLIPSIS", "NORMALIZE_WHITESPACE",]
 addopts = "--strict-markers"
 markers = "subscript"
+filterwarnings = ["ignore:currentThread:DeprecationWarning",]
 
 [tool.coverage.run]
 branch = true

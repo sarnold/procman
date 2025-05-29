@@ -12,7 +12,8 @@ from threading import Timer
 from honcho.manager import Manager
 from munch import Munch
 
-from .utils import VERSION, get_userscripts, load_config
+from . import __version__ as VERSION
+from .utils import get_userscripts, load_config
 
 # from logging_tree import printout  # debug logger environment
 

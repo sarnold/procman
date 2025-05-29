@@ -39,7 +39,7 @@ def test_load_config_bogus(monkeypatch):
     monkeypatch.setenv("PROCMAN_CFG", "testme.txt")
     with pytest.raises(FileTypeError) as excinfo:
         _, pfile = load_config()
-    assert 'unknown file extension' in str(excinfo.value)
+    assert 'invalid YAML extension' in str(excinfo.value)
     assert 'testme.txt' in str(excinfo.value)
 
 

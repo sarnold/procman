@@ -6,20 +6,14 @@ import logging
 import os
 import sys
 from pathlib import Path
+from typing import List, Tuple
 
 from munch import Munch
 
-if sys.version_info < (3, 8):
-    from importlib_metadata import version
-else:
-    from importlib.metadata import version
-
 if sys.version_info < (3, 10):
-    import importlib_resources
+    import importlib_resources  # type: ignore[import-not-found]
 else:
     import importlib.resources as importlib_resources
-
-VERSION = version('procman')
 
 
 class FileTypeError(Exception):
@@ -28,7 +22,9 @@ class FileTypeError(Exception):
     __module__ = Exception.__module__
 
 
-def load_config(file_encoding='utf-8', file_extension='.yaml'):
+def load_config(
+    file_encoding: str = 'utf-8', file_extension: str = '.yaml'
+) -> Tuple[Munch, Path]:
     """
     Load yaml configuration file and munchify the data. If ENV path or local
     file is not found in current directory, the default cfg will be loaded.
@@ -45,7 +41,8 @@ def load_config(file_encoding='utf-8', file_extension='.yaml'):
 
     cfgfile = Path(proc_cfg) if proc_cfg else Path(defconfig_file)
     if not cfgfile.name.lower().endswith(('.yml', '.yaml')):
-        raise FileTypeError(f"FileTypeError: unknown file extension: {cfgfile.name}")
+        msg = 'invalid YAML extension: %s' % cfgfile.name
+        raise (FileTypeError(msg))
     if not cfgfile.exists():
         cfgobj = load_base_config()
     else:
@@ -55,13 +52,15 @@ def load_config(file_encoding='utf-8', file_extension='.yaml'):
     return cfgobj, cfgfile.resolve()
 
 
-def get_userscripts(demo_mode=False, file_encoding='utf-8', file_extension='.yaml'):
+def get_userscripts(
+    demo_mode: bool = False, file_encoding: str = 'utf-8', file_extension: str = '.yaml'
+) -> List[str]:
     """
     Get user scripts from Munchified user cfg.
 
     :return: list of scripts
     """
-    uscripts = []
+    uscripts: List = []
     usr_cfg, usr_file = load_config(file_encoding, file_extension)
     ucfg = load_base_config() if not usr_file.exists() or demo_mode else usr_cfg
     for item in [x for x in ucfg.scripts if x.proc_enable]:
@@ -70,7 +69,9 @@ def get_userscripts(demo_mode=False, file_encoding='utf-8', file_extension='.yam
             if getattr(sys, 'frozen', False):
                 scripts_path = os.path.join(os.path.dirname(sys.executable), 'procman')
             else:
-                scripts_path = importlib_resources.files('procman')
+                pkg_path = importlib_resources.files('procman')
+                with importlib_resources.as_file(pkg_path) as path:
+                    scripts_path = str(path)
             proc_str = (
                 f'{item.proc_runner} ' if item.proc_runner else ''
             ) + f'{os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
@@ -92,7 +93,7 @@ def get_userscripts(demo_mode=False, file_encoding='utf-8', file_extension='.yam
     return uscripts
 
 
-def load_base_config():
+def load_base_config() -> Munch:
     """
     Load initial procman config with our baseline example values. This is
     used to both run the example flask app and provide a user-facing example
