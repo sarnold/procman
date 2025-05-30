@@ -2,7 +2,53 @@ Changelog
 =========
 
 
-0.4.0 (2025-03-15)
+0.5.0 (2025-05-30)
+------------------
+
+Changes
+~~~~~~~
+- Update readme and help strings, cleanup project files. [Stephen L
+  Arnold]
+- Refactor part 2, wire up config file as positional arg. [Stephen L
+  Arnold]
+
+  * add file arg to load_config, update test and entry point
+- Refactor part 1, decouple util funcs, add user config arg. [Stephen L
+  Arnold]
+
+  * tests and entrypoint are updated, but config arg is not wired up yet
+- Update docs config and deps. [Stephen L Arnold]
+
+Fixes
+~~~~~
+- Cleanup old runners in coverage workflow, update project files.
+  [Stephen L Arnold]
+- Add type annotations and cleanup imports, add mypy config. [Stephen L
+  Arnold]
+
+Other
+~~~~~
+- Merge pull request #16 from sarnold/cleanup-bits. [Steve Arnold]
+
+  more config
+
+
+0.4.1 (2025-03-18)
+------------------
+
+Changes
+~~~~~~~
+- Update to latest bandit action for testing, fix readme. [Stephen L
+  Arnold]
+
+Other
+~~~~~
+- Merge pull request #12 from sarnold/doc-nits. [Steve Arnold]
+
+  Action update
+
+
+0.4.0 (2025-03-16)
 ------------------
 
 Changes
@@ -24,10 +70,19 @@ Changes
 
 Fixes
 ~~~~~
+- Make sure release workflow has the right job permissions. [Stephen L
+  Arnold]
+- Update gitchangelog and add config, fix readme URI. [Stephen L Arnold]
 - Move description text and add version. [Stephen L Arnold]
 
 Other
 ~~~~~
+- Merge pull request #11 from sarnold/release-docs. [Steve Arnold]
+
+  release workflow fixes
+- Merge pull request #10 from sarnold/changelog-fix. [Steve Arnold]
+
+  changelog fixes
 - Merge pull request #9 from sarnold/action-hashes. [Steve Arnold]
 
   workflow linting
