@@ -1,0 +1,7 @@
+procman.procman module
+======================
+
+.. automodule:: procman.procman
+   :members:
+   :undoc-members:
+   :show-inheritance:
