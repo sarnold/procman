@@ -44,8 +44,9 @@ def test_load_config_bogus(monkeypatch):
 
 
 def test_get_userscripts():
-    uscripts = get_userscripts(True)
-    # print(uscripts)
+    popts, pfile = load_config()
+    uscripts = get_userscripts(popts, pfile, True)
+    print(uscripts)
 
     assert isinstance(uscripts, list)
     assert len(uscripts) == 2

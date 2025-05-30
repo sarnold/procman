@@ -52,16 +52,13 @@ def load_config(
     return cfgobj, cfgfile.resolve()
 
 
-def get_userscripts(
-    demo_mode: bool = False, file_encoding: str = 'utf-8', file_extension: str = '.yaml'
-) -> List[str]:
+def get_userscripts(usr_cfg: Munch, usr_file: Path, demo_mode: bool = False) -> List[str]:
     """
     Get user scripts from Munchified user cfg.
 
     :return: list of scripts
     """
     uscripts: List = []
-    usr_cfg, usr_file = load_config(file_encoding, file_extension)
     ucfg = load_base_config() if not usr_file.exists() or demo_mode else usr_cfg
     for item in [x for x in ucfg.scripts if x.proc_enable]:
         proc_list = [item.proc_label]
