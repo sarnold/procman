@@ -7,12 +7,14 @@ import importlib
 import logging
 import sys
 import warnings
+from pathlib import Path
 from threading import Timer
 
 from honcho.manager import Manager
 from munch import Munch
 
-from .utils import VERSION, get_userscripts, load_config
+from . import __version__ as VERSION
+from .utils import get_userscripts, load_config
 
 # from logging_tree import printout  # debug logger environment
 
@@ -54,10 +56,11 @@ def show_paths():
         print(mod.__doc__)
 
         print("User cfg file:")
-        _, cfg = mod.load_config()
-        print(f'  {cfg.resolve()}')
+        ucfg, cfg = mod.load_config()
+        cfgfile = cfg.resolve() if cfg.exists() else None
+        print(f'  {cfgfile}')
         print("User scripts:")
-        for item in mod.get_userscripts():
+        for item in mod.get_userscripts(ucfg, cfg):
             print(f'  {item}')
 
     except (NameError, KeyError, ModuleNotFoundError) as exc:
@@ -91,7 +94,7 @@ def main(argv=None):  # pragma: no cover
     parser.add_argument(
         '-d',
         '--dump-config',
-        help="dump active yaml configuration to stdout",
+        help="Dump active yaml configuration to stdout",
         action='store_true',
         dest="dump",
     )
@@ -101,7 +104,14 @@ def main(argv=None):  # pragma: no cover
         type=int,
         default='0',
         dest="runfor",
-        help="Runtime STOP timer in seconds - 0 means run until whenever",
+        help="Runtime STOP timer in seconds - 0 means run forever",
+    )
+    parser.add_argument(
+        'file',
+        nargs='?',
+        metavar="FILE",
+        type=str,
+        help="Path to user-defined yaml configuration",
     )
 
     args = parser.parse_args()
@@ -111,22 +121,30 @@ def main(argv=None):  # pragma: no cover
     logging.basicConfig(stream=sys.stdout, level=log_level)
     # printout()  # logging_tree
 
-    ucfg, ufile = load_config()
-    uscripts = get_userscripts(demo_mode=args.demo)
-
-    if len(argv) == 1 and not ufile.exists():
-        parser.print_help()
-        print('\nNo cfg file found; use the --demo arg or create a cfg file')
-        sys.exit(1)
     if args.show:
         show_paths()
-        sys.exit(0)
-    if args.dump:
-        sys.stdout.write(Munch.toYAML(ucfg))
         sys.exit(0)
     if args.test:
         self_test()
         sys.exit(0)
+    infile = args.file
+    if infile and not Path(infile).exists():
+        print(f'Input file {infile} not found!')
+        sys.exit(1)
+    if infile:
+        ufile = Path(infile)
+        ucfg, _ = load_config(ufile=infile)
+    else:
+        ucfg, ufile = load_config()
+    uscripts = get_userscripts(ucfg, ufile, demo_mode=args.demo)
+
+    if args.dump:
+        sys.stdout.write(Munch.toYAML(ucfg))
+        sys.exit(0)
+    if len(argv) == 1 and not ufile.exists():
+        parser.print_help()
+        print('\nNo cfg file found; use the --demo arg or create a cfg file')
+        sys.exit(1)
 
     mgr = Manager()
     for user_proc in uscripts:

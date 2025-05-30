@@ -13,6 +13,8 @@
 import os
 import sys
 
+from datetime import datetime
+
 if sys.version_info < (3, 8):
     from importlib_metadata import version
 else:
@@ -22,20 +24,22 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 
 # -- Project information -----------------------------------------------------
 
-project = 'procman'
-copyright = '2023, Stephen L Arnold'
-author = 'Stephen Arnold'
+# The full version, including alpha/beta/rc tags with setuptols-scm
+# workaround for extra-long dirty version string
+release = version('procman').split("+")[0]
+# screw the short X.Y version.
+version = release
 
-# The full version, including alpha/beta/rc tags
-release = version('procman')
-# The short X.Y version.
-version = '.'.join(release.split('.')[:2])
+project = 'procman'
+author = 'Stephen Arnold'
+copyright = '2023 - ' + str(datetime.now().year) + f' {author}'
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'
+#needs_sphinx = "8.2.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -44,18 +48,22 @@ extensions = [
     'sphinx_git',
     'sphinxcontrib.apidoc',
     'sphinx.ext.autodoc',
+    'sphinx.ext.autodoc.typehints',
     'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'recommonmark',
 ]
 
-apidoc_module_dir = '../../procman/'
+# sphinxcontrib.apidoc
+apidoc_module_dir = '../../procman'
 apidoc_output_dir = 'api'
 apidoc_excluded_paths = ['tests']
+apidoc_include_private = True
 apidoc_separate_modules = True
+
+autodoc_typehints = 'description'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -63,8 +71,10 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 # The master toctree document.
 master_doc = 'index'
@@ -86,18 +96,27 @@ language = 'en'
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+#pygments_style = 'sphinx'
+pygments_style = 'manni'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
-
 
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
+#html_theme = 'classic'  # still has a version
 html_theme = 'sphinx_rtd_theme'
+
+html_sidebars = {
+    '**': [
+        'searchfield.html',
+        'globaltoc.html',
+        'relations.html',
+    ]
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -115,12 +134,12 @@ html_theme = 'sphinx_rtd_theme'
 #
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-html_sidebars = {
-    '**': [
-        'relations.html',  # needs 'show_related': True theme option to display
-        'searchbox.html',
-    ]
-}
+# html_sidebars = {
+    # '**': [
+        # 'relations.html',  # needs 'show_related': True theme option to display
+        # 'searchbox.html',
+    # ]
+# }
 
 
 # -- Options for HTMLHelp output ------------------------------------------

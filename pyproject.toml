@@ -15,6 +15,7 @@ log_cli =  true
 doctest_optionflags = ["ELLIPSIS", "NORMALIZE_WHITESPACE",]
 addopts = "--strict-markers"
 markers = "subscript"
+filterwarnings = ["ignore:currentThread:DeprecationWarning",]
 
 [tool.coverage.run]
 branch = true
@@ -31,7 +32,7 @@ omit = [
 source = ["procman"]
 
 [tool.coverage.report]
-fail_under = 10
+fail_under = 70
 show_missing = true
 
 [tool.black]
