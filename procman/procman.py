@@ -131,8 +131,11 @@ def main(argv=None):  # pragma: no cover
     if infile and not Path(infile).exists():
         print(f'Input file {infile} not found!')
         sys.exit(1)
-
-    ucfg, ufile = load_config()
+    if infile:
+        ufile = Path(infile)
+        ucfg, _ = load_config(ufile=infile)
+    else:
+        ucfg, ufile = load_config()
     uscripts = get_userscripts(ucfg, ufile, demo_mode=args.demo)
 
     if args.dump:

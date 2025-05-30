@@ -23,12 +23,14 @@ class FileTypeError(Exception):
 
 
 def load_config(
-    file_encoding: str = 'utf-8', file_extension: str = '.yaml'
+    ufile: str = '', file_encoding: str = 'utf-8', file_extension: str = '.yaml'
 ) -> Tuple[Munch, Path]:
     """
     Load yaml configuration file and munchify the data. If ENV path or local
     file is not found in current directory, the default cfg will be loaded.
 
+    :param ufile: path string for config file
+    :type ufile: str
     :param file_encoding: file encoding of config file
     :type file_encoding: str
     :param file_extension: file extension with leading separator
@@ -37,7 +39,7 @@ def load_config(
     :raises FileTypeError: if the input file is not yml
     """
     proc_cfg = os.getenv('PROCMAN_CFG', default='')
-    defconfig_file = f'.procman{file_extension}'
+    defconfig_file = ufile or f'.procman{file_extension}'
 
     cfgfile = Path(proc_cfg) if proc_cfg else Path(defconfig_file)
     if not cfgfile.name.lower().endswith(('.yml', '.yaml')):

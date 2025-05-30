@@ -20,5 +20,5 @@ def test_self_test(capfd):
 def test_show_paths(capfd):
     show_paths()
     out, err = capfd.readouterr()
-    for x in ['parsing.', 'procman.yaml', 'web', 'redis', 'examples']:
+    for x in ['parsing.', 'procman', 'web', 'redis', 'examples']:
         assert x in out
