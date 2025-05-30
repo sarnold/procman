@@ -82,19 +82,19 @@ def main(argv=None):  # pragma: no cover
         description='Process manager for user scripts',
     )
     parser.add_argument('--version', action="version", version=f"%(prog)s {VERSION}")
-    parser.add_argument('-D', '--demo', help='Run demo config', action='store_true')
-    parser.add_argument('-S', '--show', help='Display user config', action='store_true')
-    parser.add_argument('-t', '--test', help='Run sanity checks', action='store_true')
+    parser.add_argument('-D', '--demo', help='run demo config', action='store_true')
+    parser.add_argument('-S', '--show', help='display user config', action='store_true')
+    parser.add_argument('-t', '--test', help='run sanity checks', action='store_true')
     parser.add_argument(
         "-v",
         "--verbose",
         action="store_true",
-        help="Display more processing info",
+        help="display more processing info",
     )
     parser.add_argument(
         '-d',
         '--dump-config',
-        help="Dump active yaml configuration to stdout",
+        help="dump active yaml configuration to stdout",
         action='store_true',
         dest="dump",
     )
@@ -104,14 +104,14 @@ def main(argv=None):  # pragma: no cover
         type=int,
         default='0',
         dest="runfor",
-        help="Runtime STOP timer in seconds - 0 means run forever",
+        help="runtime STOP timer in seconds - 0 means run forever",
     )
     parser.add_argument(
         'file',
         nargs='?',
         metavar="FILE",
         type=str,
-        help="Path to user-defined yaml configuration",
+        help="path to user-defined yaml configuration",
     )
 
     args = parser.parse_args()

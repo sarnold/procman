@@ -60,25 +60,41 @@ details).
 The current version supports minimal command options and there are no
 required arguments::
 
-  (dev) user@host $ procman
-  usage: procman [-h] [-v] [-d] [-c RUNFOR] [-D] [-t] [--version] [-S]
+  (dev) user@host $ procman -h
+  usage: procman [-h] [--version] [-D] [-S] [-t] [-v] [-d] [-c RUNFOR] [FILE]
 
   Process manager for user scripts
 
+  positional arguments:
+    FILE                  path to user-defined yaml configuration (default:
+                          None)
+
   options:
     -h, --help            show this help message and exit
-    -v, --verbose         Display more processing info (default: False)
+    --version             show program's version number and exit
+    -D, --demo            run demo config (default: False)
+    -S, --show            display user config (default: False)
+    -t, --test            run sanity checks (default: False)
+    -v, --verbose         display more processing info (default: False)
     -d, --dump-config     dump active yaml configuration to stdout (default:
                           False)
-    -c RUNFOR, --countdown RUNFOR
-                          Runtime STOP timer in seconds - 0 means run until
-                          whenever (default: 0)
-    -D, --demo            Run demo config (default: False)
-    -t, --test            Run sanity checks (default: False)
-    --version             show program's version number and exit
-    -S, --show            Display user data paths (default: False)
+    -c, --countdown RUNFOR
+                          runtime STOP timer in seconds - 0 means run forever
+                          (default: 0)
 
-  No cfg file found; use the --demo arg or create a cfg file
+Configuration options
+---------------------
+
+There are several ways to apply your own configuration:
+
+* use default filename pattern in project root, either ``.procman`` or
+  ``procman`` with a YAML extension of ``.yml`` or ``.yaml``
+
+* use any filename with YAML extension passed as positional argument, eg
+  something like ``procman custom_config.yaml``
+
+* set the ``PROCMAN_CFG`` environment variable to something like
+  ``my/path/to/config.yaml``
 
 
 Usage
@@ -251,7 +267,7 @@ To build/lint the html docs, use the following tox commands:
 To install the latest release, eg with your own ``tox.ini`` file in
 another project, use something like this::
 
-  $ pip install -U https://github.com/sarnold/procman/releases/download/0.1.0/procman-0.1.0-py3-none-any.whl
+  $ pip install -U https://github.com/sarnold/procman/releases/download/0.1.0/procman-0.4.1-py3-none-any.whl
 
 
 .. _Tox: https://github.com/tox-dev/tox
@@ -381,7 +397,7 @@ specifications.
     :target: https://github.com/sarnold/procman/releases
     :alt: GitHub tag
 
-.. |python| image:: https://img.shields.io/badge/python-3.6+-blue.svg
+.. |python| image:: https://img.shields.io/badge/python-3.9+-blue.svg
     :target: https://www.python.org/downloads/
     :alt: Python
 
