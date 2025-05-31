@@ -31,12 +31,9 @@ def load_config(
     Note that passing ``ufile`` as a parameter overrides the above default.
 
     :param ufile: path string for config file
-    :type ufile: str
     :param file_extension: file extension with leading separator
-    :type file_extension: str
     :param file_encoding: file encoding of config file
-    :type file_encoding: str
-    :return: Munch and Path objects
+    :returns: cfg Munch and file Path
     :raises FileTypeError: if the input file is not yml
     """
     proc_cfg = os.getenv('PROCMAN_CFG', default='')
@@ -44,8 +41,8 @@ def load_config(
 
     cfgfile = Path(proc_cfg) if proc_cfg else Path(defconfig_file)
     if not cfgfile.name.lower().endswith(('.yml', '.yaml')):
-        msg = 'invalid YAML extension: %s' % cfgfile.name
-        raise (FileTypeError(msg))
+        msg = f'invalid YAML extension: {cfgfile.name}'
+        raise FileTypeError(msg)
     if not cfgfile.exists():
         cfgobj = load_base_config()
     else:
@@ -59,7 +56,10 @@ def get_userscripts(usr_cfg: Munch, usr_file: Path, demo_mode: bool = False) -> 
     """
     Get user scripts from Munchified user cfg.
 
-    :return: list of scripts
+    :param usr_cfg: user configuration
+    :param usr_file: user config file
+    :param demo_mode: run example scripts (self-test)
+    :returns: list of user scripts
     """
     uscripts: List = []
     ucfg = load_base_config() if not usr_file.exists() or demo_mode else usr_cfg
