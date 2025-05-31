@@ -10,7 +10,7 @@ import warnings
 from pathlib import Path
 from threading import Timer
 
-from honcho.manager import Manager
+from honcho.manager import Manager  # type: ignore
 from munch import Munch
 
 from . import __version__ as VERSION
@@ -139,7 +139,7 @@ def main(argv=None):  # pragma: no cover
     uscripts = get_userscripts(ucfg, ufile, demo_mode=args.demo)
 
     if args.dump:
-        sys.stdout.write(Munch.toYAML(ucfg))
+        sys.stdout.write(Munch.toYAML(ucfg))  # type: ignore
         sys.exit(0)
     if len(argv) == 1 and not ufile.exists():
         parser.print_help()
