@@ -2,11 +2,26 @@ Changelog
 =========
 
 
+0.5.1 (2025-05-31)
+------------------
+
+Changes
+~~~~~~~
+- Add py.typed marker and 2 type:ignore, remove mypy cfg. [Stephen L
+  Arnold]
+
+  * cleanup some docstrings and lint
+- Cleanup config file documentation bits. [Stephen L Arnold]
+- Cleanup old runner environments, fix some typos. [Stephen L Arnold]
+
+
 0.5.0 (2025-05-30)
 ------------------
 
 Changes
 ~~~~~~~
+- Update changelog for new release, update pre-commit hooks. [Stephen L
+  Arnold]
 - Update readme and help strings, cleanup project files. [Stephen L
   Arnold]
 - Refactor part 2, wire up config file as positional arg. [Stephen L
@@ -28,6 +43,9 @@ Fixes
 
 Other
 ~~~~~
+- Merge pull request #17 from sarnold/doc-updates. [Steve Arnold]
+
+  pre-release cleanup
 - Merge pull request #16 from sarnold/cleanup-bits. [Steve Arnold]
 
   more config
