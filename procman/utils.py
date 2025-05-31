@@ -23,18 +23,19 @@ class FileTypeError(Exception):
 
 
 def load_config(
-    ufile: str = '', file_encoding: str = 'utf-8', file_extension: str = '.yaml'
+    ufile: str = '', file_extension: str = '.yaml', file_encoding: str = 'utf-8'
 ) -> Tuple[Munch, Path]:
     """
     Load yaml configuration file and munchify the data. If ENV path or local
     file is not found in current directory, the default cfg will be loaded.
+    Note that passing ``ufile`` as a parameter overrides the above default.
 
     :param ufile: path string for config file
     :type ufile: str
-    :param file_encoding: file encoding of config file
-    :type file_encoding: str
     :param file_extension: file extension with leading separator
     :type file_extension: str
+    :param file_encoding: file encoding of config file
+    :type file_encoding: str
     :return: Munch and Path objects
     :raises FileTypeError: if the input file is not yml
     """
