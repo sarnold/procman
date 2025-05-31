@@ -118,8 +118,9 @@ If needed, you can also create additional ``procman`` config files to
 override your default project configuration. These alternate config files
 can have arbitrary names (ending in '.yml' or '.yaml') but we recommend
 using something like ``procman-dev-myproject.yml`` or similar. Since only
-one configuration can be "active", the non-default config file must be set
-via the environment variable ``PROCMAN_CFG``, eg::
+one configuration can be "active", the non-default config file must either
+be be passed as a positional argument **or** set via the environment
+variable ``PROCMAN_CFG``, eg::
 
   $ procman --dump-config > procman-develop.yml
   $ $EDITOR procman-develop.yml  # set alternate scripts, other options

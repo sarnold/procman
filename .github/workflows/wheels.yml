@@ -2,9 +2,10 @@ name: Wheels
 
 on:
   workflow_dispatch:
+  workflow_call:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   python_wheels:
@@ -42,8 +43,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip build wheel
-          pip install tox tox-gh-actions
+          python -m pip install --upgrade pip
+          pip install tox
 
       - name: Build dist pkgs
         run: |
@@ -53,5 +54,5 @@ jobs:
         if: matrix.python-version == 3.9 && runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: wheels
-          path: ./dist/*.whl
+          name: packages
+          path: dist
