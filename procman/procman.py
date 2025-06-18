@@ -142,7 +142,6 @@ def main(argv=None):  # pragma: no cover
         sys.stdout.write(Munch.toYAML(ucfg))  # type: ignore
         sys.exit(0)
     if len(argv) == 1 and not ufile.exists():
-        parser.print_help()
         print('\nNo cfg file found; use the --demo arg or create a cfg file')
         sys.exit(1)
 
@@ -151,8 +150,8 @@ def main(argv=None):  # pragma: no cover
         logging.debug('Adding %s to manager', user_proc)
         mgr.add_process(user_proc[0], user_proc[1])
 
-    stopme = Timer(args.runfor, mgr.terminate)
     if args.runfor:
+        stopme = Timer(args.runfor, mgr.terminate)
         logging.debug('Running for %d seconds then shutdown', args.runfor)
         stopme.start()
 

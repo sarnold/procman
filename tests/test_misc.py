@@ -52,6 +52,7 @@ def test_get_userscripts():
     assert len(uscripts) == 2
 
     for item in uscripts:
+        assert isinstance(item, list)
         path_str = item[1].split()[1]
         print(path_str)
         assert isinstance(path_str, str)

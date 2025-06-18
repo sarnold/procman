@@ -52,14 +52,16 @@ def load_config(
     return cfgobj, cfgfile.resolve()
 
 
-def get_userscripts(usr_cfg: Munch, usr_file: Path, demo_mode: bool = False) -> List[str]:
+def get_userscripts(
+    usr_cfg: Munch, usr_file: Path, demo_mode: bool = False
+) -> List[List[str]]:
     """
     Get user scripts from Munchified user cfg.
 
     :param usr_cfg: user configuration
     :param usr_file: user config file
     :param demo_mode: run example scripts (self-test)
-    :returns: list of user scripts
+    :returns: list of lists with user scripts
     """
     uscripts: List = []
     ucfg = load_base_config() if not usr_file.exists() or demo_mode else usr_cfg
