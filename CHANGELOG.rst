@@ -2,6 +2,18 @@ Changelog
 =========
 
 
+0.5.2 (2025-06-17)
+------------------
+
+Fixes
+~~~~~
+- Cleanup typing and misc lint, ignore pytest warnings. [Stephen L
+  Arnold]
+
+  * cleanup tox commands, add an assert to make return type even
+    more obvious
+
+
 0.5.1 (2025-05-31)
 ------------------
 
@@ -13,6 +25,15 @@ Changes
   * cleanup some docstrings and lint
 - Cleanup config file documentation bits. [Stephen L Arnold]
 - Cleanup old runner environments, fix some typos. [Stephen L Arnold]
+
+Other
+~~~~~
+- Merge pull request #19 from sarnold/changelogs. [Steve Arnold]
+
+  update changelog
+- Merge pull request #18 from sarnold/ci-runners. [Steve Arnold]
+
+  CI runner cleanup
 
 
 0.5.0 (2025-05-30)
