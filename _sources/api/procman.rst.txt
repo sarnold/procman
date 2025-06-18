@@ -1,0 +1,19 @@
+procman package
+===============
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   procman.procman
+   procman.utils
+
+Module contents
+---------------
+
+.. automodule:: procman
+   :members:
+   :undoc-members:
+   :show-inheritance:
