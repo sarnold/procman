@@ -15,7 +15,10 @@ log_cli =  true
 doctest_optionflags = ["ELLIPSIS", "NORMALIZE_WHITESPACE",]
 addopts = "--strict-markers"
 markers = "subscript"
-filterwarnings = ["ignore:currentThread:DeprecationWarning",]
+filterwarnings = [
+    "ignore:currentThread:DeprecationWarning",
+    "ignore:co_lnotab:DeprecationWarning",
+]
 
 [tool.coverage.run]
 branch = true
