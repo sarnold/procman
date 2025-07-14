@@ -9,14 +9,14 @@ Welcome to the procman documentation!
     :untracked:
 
 .. toctree::
-    :maxdepth: 4
+    :maxdepth: 2
     :caption: Contents:
 
     readme_include
+    api/modules
     dev/generate-changelog
     dev/pre-commit-config
     dev/pre-commit-usage
-    api/modules
     CHANGELOG
 
 Indices and tables

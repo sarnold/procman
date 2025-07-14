@@ -2,7 +2,32 @@ Changelog
 =========
 
 
-0.5.2 (2025-06-17)
+0.5.3 (2025-07-13)
+------------------
+
+Changes
+~~~~~~~
+- Update readme and docs build, set min python version to 3.8. [Stephen
+  L Arnold]
+- Update deps, keep munch but swap pyyaml for ruamel.yaml. [Stephen L
+  Arnold]
+
+  * change example config from yaml string to dict, update munches
+    to use Dict attributes instead of yaml
+  * update tox and project files, bump pre-commit hooks
+
+Fixes
+~~~~~
+- Address codeql warning in example app. [Stephen L Arnold]
+
+Other
+~~~~~
+- Merge pull request #24 from sarnold/compat-yaml. [Steve Arnold]
+
+  el9 compat yaml
+
+
+0.5.2 (2025-06-18)
 ------------------
 
 Fixes
@@ -12,6 +37,12 @@ Fixes
 
   * cleanup tox commands, add an assert to make return type even
     more obvious
+
+Other
+~~~~~
+- Merge pull request #22 from sarnold/lint-cleanup. [Steve Arnold]
+
+  cleanup lint
 
 
 0.5.1 (2025-05-31)

@@ -15,10 +15,7 @@ import sys
 
 from datetime import datetime
 
-if sys.version_info < (3, 8):
-    from importlib_metadata import version
-else:
-    from importlib.metadata import version
+from importlib.metadata import version
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
@@ -39,7 +36,6 @@ copyright = '2023 - ' + str(datetime.now().year) + f' {author}'
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'
-#needs_sphinx = "8.2.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -53,11 +49,27 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
-    'recommonmark',
+    'myst_parser',
+    #'sphinxcontrib.mermaid',
+]
+# do not render mermaid, show source instead
+#myst_fence_as_directive = ["mermaid"]
+
+myst_enable_extensions = [
+    'amsmath',
+    'attrs_block',
+    'colon_fence',
+    'deflist',
+    'dollarmath',
+    'fieldlist',
+    'tasklist',
+    'substitution',
 ]
 
+myst_suppress_warnings = ["myst.header"]
+
 # sphinxcontrib.apidoc
-apidoc_module_dir = '../../procman'
+apidoc_module_dir = f'../../{project}'
 apidoc_output_dir = 'api'
 apidoc_excluded_paths = ['tests']
 apidoc_include_private = True
@@ -107,7 +119,6 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'classic'  # still has a version
 html_theme = 'sphinx_rtd_theme'
 
 html_sidebars = {
