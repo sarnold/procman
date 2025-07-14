@@ -14,7 +14,7 @@ from honcho.manager import Manager  # type: ignore
 from munch import Munch
 
 from . import __version__ as VERSION
-from .utils import get_userscripts, load_config
+from .utils import MyYAML, get_userscripts, load_config
 
 # from logging_tree import printout  # debug logger environment
 
@@ -139,8 +139,9 @@ def main(argv=None):  # pragma: no cover
     uscripts = get_userscripts(ucfg, ufile, demo_mode=args.demo)
 
     if args.dump:
-        sys.stdout.write(Munch.toYAML(ucfg))  # type: ignore
-        sys.exit(0)
+        with MyYAML(output=sys.stdout) as yaml:
+            yaml.dump(Munch.toDict(ucfg))
+            sys.exit(0)
     if len(argv) == 1 and not ufile.exists():
         print('\nNo cfg file found; use the --demo arg or create a cfg file')
         sys.exit(1)

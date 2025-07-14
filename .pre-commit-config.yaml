@@ -41,7 +41,7 @@ repos:
         args: [--settings-path=pyproject.toml]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.16.0
+    rev: v1.16.1
     hooks:
     - id: mypy
       args:
@@ -49,8 +49,11 @@ repos:
         - --install-types
         - --non-interactive
       additional_dependencies:
-        - "munch[yaml]"
-        - "munch-stubs @ git+https://github.com/VCTLabs/munch-stubs.git@main"
+        - "munch"
+        - "munch-stubs"
+        - "ruamel.yaml"
+        - "flask"
+        - "redis"
       files: procman/
 
   - repo: "https://github.com/asottile/blacken-docs"
@@ -63,7 +66,7 @@ repos:
           - "black==23.1.0"
 
   - repo: https://github.com/PyCQA/doc8
-    rev: v1.1.2
+    rev: v2.0.0
     hooks:
       - id: doc8
         args:
@@ -89,17 +92,18 @@ repos:
           - --remove-unused-variables
 
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.2.0
+    rev: 7.3.0
     hooks:
       - id: flake8
         files: procman/
         additional_dependencies: ["flake8-bugbear"]
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.8.3
+    rev: 1.8.6
     hooks:
       - id: bandit
-        args: ["-ll", "-q"]
+        args: ["-ll", "-q", "-r", "-c", "pyproject.toml"]
+        additional_dependencies: ["bandit[toml]"]
         files: procman/
 
 #  - repo: https://github.com/lovesegfault/beautysh

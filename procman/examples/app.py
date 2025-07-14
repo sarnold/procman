@@ -21,4 +21,4 @@ def hello():
 
 
 if __name__ == "__main__":  # see the warning in console, DEMO only
-    app.run(host="localhost", port=8000, debug=True)  # nosec
+    app.run(host="localhost", port=8000, debug=True)

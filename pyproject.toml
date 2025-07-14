@@ -71,3 +71,5 @@ ensure_newline_before_comments = true
 
 [tool.bandit]
 exclude_dirs = ["docs"]
+# warning in example code only
+skips = ["B201"]
