@@ -9,11 +9,24 @@ from pathlib import Path
 from typing import List, Tuple
 
 from munch import Munch
+from ruamel.yaml import YAML
 
 if sys.version_info < (3, 10):
     import importlib_resources  # type: ignore[import-not-found]
 else:
     import importlib.resources as importlib_resources
+
+
+class MyYAML(YAML):
+    """
+    Simple YAML subclass with default indenting. Useful in old RHEL
+    environments with ``ruamel.yaml==0.16.6``.
+    """
+
+    def __init__(self, *args, **kwargs):
+        YAML.__init__(self, *args, **kwargs)
+        self.preserve_quotes = True
+        self.indent(mapping=2, sequence=4, offset=2)
 
 
 class FileTypeError(Exception):
@@ -23,7 +36,8 @@ class FileTypeError(Exception):
 
 
 def load_config(
-    ufile: str = '', file_extension: str = '.yaml', file_encoding: str = 'utf-8'
+    ufile: str = '',
+    file_extension: str = '.yaml',
 ) -> Tuple[Munch, Path]:
     """
     Load yaml configuration file and munchify the data. If ENV path or local
@@ -32,7 +46,6 @@ def load_config(
 
     :param ufile: path string for config file
     :param file_extension: file extension with leading separator
-    :param file_encoding: file encoding of config file
     :returns: cfg Munch and file Path
     :raises FileTypeError: if the input file is not yml
     """
@@ -46,7 +59,7 @@ def load_config(
     if not cfgfile.exists():
         cfgobj = load_base_config()
     else:
-        cfgobj = Munch.fromYAML(cfgfile.read_text(encoding=file_encoding))
+        cfgobj = Munch.fromDict(MyYAML().load(cfgfile))
     logging.debug('Using config: %s', str(cfgfile.resolve()))
 
     return cfgobj, cfgfile.resolve()
@@ -104,24 +117,28 @@ def load_base_config() -> Munch:
     :return: Munch config obj
     """
 
-    proc_cfg = Munch.fromYAML(
-        """
-        scripts_path: null
-        scripts:
-          - proc_name: 'app.py'
-            proc_dir: examples
-            proc_label: web
-            proc_opts: []
-            proc_enable: true
-            proc_runner: python
-          - proc_name: 'run_redis.sh'
-            proc_dir: examples
-            proc_label: redis
-            proc_opts:
-              - 'run'
-            proc_enable: true
-            proc_runner: bash
-        """
+    proc_cfg = Munch.fromDict(
+        {
+            'scripts_path': None,
+            'scripts': [
+                {
+                    'proc_name': 'app.py',
+                    'proc_dir': 'examples',
+                    'proc_label': 'web',
+                    'proc_opts': [],
+                    'proc_enable': True,
+                    'proc_runner': 'python',
+                },
+                {
+                    'proc_name': 'run_redis.sh',
+                    'proc_dir': 'examples',
+                    'proc_label': 'redis',
+                    'proc_opts': ['run'],
+                    'proc_enable': True,
+                    'proc_runner': 'bash',
+                },
+            ],
+        }
     )
 
     return proc_cfg
