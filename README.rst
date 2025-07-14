@@ -1,6 +1,5 @@
-=========
- Procman
-=========
+Procman Docs
+============
 
 **A lightweight process manager for user scripts**.
 
@@ -12,7 +11,7 @@
 
 
 But what is it, really?
-=======================
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Procman is a tool for running multiple external processes and multiplexing
 their output to the console. It also cleans up and stops the whole stack
@@ -34,7 +33,7 @@ redis using your own platform tools (eg, ``apt`` or ``brew``).
 Procman is tested on the 3 primary GH runner platforms, so as long as you
 have a new-ish Python and a sane shell environment it should Just Work.
 
-Note Procman only supports Python 3.6+.
+Note Procman only supports Python 3.8+.
 
 
 .. _Honcho: https://honcho.readthedocs.io/en/latest/index.html
@@ -49,7 +48,7 @@ Note Procman only supports Python 3.6+.
 
 
 Quick Start
-===========
+~~~~~~~~~~~
 
 Procman is mainly configuration-driven via YAML config files; the included
 example can be displayed and copied via command-line options (see the Usage_
@@ -151,7 +150,7 @@ config file guidance includes:
 :proc_opts: any required script args (default is an empty list)
 
 Install with pip
-================
+~~~~~~~~~~~~~~~~
 
 This package is *not* yet published on PyPI, thus use one of the following
 to install procman on any platform. Install from the main branch::
@@ -274,7 +273,7 @@ another project, use something like this::
 .. _Tox: https://github.com/tox-dev/tox
 
 Making Changes & Contributing
-=============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We use the gitchangelog_ action to generate our changelog and GH Release
 page, as well as the gitchangelog message format to help it categorize/filter
@@ -323,7 +322,7 @@ It's usually a good idea to update the hooks to the latest version::
 
 
 SBOM and license info
-=====================
+~~~~~~~~~~~~~~~~~~~~~
 
 This project is now compliant the REUSE Specification Version 3.3, so the
 corresponding license information for all files can be found in the ``REUSE.toml``
@@ -398,7 +397,7 @@ specifications.
     :target: https://github.com/sarnold/procman/releases
     :alt: GitHub tag
 
-.. |python| image:: https://img.shields.io/badge/python-3.9+-blue.svg
+.. |python| image:: https://img.shields.io/badge/python-3.8+-blue.svg
     :target: https://www.python.org/downloads/
     :alt: Python
 
