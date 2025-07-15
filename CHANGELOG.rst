@@ -2,6 +2,16 @@ Changelog
 =========
 
 
+0.6.0 (2025-07-14)
+------------------
+
+Changes
+~~~~~~~
+- Make sure github and reuse can find the license file. [Stephen L
+  Arnold]
+- Cleanup dep versioning, allow el9 setuptools. [Stephen L Arnold]
+
+
 0.5.3 (2025-07-13)
 ------------------
 
@@ -9,6 +19,8 @@ Changes
 ~~~~~~~
 - Update readme and docs build, set min python version to 3.8. [Stephen
   L Arnold]
+
+  * update changelog for release
 - Update deps, keep munch but swap pyyaml for ruamel.yaml. [Stephen L
   Arnold]
 
@@ -22,6 +34,9 @@ Fixes
 
 Other
 ~~~~~
+- Merge pull request #25 from sarnold/doc-updates. [Steve Arnold]
+
+  Docs cleanup
 - Merge pull request #24 from sarnold/compat-yaml. [Steve Arnold]
 
   el9 compat yaml
