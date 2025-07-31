@@ -23,8 +23,11 @@ class MyYAML(YAML):
     environments with ``ruamel.yaml==0.16.6``.
     """
 
-    def __init__(self, *args, **kwargs):
-        YAML.__init__(self, *args, **kwargs)
+    def __init__(self, **kwargs):
+        """
+        Init with specific indenting and quote preservation.
+        """
+        super().__init__(**kwargs)
         self.preserve_quotes = True
         self.indent(mapping=2, sequence=4, offset=2)
 
@@ -33,6 +36,17 @@ class FileTypeError(Exception):
     """Raise when the file extension is not '.yml' or '.yaml'"""
 
     __module__ = Exception.__module__
+
+
+def get_env_prefix() -> str:
+    """
+    Get user-supplied prefix from environment and expand it when used in
+    ``get_userscripts``.
+
+    :returns: prefix path
+    """
+    proc_pfx = os.getenv('PROCMAN_PREFIX', default='')
+    return proc_pfx
 
 
 def load_config(
@@ -91,11 +105,11 @@ def get_userscripts(
                 f'{item.proc_runner} ' if item.proc_runner else ''
             ) + f'{os.path.join(scripts_path, item.proc_dir, item.proc_name)}'
         else:
-            if ucfg.scripts_path:
+            user_prefix = ucfg.scripts_path if ucfg.scripts_path else get_env_prefix()
+            if user_prefix:
                 proc_str = (
-                    (f'{item.proc_runner} ' if item.proc_runner else '')
-                    + f'{os.path.join(ucfg.scripts_path, item.proc_dir, item.proc_name)}'
-                )
+                    f'{item.proc_runner} ' if item.proc_runner else ''
+                ) + f'{os.path.join(user_prefix, item.proc_dir, item.proc_name)}'
             else:
                 proc_str = (
                     f'{item.proc_runner} ' if item.proc_runner else ''

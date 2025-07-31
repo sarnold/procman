@@ -125,6 +125,17 @@ variable ``PROCMAN_CFG``, eg::
   $ $EDITOR procman-develop.yml  # set alternate scripts, other options
   $ PROCMAN_CFG="procman-develop.yml" procman --verbose
 
+Finally, if your project needs to be installed, whether installed as an OS
+package or into a virtual environment, you can use a configuration similar
+to the following:
+
+* set ``proc_dir`` to ``bin`` and leave ``scripts_path`` empty
+* set the env variable PROCMAN_PREFIX to the ``bin`` prefix in your workflow
+
+For examnple, use PROCMAN_PREFIX=/usr if your project is installed as an OS
+package, or something like PROCMAN_PREFIX={env_dir} if your project is installed
+into a tox environment.
+
 Configuration settings
 ----------------------
 
