@@ -2,17 +2,52 @@ Changelog
 =========
 
 
-0.6.0 (2025-07-14)
+0.6.2 (2025-08-18)
+------------------
+
+Fixes
+~~~~~
+- Remove deprecated version attribute from package metadata. [Stephen L
+  Arnold]
+
+
+0.6.1 (2025-07-31)
+------------------
+
+Fixes
+~~~~~
+- Add PROCMAN_PREFIX override for install prefix path. [Stephen L
+  Arnold]
+
+  * set the above env variable to install prefix as needed, something like
+    PROCMAN_PREFIX=/usr if scripts are installed to /usr/bin
+
+Other
+~~~~~
+- Merge pull request #29 from sarnold/refactored-yaml. [Steve Arnold]
+
+  yaml and path cleanup
+
+
+0.6.0 (2025-07-15)
 ------------------
 
 Changes
 ~~~~~~~
 - Make sure github and reuse can find the license file. [Stephen L
   Arnold]
+
+  * use reasonable min versions in pyproject.toml, update changelog
 - Cleanup dep versioning, allow el9 setuptools. [Stephen L Arnold]
 
+Other
+~~~~~
+- Merge pull request #26 from sarnold/license-bits. [Steve Arnold]
 
-0.5.3 (2025-07-13)
+  License bits
+
+
+0.5.3 (2025-07-14)
 ------------------
 
 Changes
