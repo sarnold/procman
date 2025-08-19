@@ -7,8 +7,15 @@ Changelog
 
 Fixes
 ~~~~~
+- Bump to latest upstream fix release. [Stephen L Arnold]
 - Remove deprecated version attribute from package metadata. [Stephen L
   Arnold]
+
+Other
+~~~~~
+- Merge pull request #32 from sarnold/packaging-fix. [Steve Arnold]
+
+  packaging fix
 
 
 0.6.1 (2025-07-31)
