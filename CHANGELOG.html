@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog &mdash; procman 0.6.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=55b73dce" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=1c28bd9a"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Using Pre-Commit" href="dev/pre-commit-usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            procman
+          </a>
+              <div class="version">
+                0.6.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme_include.html">Procman Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/generate-changelog.html">Changelog Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/pre-commit-config.html">Contents of the <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/pre-commit-usage.html">Using Pre-Commit</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.6.2 (2025-08-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fixes">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.6.1 (2025-07-31)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">0.6.0 (2025-07-15)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">0.5.3 (2025-07-14)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">0.5.2 (2025-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">0.5.1 (2025-05-31)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">0.5.0 (2025-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id18">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">0.4.1 (2025-03-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">0.4.0 (2025-03-16)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id25">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id26">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id27">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id28">0.3.0 (2024-01-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id29">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id30">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id31">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id32">0.2.0 (2023-09-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new">New</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id33">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id34">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id35">0.1.1 (2023-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id36">New</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id37">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id38">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id39">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id40">0.1.0 (2023-08-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id41">New</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id42">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id43">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id44">Other</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">procman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Changelog</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/CHANGELOG.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>0.6.2 (2025-08-18)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="fixes">
+<h3>Fixes<a class="headerlink" href="#fixes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Bump to latest upstream fix release. [Stephen L Arnold]</p></li>
+<li><p>Remove deprecated version attribute from package metadata. [Stephen L
+Arnold]</p></li>
+</ul>
+</section>
+<section id="other">
+<h3>Other<a class="headerlink" href="#other" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #32 from sarnold/packaging-fix. [Steve Arnold]</p>
+<p>packaging fix</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2>0.6.1 (2025-07-31)<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>Fixes<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add PROCMAN_PREFIX override for install prefix path. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>set the above env variable to install prefix as needed, something like
+PROCMAN_PREFIX=/usr if scripts are installed to /usr/bin</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id4">
+<h3>Other<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #29 from sarnold/refactored-yaml. [Steve Arnold]</p>
+<p>yaml and path cleanup</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id5">
+<h2>0.6.0 (2025-07-15)<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="changes">
+<h3>Changes<a class="headerlink" href="#changes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Make sure github and reuse can find the license file. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>use reasonable min versions in pyproject.toml, update changelog</p></li>
+</ul>
+</li>
+<li><p>Cleanup dep versioning, allow el9 setuptools. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Other<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #26 from sarnold/license-bits. [Steve Arnold]</p>
+<p>License bits</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h2>0.5.3 (2025-07-14)<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3>Changes<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Update readme and docs build, set min python version to 3.8. [Stephen
+L Arnold]</p>
+<ul>
+<li><p>update changelog for release</p></li>
+</ul>
+</li>
+<li><p>Update deps, keep munch but swap pyyaml for ruamel.yaml. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>change example config from yaml string to dict, update munches
+to use Dict attributes instead of yaml</p></li>
+<li><p>update tox and project files, bump pre-commit hooks</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id9">
+<h3>Fixes<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Address codeql warning in example app. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Other<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #25 from sarnold/doc-updates. [Steve Arnold]</p>
+<p>Docs cleanup</p>
+</li>
+<li><p>Merge pull request #24 from sarnold/compat-yaml. [Steve Arnold]</p>
+<p>el9 compat yaml</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h2>0.5.2 (2025-06-18)<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="id12">
+<h3>Fixes<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Cleanup typing and misc lint, ignore pytest warnings. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>cleanup tox commands, add an assert to make return type even
+more obvious</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id13">
+<h3>Other<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #22 from sarnold/lint-cleanup. [Steve Arnold]</p>
+<p>cleanup lint</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id14">
+<h2>0.5.1 (2025-05-31)<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<section id="id15">
+<h3>Changes<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add py.typed marker and 2 type:ignore, remove mypy cfg. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>cleanup some docstrings and lint</p></li>
+</ul>
+</li>
+<li><p>Cleanup config file documentation bits. [Stephen L Arnold]</p></li>
+<li><p>Cleanup old runner environments, fix some typos. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>Other<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #19 from sarnold/changelogs. [Steve Arnold]</p>
+<p>update changelog</p>
+</li>
+<li><p>Merge pull request #18 from sarnold/ci-runners. [Steve Arnold]</p>
+<p>CI runner cleanup</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id17">
+<h2>0.5.0 (2025-05-30)<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
+<section id="id18">
+<h3>Changes<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Update changelog for new release, update pre-commit hooks. [Stephen L
+Arnold]</p></li>
+<li><p>Update readme and help strings, cleanup project files. [Stephen L
+Arnold]</p></li>
+<li><p>Refactor part 2, wire up config file as positional arg. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>add file arg to load_config, update test and entry point</p></li>
+</ul>
+</li>
+<li><p>Refactor part 1, decouple util funcs, add user config arg. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>tests and entrypoint are updated, but config arg is not wired up yet</p></li>
+</ul>
+</li>
+<li><p>Update docs config and deps. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>Fixes<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Cleanup old runners in coverage workflow, update project files.
+[Stephen L Arnold]</p></li>
+<li><p>Add type annotations and cleanup imports, add mypy config. [Stephen L
+Arnold]</p></li>
+</ul>
+</section>
+<section id="id20">
+<h3>Other<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #17 from sarnold/doc-updates. [Steve Arnold]</p>
+<p>pre-release cleanup</p>
+</li>
+<li><p>Merge pull request #16 from sarnold/cleanup-bits. [Steve Arnold]</p>
+<p>more config</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id21">
+<h2>0.4.1 (2025-03-18)<a class="headerlink" href="#id21" title="Link to this heading"></a></h2>
+<section id="id22">
+<h3>Changes<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Update to latest bandit action for testing, fix readme. [Stephen L
+Arnold]</p></li>
+</ul>
+</section>
+<section id="id23">
+<h3>Other<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #12 from sarnold/doc-nits. [Steve Arnold]</p>
+<p>Action update</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id24">
+<h2>0.4.0 (2025-03-16)<a class="headerlink" href="#id24" title="Link to this heading"></a></h2>
+<section id="id25">
+<h3>Changes<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Apply recommended actions hardening, add PR approval. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>the latter auto-approve workflow is owner-only for CI checks</p></li>
+<li><p>update .pre-commit-config.yaml</p></li>
+</ul>
+</li>
+<li><p>Add explicit job permissions, bump runner version. [Stephen L Arnold]</p></li>
+<li><p>Add REUSE.toml config and become reuse spec 3.3 compliant. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>procman-sdist-sbom.txt was generated using <code class="docutils literal notranslate"><span class="pre">reuse</span> <span class="pre">spdx</span></code> cmd</p></li>
+<li><p>COPYING is now a symlink pointing to LICENSES/LGPL-2.1-or-later.txt</p></li>
+<li><p>add readme section on SBOM and licensing info</p></li>
+<li><p>add reuse cmd and bump python versions in tox file</p></li>
+</ul>
+</li>
+<li><p>Update all workflow actions and python versions. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id26">
+<h3>Fixes<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Make sure release workflow has the right job permissions. [Stephen L
+Arnold]</p></li>
+<li><p>Update gitchangelog and add config, fix readme URI. [Stephen L Arnold]</p></li>
+<li><p>Move description text and add version. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id27">
+<h3>Other<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #11 from sarnold/release-docs. [Steve Arnold]</p>
+<p>release workflow fixes</p>
+</li>
+<li><p>Merge pull request #10 from sarnold/changelog-fix. [Steve Arnold]</p>
+<p>changelog fixes</p>
+</li>
+<li><p>Merge pull request #9 from sarnold/action-hashes. [Steve Arnold]</p>
+<p>workflow linting</p>
+</li>
+<li><p>Merge pull request #8 from sarnold/workflow-job-renames. [Steve
+Arnold]</p>
+<p>more workflow cleanup</p>
+</li>
+<li><p>Merge pull request #6 from sarnold/metadata-cleanup. [Steve Arnold]</p>
+<p>metadata cleanup</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id28">
+<h2>0.3.0 (2024-01-12)<a class="headerlink" href="#id28" title="Link to this heading"></a></h2>
+<section id="id29">
+<h3>Changes<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Tighten up show output, use full path for cfg file. [Stephen L Arnold]</p>
+<ul>
+<li><p>since the demo config is a string and not a file, the –show command
+will display a “fictitious” user file, and –test will warn about it</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id30">
+<h3>Fixes<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Use resolved paths for config and scripts. [Stephen L Arnold]</p>
+<ul>
+<li><p>return resolved path obj from load_config, use it in get_userscripts</p></li>
+<li><p>update tests for full script path in get_userscripts list</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id31">
+<h3>Other<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #5 from sarnold/full-cfg-path. [Steve Arnold]</p>
+<p>use resolved paths for config and scripts</p>
+</li>
+<li><p>Merge pull request #4 from sarnold/more-nit-cleanup. [Steve Arnold]</p>
+<p>tighten up show output, use full path for cfg file</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id32">
+<h2>0.2.0 (2023-09-26)<a class="headerlink" href="#id32" title="Link to this heading"></a></h2>
+<section id="new">
+<h3>New<a class="headerlink" href="#new" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add coverage workflow. [Stephen L Arnold]</p></li>
+<li><p>Add a changelog, update docs build, readme and pkg cleanup. [Stephen L
+Arnold]</p></li>
+</ul>
+</section>
+<section id="id33">
+<h3>Changes<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Refactor docs, cleanup imports, sync up extension bits. [Stephen L
+Arnold]</p>
+<ul>
+<li><p>document the full config block, cleanup serv example</p></li>
+</ul>
+</li>
+<li><p>Bump setuptools version for setuptools_scm, cleanup setup.py. [Stephen
+L Arnold]</p>
+<ul>
+<li><p>according to other project bugs, eg, matplotlib, minimum should be 64</p></li>
+<li><p>try 59 so we can keep python 3.6 for now</p></li>
+</ul>
+</li>
+<li><p>More readme and logging cleanup, print help if no cfg file. [Stephen L
+Arnold]</p></li>
+<li><p>Add more connfig tests. [Stephen L Arnold]</p></li>
+<li><p>Cleanup imports and reqs, warnings, logging, and config handling.
+[Stephen L Arnold]</p>
+<ul>
+<li><p>make demo-mode a command-line arg with default False</p></li>
+<li><p>do NOT write the example config to a file automatically</p></li>
+<li><p>use –dump-config and redirect to a file instead</p></li>
+</ul>
+</li>
+<li><p>Refactor user cfg  handling, no more appdirs. [Stephen L Arnold]</p>
+<ul>
+<li><p>support local/default project config file(s) with ENV override</p></li>
+<li><p>if no defconfig is found, create one in working directory</p></li>
+</ul>
+</li>
+<li><p>Add simple tests, start refactoring readme. [Stephen L Arnold]</p>
+<ul>
+<li><p>still needs old cfg handling yanked, make it simpler</p></li>
+</ul>
+</li>
+<li><p>Swap out version file, swap in setuptools-scm dynamic version.
+[Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id34">
+<h3>Other<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Fix silly branch typo in coverage workflow. [Stephen L Arnold]</p></li>
+<li><p>Update changelog for release, restore missing coverage in the readme.
+[Stephen L Arnold]</p></li>
+<li><p>Merge pull request #3 from sarnold/import-ref. [Steve Arnold]</p>
+<p>Import refactor, docs cleanup</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id35">
+<h2>0.1.1 (2023-08-25)<a class="headerlink" href="#id35" title="Link to this heading"></a></h2>
+<section id="id36">
+<h3>New<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add runtime countdown-to-terminate argument, use 5 sec in tox.
+[Stephen L Arnold]</p>
+<ul>
+<li><p>tox dev mode will start the demo stack for 5 seconds then terminate</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id37">
+<h3>Changes<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Cleanup rst formatting. [Stephen L Arnold]</p></li>
+<li><p>Add new tox command to run active config, update readme. [Stephen L
+Arnold]</p></li>
+<li><p>Replace assert with UserWarning in self-check. [Stephen L Arnold]</p></li>
+<li><p>Show some output in the readme, cleanup self-checks. [Stephen L
+Arnold]</p></li>
+</ul>
+</section>
+<section id="id38">
+<h3>Fixes<a class="headerlink" href="#id38" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add worrkaround for GH API bug, update readme. [Stephen L Arnold]</p>
+<ul>
+<li><p>limit bandit workflow to push event only so comments get connected
+with the proper check run</p></li>
+</ul>
+</li>
+<li><p>Cleanup formatting, docs and docstrings, remove static default_tag.
+[Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id39">
+<h3>Other<a class="headerlink" href="#id39" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #2 from sarnold/nit-cleanup. [Steve Arnold]</p>
+<p>Doc and nit cleanup</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id40">
+<h2>0.1.0 (2023-08-21)<a class="headerlink" href="#id40" title="Link to this heading"></a></h2>
+<section id="id41">
+<h3>New<a class="headerlink" href="#id41" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add basic sphinx docs build and some GH workflows. [Stephen L Arnold]</p>
+<ul>
+<li><p>more cleanup in readne/tox/setup files</p></li>
+</ul>
+</li>
+<li><p>Add initial README doc and pre-commit config. [Stephen L Arnold]</p></li>
+<li><p>Initial process manager and example user script integration. [Stephen
+L Arnold]</p>
+<ul>
+<li><p>uses default example flask-redis app</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id42">
+<h3>Changes<a class="headerlink" href="#id42" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ci: get more verbose with bandit workflow permissions. [Stephen L
+Arnold]</p></li>
+<li><p>Restore pylint/bandit workflows, use explicit branch target. [Stephen
+L Arnold]</p></li>
+<li><p>Add explicit permissions block to bandit workflow. [Stephen L Arnold]</p></li>
+<li><p>Revert bandit workflow action branch to master, set path. [Stephen L
+Arnold]</p></li>
+<li><p>Switch bandit workflow to latest test branch. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id43">
+<h3>Fixes<a class="headerlink" href="#id43" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Restore missing release artifact name. [Stephen L Arnold]</p></li>
+<li><p>Add missing pylint score. [Stephen L Arnold]</p></li>
+<li><p>Use correct license in badge text. [Stephen L Arnold]</p></li>
+<li><p>Allow proc_runner to be null if no interpreter. [Stephen L Arnold]</p>
+<ul>
+<li><p>cleanup example app, docstrings, and tox file</p></li>
+</ul>
+</li>
+<li><p>Add missing license file. [Stephen L Arnold]</p></li>
+<li><p>Cleanup even more lint with pre-commit. [Stephen L Arnold]</p></li>
+<li><p>Cleanup some lint. [Stephen L Arnold]</p></li>
+</ul>
+</section>
+<section id="id44">
+<h3>Other<a class="headerlink" href="#id44" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Merge pull request #1 from sarnold/early-chores. [Steve Arnold]</p>
+<p>add docs and workflows</p>
+</li>
+<li><p>Fix silly typo in badge string. [Stephen L Arnold]</p></li>
+<li><p>Cleanup initial cruft, flesh out base cfgs and user scripts. [Stephen
+L Arnold]</p></li>
+<li><p>Initial commit, new app shell with some yaml foo and an example.
+[Stephen L Arnold]</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dev/pre-commit-usage.html" class="btn btn-neutral float-left" title="Using Pre-Commit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023 - 2025 Stephen Arnold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

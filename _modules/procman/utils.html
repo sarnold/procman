@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>procman.utils &mdash; procman 0.6.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=55b73dce" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=1c28bd9a"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            procman
+          </a>
+              <div class="version">
+                0.6.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_include.html">Procman Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">procman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/generate-changelog.html">Changelog Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/pre-commit-config.html">Contents of the <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/pre-commit-usage.html">Using Pre-Commit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">procman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">procman.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for procman.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">procman utils for file handling and config parsing.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">munch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Munch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ruamel.yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">YAML</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">importlib_resources</span>  <span class="c1"># type: ignore[import-not-found]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">importlib_resources</span>
+
+
+<div class="viewcode-block" id="MyYAML">
+<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.MyYAML">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyYAML</span><span class="p">(</span><span class="n">YAML</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple YAML subclass with default indenting. Useful in old RHEL</span>
+<span class="sd">    environments with ``ruamel.yaml==0.16.6``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Init with specific indenting and quote preservation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preserve_quotes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">mapping</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sequence</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FileTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when the file extension is not &#39;.yml&#39; or &#39;.yaml&#39;&quot;&quot;&quot;</span>
+
+    <span class="vm">__module__</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="vm">__module__</span>
+
+
+<div class="viewcode-block" id="get_env_prefix">
+<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.get_env_prefix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_env_prefix</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get user-supplied prefix from environment and expand it when used in</span>
+<span class="sd">    ``get_userscripts``.</span>
+
+<span class="sd">    :returns: prefix path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">proc_pfx</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;PROCMAN_PREFIX&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">proc_pfx</span></div>
+
+
+
+<div class="viewcode-block" id="load_config">
+<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.load_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span>
+    <span class="n">ufile</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">file_extension</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Munch</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load yaml configuration file and munchify the data. If ENV path or local</span>
+<span class="sd">    file is not found in current directory, the default cfg will be loaded.</span>
+<span class="sd">    Note that passing ``ufile`` as a parameter overrides the above default.</span>
+
+<span class="sd">    :param ufile: path string for config file</span>
+<span class="sd">    :param file_extension: file extension with leading separator</span>
+<span class="sd">    :returns: cfg Munch and file Path</span>
+<span class="sd">    :raises FileTypeError: if the input file is not yml</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">proc_cfg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;PROCMAN_CFG&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">defconfig_file</span> <span class="o">=</span> <span class="n">ufile</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;.procman</span><span class="si">{</span><span class="n">file_extension</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="n">cfgfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">proc_cfg</span><span class="p">)</span> <span class="k">if</span> <span class="n">proc_cfg</span> <span class="k">else</span> <span class="n">Path</span><span class="p">(</span><span class="n">defconfig_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfgfile</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s1">&#39;.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">)):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;invalid YAML extension: </span><span class="si">{</span><span class="n">cfgfile</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">raise</span> <span class="n">FileTypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfgfile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">cfgobj</span> <span class="o">=</span> <span class="n">load_base_config</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cfgobj</span> <span class="o">=</span> <span class="n">Munch</span><span class="o">.</span><span class="n">fromDict</span><span class="p">(</span><span class="n">MyYAML</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfgfile</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Using config: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">cfgfile</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+
+    <span class="k">return</span> <span class="n">cfgobj</span><span class="p">,</span> <span class="n">cfgfile</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="get_userscripts">
+<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.get_userscripts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_userscripts</span><span class="p">(</span>
+    <span class="n">usr_cfg</span><span class="p">:</span> <span class="n">Munch</span><span class="p">,</span> <span class="n">usr_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">demo_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get user scripts from Munchified user cfg.</span>
+
+<span class="sd">    :param usr_cfg: user configuration</span>
+<span class="sd">    :param usr_file: user config file</span>
+<span class="sd">    :param demo_mode: run example scripts (self-test)</span>
+<span class="sd">    :returns: list of lists with user scripts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">uscripts</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ucfg</span> <span class="o">=</span> <span class="n">load_base_config</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">usr_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="n">demo_mode</span> <span class="k">else</span> <span class="n">usr_cfg</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ucfg</span><span class="o">.</span><span class="n">scripts</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">proc_enable</span><span class="p">]:</span>
+        <span class="n">proc_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">proc_label</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">demo_mode</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="n">scripts_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">),</span> <span class="s1">&#39;procman&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pkg_path</span> <span class="o">=</span> <span class="n">importlib_resources</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s1">&#39;procman&#39;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">importlib_resources</span><span class="o">.</span><span class="n">as_file</span><span class="p">(</span><span class="n">pkg_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">path</span><span class="p">:</span>
+                    <span class="n">scripts_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">proc_str</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+            <span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scripts_path</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="o">.</span><span class="n">proc_dir</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="o">.</span><span class="n">proc_name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">user_prefix</span> <span class="o">=</span> <span class="n">ucfg</span><span class="o">.</span><span class="n">scripts_path</span> <span class="k">if</span> <span class="n">ucfg</span><span class="o">.</span><span class="n">scripts_path</span> <span class="k">else</span> <span class="n">get_env_prefix</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">user_prefix</span><span class="p">:</span>
+                <span class="n">proc_str</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+                <span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="o">.</span><span class="n">proc_dir</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="o">.</span><span class="n">proc_name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">proc_str</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">proc_runner</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+                <span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">proc_dir</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="o">.</span><span class="n">proc_name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Demo mode is </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">demo_mode</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">proc_opts</span><span class="p">:</span>
+            <span class="n">proc_str</span> <span class="o">=</span> <span class="n">proc_str</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">opt</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">proc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proc_str</span><span class="p">)</span>
+        <span class="n">uscripts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proc_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">uscripts</span></div>
+
+
+
+<div class="viewcode-block" id="load_base_config">
+<a class="viewcode-back" href="../../api/procman.utils.html#procman.utils.load_base_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_base_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Munch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load initial procman config with our baseline example values. This is</span>
+<span class="sd">    used to both run the example flask app and provide a user-facing example</span>
+<span class="sd">    configuration.</span>
+
+<span class="sd">    :return: Munch config obj</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">proc_cfg</span> <span class="o">=</span> <span class="n">Munch</span><span class="o">.</span><span class="n">fromDict</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;scripts_path&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;scripts&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;proc_name&#39;</span><span class="p">:</span> <span class="s1">&#39;app.py&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;examples&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_label&#39;</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_opts&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s1">&#39;proc_enable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_runner&#39;</span><span class="p">:</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;proc_name&#39;</span><span class="p">:</span> <span class="s1">&#39;run_redis.sh&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;examples&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_label&#39;</span><span class="p">:</span> <span class="s1">&#39;redis&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_opts&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;run&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;proc_enable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s1">&#39;proc_runner&#39;</span><span class="p">:</span> <span class="s1">&#39;bash&#39;</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">proc_cfg</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023 - 2025 Stephen Arnold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
